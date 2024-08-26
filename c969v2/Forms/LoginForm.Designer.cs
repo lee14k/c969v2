@@ -35,11 +35,13 @@
             this.label2 = new System.Windows.Forms.Label();
             this.labeler = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // loginButton
             // 
-            this.loginButton.Location = new System.Drawing.Point(246, 205);
+            this.loginButton.Location = new System.Drawing.Point(119, 196);
             this.loginButton.Name = "loginButton";
             this.loginButton.Size = new System.Drawing.Size(75, 23);
             this.loginButton.TabIndex = 0;
@@ -48,7 +50,7 @@
             // 
             // usernameEnter
             // 
-            this.usernameEnter.Location = new System.Drawing.Point(253, 114);
+            this.usernameEnter.Location = new System.Drawing.Point(126, 105);
             this.usernameEnter.Name = "usernameEnter";
             this.usernameEnter.Size = new System.Drawing.Size(68, 20);
             this.usernameEnter.TabIndex = 1;
@@ -56,7 +58,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(207, 76);
+            this.label1.Location = new System.Drawing.Point(80, 67);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(114, 13);
             this.label1.TabIndex = 2;
@@ -64,7 +66,7 @@
             // 
             // passwordEnter
             // 
-            this.passwordEnter.Location = new System.Drawing.Point(253, 158);
+            this.passwordEnter.Location = new System.Drawing.Point(126, 149);
             this.passwordEnter.Name = "passwordEnter";
             this.passwordEnter.Size = new System.Drawing.Size(68, 20);
             this.passwordEnter.TabIndex = 3;
@@ -72,7 +74,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(176, 117);
+            this.label2.Location = new System.Drawing.Point(49, 108);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(58, 13);
             this.label2.TabIndex = 4;
@@ -81,7 +83,7 @@
             // labeler
             // 
             this.labeler.AutoSize = true;
-            this.labeler.Location = new System.Drawing.Point(178, 161);
+            this.labeler.Location = new System.Drawing.Point(51, 152);
             this.labeler.Name = "labeler";
             this.labeler.Size = new System.Drawing.Size(56, 13);
             this.labeler.TabIndex = 5;
@@ -91,17 +93,37 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 18.25F);
-            this.label4.Location = new System.Drawing.Point(140, 30);
+            this.label4.Location = new System.Drawing.Point(13, 21);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(277, 29);
             this.label4.TabIndex = 6;
             this.label4.Text = "Appointment Scheduler";
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(280, 105);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(58, 13);
+            this.label3.TabIndex = 7;
+            this.label3.Text = "Language:";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(280, 67);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(56, 13);
+            this.label5.TabIndex = 8;
+            this.label5.Text = "Timezone:";
+            // 
             // LoginForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(529, 258);
+            this.ClientSize = new System.Drawing.Size(435, 278);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.labeler);
             this.Controls.Add(this.label2);
@@ -125,5 +147,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label labeler;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label5;
     }
 }
