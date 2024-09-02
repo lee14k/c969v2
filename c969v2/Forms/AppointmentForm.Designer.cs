@@ -166,6 +166,7 @@
             this.SubmitButton.TabIndex = 13;
             this.SubmitButton.Text = "Submit";
             this.SubmitButton.UseVisualStyleBackColor = true;
+            this.SubmitButton.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // AppointmentCancelButton
             // 

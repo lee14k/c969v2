@@ -89,19 +89,32 @@ namespace c969v2.Forms
                 }
             }
         }
-
         private void btnSave_Click(object sender, EventArgs e)
         {
-            // Gather the input values from the form controls
-            string title = TitleTextBox.Text;
-            string description = DescriptionTextBox.Text;
-            string location = LocationTextBox.Text;
-            string contact = ContactTextBox.Text;
-            string type = TypeTextBox.Text;
-            string url = URLTextBox.Text;
-            DateTime start = StartDateTimePicker.Value;
-            DateTime end = EndDateTimePicker.Value;
-            int customerId = Convert.ToInt32(CustomerNum.Value);
+            string title = txtTitle.Text;
+            string description = txtDescription.Text;
+            string location = txtLocation.Text;
+            string contact = txtContact.Text;
+            string type = txtType.Text;
+            string url = txtUrl.Text;
+            DateTime start = dtpStart.Value;
+            DateTime end = dtpEnd.Value;
+
+            // Validate business hours
+            if (!IsWithinBusinessHours(start, end))
+            {
+                MessageBox.Show("Appointments can only be scheduled during business hours (Monday through Friday, 9:00 AM to 5:00 PM).",
+                                "Invalid Appointment Time", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return; // Do not proceed with saving
+            }
+
+            // Check for overlapping appointments
+            if (IsOverlappingAppointment(start, end, userId))
+            {
+                MessageBox.Show("The appointment times overlap with an existing appointment.",
+                                "Appointment Overlap", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return; // Do not proceed with saving
+            }
 
             try
             {
@@ -109,8 +122,11 @@ namespace c969v2.Forms
                 {
                     connection.Open();
 
-                    string query = isEditMode
-                        ? @"UPDATE appointment SET 
+                    string query;
+
+                    if (isEditMode) // Update existing appointment
+                    {
+                        query = @"UPDATE appointment SET 
                             title = @title, 
                             description = @description, 
                             location = @location, 
@@ -119,11 +135,15 @@ namespace c969v2.Forms
                             url = @url, 
                             start = @start, 
                             end = @end 
-                          WHERE appointmentId = @appointmentId"
-                        : @"INSERT INTO appointment 
+                          WHERE appointmentId = @appointmentId";
+                    }
+                    else // Insert new appointment
+                    {
+                        query = @"INSERT INTO appointment 
                             (customerId, userId, title, description, location, contact, type, url, start, end) 
                           VALUES 
                             (@customerId, @userId, @title, @description, @location, @contact, @type, @url, @start, @end)";
+                    }
 
                     using (var cmd = new MySqlCommand(query, connection))
                     {
@@ -143,21 +163,20 @@ namespace c969v2.Forms
                         }
                         else
                         {
+                            // Assuming customerId and userId are being selected or set somewhere in your form
                             cmd.Parameters.AddWithValue("@customerId", customerId);
-                            // You need to set the userId here as well
-                            // cmd.Parameters.AddWithValue("@userId", userId);
                         }
 
-                        int rowsAffected = cmd.ExecuteNonQuery();
+                        cmd.ExecuteNonQuery();
+                    }
 
-                        if (rowsAffected > 0)
-                        {
-                            MessageBox.Show(isEditMode ? "Appointment updated successfully." : "Appointment added successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        }
-                        else
-                        {
-                            MessageBox.Show("No changes were made to the database.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        }
+                    if (isEditMode)
+                    {
+                        MessageBox.Show("Appointment updated successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Appointment added successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
 
                     this.Close();
@@ -165,13 +184,12 @@ namespace c969v2.Forms
             }
             catch (MySqlException ex)
             {
-                MessageBox.Show($"Error saving appointment: {ex.Message}\nAppointment ID: {appointmentId}", "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Unexpected error: {ex.Message}\nAppointment ID: {appointmentId}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error saving appointment: {ex.Message}", "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+
+
     }
 }
 
