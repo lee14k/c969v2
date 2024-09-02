@@ -52,6 +52,8 @@
             this.UserIDTextBox = new System.Windows.Forms.TextBox();
             this.ContactTextBox = new System.Windows.Forms.TextBox();
             this.MainAppointmentHeadline = new System.Windows.Forms.Label();
+            this.URLLabel = new System.Windows.Forms.Label();
+            this.URLTextBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // IDLabel
@@ -103,7 +105,7 @@
             // StartDateLabel
             // 
             this.StartDateLabel.AutoSize = true;
-            this.StartDateLabel.Location = new System.Drawing.Point(29, 260);
+            this.StartDateLabel.Location = new System.Drawing.Point(29, 286);
             this.StartDateLabel.Name = "StartDateLabel";
             this.StartDateLabel.Size = new System.Drawing.Size(102, 13);
             this.StartDateLabel.TabIndex = 5;
@@ -209,26 +211,23 @@
             // 
             // StartDateTimePicker
             // 
-            this.StartDateTimePicker.Location = new System.Drawing.Point(32, 276);
+            this.StartDateTimePicker.CustomFormat = "MM/dd/yyyy hh:mm tt";
+            this.StartDateTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.StartDateTimePicker.Location = new System.Drawing.Point(32, 302);
             this.StartDateTimePicker.Name = "StartDateTimePicker";
+            this.StartDateTimePicker.ShowUpDown = true;
             this.StartDateTimePicker.Size = new System.Drawing.Size(200, 20);
             this.StartDateTimePicker.TabIndex = 20;
-            this.StartDateTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.StartDateTimePicker.CustomFormat = "MM/dd/yyyy hh:mm tt";
-            this.StartDateTimePicker.ShowUpDown = true;
-
-
             // 
             // EndDateTimePicker
             // 
+            this.EndDateTimePicker.CustomFormat = "MM/dd/yyyy hh:mm tt";
+            this.EndDateTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.EndDateTimePicker.Location = new System.Drawing.Point(32, 341);
             this.EndDateTimePicker.Name = "EndDateTimePicker";
+            this.EndDateTimePicker.ShowUpDown = true;
             this.EndDateTimePicker.Size = new System.Drawing.Size(200, 20);
             this.EndDateTimePicker.TabIndex = 21;
-            this.EndDateTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            EndDateTimePicker.CustomFormat = "MM/dd/yyyy hh:mm tt";
-            this.EndDateTimePicker.ShowUpDown = true;
-
             // 
             // CustomerIDTextBox
             // 
@@ -262,11 +261,29 @@
             this.MainAppointmentHeadline.Text = "Appointment Form";
             this.MainAppointmentHeadline.Click += new System.EventHandler(this.label1_Click);
             // 
+            // URLLabel
+            // 
+            this.URLLabel.AutoSize = true;
+            this.URLLabel.Location = new System.Drawing.Point(29, 258);
+            this.URLLabel.Name = "URLLabel";
+            this.URLLabel.Size = new System.Drawing.Size(29, 13);
+            this.URLLabel.TabIndex = 28;
+            this.URLLabel.Text = "URL";
+            // 
+            // URLTextBox
+            // 
+            this.URLTextBox.Location = new System.Drawing.Point(107, 258);
+            this.URLTextBox.Name = "URLTextBox";
+            this.URLTextBox.Size = new System.Drawing.Size(100, 20);
+            this.URLTextBox.TabIndex = 29;
+            // 
             // AppointmentForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(399, 575);
+            this.Controls.Add(this.URLTextBox);
+            this.Controls.Add(this.URLLabel);
             this.Controls.Add(this.MainAppointmentHeadline);
             this.Controls.Add(this.ContactTextBox);
             this.Controls.Add(this.UserIDTextBox);
@@ -324,5 +341,7 @@
         private System.Windows.Forms.TextBox UserIDTextBox;
         private System.Windows.Forms.TextBox ContactTextBox;
         private System.Windows.Forms.Label MainAppointmentHeadline;
+        private System.Windows.Forms.Label URLLabel;
+        private System.Windows.Forms.TextBox URLTextBox;
     }
 }
