@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data.SqlClient;
 using MySql.Data.MySqlClient;
 
 namespace c969v2.Data
@@ -14,8 +13,12 @@ namespace c969v2.Data
 
         public DatabaseConnection()
         {
-            // Define your connection string here
-            connectionString = "Server=localhost;Database=mydatabase;User ID=myusername;Password=mypassword;";
+            // Define your connection string here using the provided database info
+            connectionString = "Server=127.0.0.1;" +
+                               "Port=3306;" +
+                               "Database=client_schedule;" +
+                               "Uid=sqlUser;" +
+                               "Pwd=Passw0rd!;";
         }
 
         public MySqlConnection GetConnection()

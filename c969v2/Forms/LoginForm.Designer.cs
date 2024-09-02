@@ -47,6 +47,7 @@
             this.loginButton.TabIndex = 0;
             this.loginButton.Text = "Login";
             this.loginButton.UseVisualStyleBackColor = true;
+            this.loginButton.Click += new System.EventHandler(this.LoginButton_Click);
             // 
             // usernameEnter
             // 
@@ -61,7 +62,7 @@
             this.WelcomeMessage.AutoSize = true;
             this.WelcomeMessage.Location = new System.Drawing.Point(80, 67);
             this.WelcomeMessage.Name = "WelcomeMessage";
-            this.WelcomeMessage.Size = new System.Drawing.Size(132, 15);
+            this.WelcomeMessage.Size = new System.Drawing.Size(114, 13);
             this.WelcomeMessage.TabIndex = 2;
             this.WelcomeMessage.Text = "Welcome, please login";
             // 
@@ -78,7 +79,7 @@
             this.UsernameLabel.AutoSize = true;
             this.UsernameLabel.Location = new System.Drawing.Point(49, 108);
             this.UsernameLabel.Name = "UsernameLabel";
-            this.UsernameLabel.Size = new System.Drawing.Size(68, 15);
+            this.UsernameLabel.Size = new System.Drawing.Size(58, 13);
             this.UsernameLabel.TabIndex = 4;
             this.UsernameLabel.Text = "Username:";
             // 
@@ -87,7 +88,7 @@
             this.PasswordLabel.AutoSize = true;
             this.PasswordLabel.Location = new System.Drawing.Point(51, 152);
             this.PasswordLabel.Name = "PasswordLabel";
-            this.PasswordLabel.Size = new System.Drawing.Size(64, 15);
+            this.PasswordLabel.Size = new System.Drawing.Size(56, 13);
             this.PasswordLabel.TabIndex = 5;
             this.PasswordLabel.Text = "Password:";
             // 
@@ -97,7 +98,7 @@
             this.MainAppHeadline.Font = new System.Drawing.Font("Microsoft Sans Serif", 18.25F);
             this.MainAppHeadline.Location = new System.Drawing.Point(13, 21);
             this.MainAppHeadline.Name = "MainAppHeadline";
-            this.MainAppHeadline.Size = new System.Drawing.Size(335, 35);
+            this.MainAppHeadline.Size = new System.Drawing.Size(277, 29);
             this.MainAppHeadline.TabIndex = 6;
             this.MainAppHeadline.Text = "Appointment Scheduler";
             // 
@@ -106,7 +107,7 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(282, 242);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(66, 15);
+            this.label3.Size = new System.Drawing.Size(58, 13);
             this.label3.TabIndex = 7;
             this.label3.Text = "Language:";
             // 
@@ -115,7 +116,7 @@
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(282, 204);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(65, 15);
+            this.label5.Size = new System.Drawing.Size(56, 13);
             this.label5.TabIndex = 8;
             this.label5.Text = "Timezone:";
             // 
