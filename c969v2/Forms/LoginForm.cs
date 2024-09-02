@@ -29,17 +29,17 @@ namespace c969v2.Forms
             {
                 // Set text to French
                 this.Text = "Formulaire de connexion";
-                lblUsername.Text = "Nom d'utilisateur";
-                lblPassword.Text = "Mot de passe";
-                btnLogin.Text = "Connexion";
+                MainAppHeadline.Text = "Planificateur de rendez-vous";
+                WelcomeMessage.Text = "Bienvenue, veuillez vous connecter.";
+                UsernameLabel.Text = "Nom d'utilisateur";
+                PasswordLabel.Text = "Mot de passe";
+                loginButton.Text = "Connexion";
             }
             else
             {
                 // Set text to English or your default language
                 this.Text = "Login Form";
-                lblUsername.Text = "Username";
-                lblPassword.Text = "Password";
-                btnLogin.Text = "Login";
+                loginButton.Text = "Login";
             }
         }
         private void ValidateLogin(string username, string password)
@@ -89,6 +89,21 @@ namespace c969v2.Forms
                 string message = "You have an appointment within the next 15 minutes.";
                 MessageBox.Show(message, "Upcoming Appointment Alert", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+        }
+
+        private void usernameEnter_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void LoginForm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void passwordEnter_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

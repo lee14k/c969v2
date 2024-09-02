@@ -30,11 +30,11 @@
         {
             this.loginButton = new System.Windows.Forms.Button();
             this.usernameEnter = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.WelcomeMessage = new System.Windows.Forms.Label();
             this.passwordEnter = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.labeler = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
+            this.UsernameLabel = new System.Windows.Forms.Label();
+            this.PasswordLabel = new System.Windows.Forms.Label();
+            this.MainAppHeadline = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.SuspendLayout();
@@ -50,70 +50,72 @@
             // 
             // usernameEnter
             // 
-            this.usernameEnter.Location = new System.Drawing.Point(126, 105);
+            this.usernameEnter.Location = new System.Drawing.Point(161, 108);
             this.usernameEnter.Name = "usernameEnter";
             this.usernameEnter.Size = new System.Drawing.Size(68, 20);
             this.usernameEnter.TabIndex = 1;
+            this.usernameEnter.TextChanged += new System.EventHandler(this.usernameEnter_TextChanged);
             // 
-            // label1
+            // WelcomeMessage
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(80, 67);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(114, 13);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Welcome, please login";
+            this.WelcomeMessage.AutoSize = true;
+            this.WelcomeMessage.Location = new System.Drawing.Point(80, 67);
+            this.WelcomeMessage.Name = "WelcomeMessage";
+            this.WelcomeMessage.Size = new System.Drawing.Size(132, 15);
+            this.WelcomeMessage.TabIndex = 2;
+            this.WelcomeMessage.Text = "Welcome, please login";
             // 
             // passwordEnter
             // 
-            this.passwordEnter.Location = new System.Drawing.Point(126, 149);
+            this.passwordEnter.Location = new System.Drawing.Point(161, 152);
             this.passwordEnter.Name = "passwordEnter";
             this.passwordEnter.Size = new System.Drawing.Size(68, 20);
             this.passwordEnter.TabIndex = 3;
+            this.passwordEnter.TextChanged += new System.EventHandler(this.passwordEnter_TextChanged);
             // 
-            // label2
+            // UsernameLabel
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(49, 108);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(58, 13);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "Username:";
+            this.UsernameLabel.AutoSize = true;
+            this.UsernameLabel.Location = new System.Drawing.Point(49, 108);
+            this.UsernameLabel.Name = "UsernameLabel";
+            this.UsernameLabel.Size = new System.Drawing.Size(68, 15);
+            this.UsernameLabel.TabIndex = 4;
+            this.UsernameLabel.Text = "Username:";
             // 
-            // labeler
+            // PasswordLabel
             // 
-            this.labeler.AutoSize = true;
-            this.labeler.Location = new System.Drawing.Point(51, 152);
-            this.labeler.Name = "labeler";
-            this.labeler.Size = new System.Drawing.Size(56, 13);
-            this.labeler.TabIndex = 5;
-            this.labeler.Text = "Password:";
+            this.PasswordLabel.AutoSize = true;
+            this.PasswordLabel.Location = new System.Drawing.Point(51, 152);
+            this.PasswordLabel.Name = "PasswordLabel";
+            this.PasswordLabel.Size = new System.Drawing.Size(64, 15);
+            this.PasswordLabel.TabIndex = 5;
+            this.PasswordLabel.Text = "Password:";
             // 
-            // label4
+            // MainAppHeadline
             // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 18.25F);
-            this.label4.Location = new System.Drawing.Point(13, 21);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(277, 29);
-            this.label4.TabIndex = 6;
-            this.label4.Text = "Appointment Scheduler";
+            this.MainAppHeadline.AutoSize = true;
+            this.MainAppHeadline.Font = new System.Drawing.Font("Microsoft Sans Serif", 18.25F);
+            this.MainAppHeadline.Location = new System.Drawing.Point(13, 21);
+            this.MainAppHeadline.Name = "MainAppHeadline";
+            this.MainAppHeadline.Size = new System.Drawing.Size(335, 35);
+            this.MainAppHeadline.TabIndex = 6;
+            this.MainAppHeadline.Text = "Appointment Scheduler";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(280, 105);
+            this.label3.Location = new System.Drawing.Point(282, 242);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(58, 13);
+            this.label3.Size = new System.Drawing.Size(66, 15);
             this.label3.TabIndex = 7;
             this.label3.Text = "Language:";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(280, 67);
+            this.label5.Location = new System.Drawing.Point(282, 204);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(56, 13);
+            this.label5.Size = new System.Drawing.Size(65, 15);
             this.label5.TabIndex = 8;
             this.label5.Text = "Timezone:";
             // 
@@ -124,15 +126,16 @@
             this.ClientSize = new System.Drawing.Size(435, 278);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.labeler);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.MainAppHeadline);
+            this.Controls.Add(this.PasswordLabel);
+            this.Controls.Add(this.UsernameLabel);
             this.Controls.Add(this.passwordEnter);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.WelcomeMessage);
             this.Controls.Add(this.usernameEnter);
             this.Controls.Add(this.loginButton);
             this.Name = "LoginForm";
             this.Text = "LoginForm";
+            this.Load += new System.EventHandler(this.LoginForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -142,11 +145,11 @@
 
         private System.Windows.Forms.Button loginButton;
         private System.Windows.Forms.TextBox usernameEnter;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label WelcomeMessage;
         private System.Windows.Forms.TextBox passwordEnter;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label labeler;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label UsernameLabel;
+        private System.Windows.Forms.Label PasswordLabel;
+        private System.Windows.Forms.Label MainAppHeadline;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label5;
     }
