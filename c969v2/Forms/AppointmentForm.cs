@@ -14,7 +14,6 @@ namespace c969v2.Forms
         private int customerId;
         private DatabaseConnection dbConnection;
 
-        // Constructor for adding or editing an appointment
         public AppointmentForm(int? appointmentId = null)
         {
             InitializeComponent();
@@ -26,8 +25,32 @@ namespace c969v2.Forms
             {
                 LoadAppointmentData();
             }
+            else
+            {
+                // Generate a new appointment ID and display it in the textbox
+                this.appointmentId = GenerateNewAppointmentId();
+                IDNum.Value = this.appointmentId; // Assuming IDNum is a NumericUpDown control
+            }
         }
 
+
+        private int GenerateNewAppointmentId()
+        {
+            int newAppointmentId = 10;
+            string query = "SELECT MAX(appointmentId) FROM appointment";
+
+            ExecuteQuery(query, cmd =>
+            {
+                object result = cmd.ExecuteScalar();
+                if (result != DBNull.Value && result != null)
+                {
+                    newAppointmentId = Convert.ToInt32(result) + 1;
+                }
+            });
+
+            return newAppointmentId;
+
+        }
         private void SetFormTitle()
         {
             MainAppointmentHeadline.Text = isEditMode ? "Edit Appointment" : "Add Appointment";
