@@ -88,8 +88,6 @@ namespace c969v2.Forms
             LoadCustomerData();
         }
 
-
-
         // Event handler for adding a new appointment
         private void btnAddAppointment_Click(object sender, EventArgs e)
         {
@@ -106,7 +104,7 @@ namespace c969v2.Forms
                 // Assuming the first column is the appointmentId
                 int selectedAppointmentId = Convert.ToInt32(AppointmentData.SelectedRows[0].Cells[0].Value);
 
-                var editAppointmentForm = new AppointmentForm(true); // Opens form in "Edit" mode
+                var editAppointmentForm = new AppointmentForm(selectedAppointmentId); // Pass appointmentId for "Edit" mode
                 editAppointmentForm.ShowDialog();
                 RefreshAppointmentData(); // Refresh data after form is closed
             }

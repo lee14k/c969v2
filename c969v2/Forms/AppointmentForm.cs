@@ -35,14 +35,7 @@ namespace c969v2.Forms
 
         private void SetFormTitle()
         {
-            if (isEditMode)
-            {
-                MainAppointmentHeadline.Text = "Edit Appointment";
-            }
-            else
-            {
-                MainAppointmentHeadline.Text = "Add Appointment";
-            }
+            MainAppointmentHeadline.Text = isEditMode ? "Edit Appointment" : "Add Appointment";
         }
 
         private void LoadAppointmentData()
@@ -65,7 +58,7 @@ namespace c969v2.Forms
                         {
                             if (reader.Read())
                             {
-                                // Populate the form controls with the retrieved data
+                                IDNum.Value = appointmentId;
                                 TitleTextBox.Text = reader["title"].ToString();
                                 DescriptionTextBox.Text = reader["description"].ToString();
                                 LocationTextBox.Text = reader["location"].ToString();
@@ -75,22 +68,24 @@ namespace c969v2.Forms
                                 StartDateTimePicker.Value = Convert.ToDateTime(reader["start"]);
                                 EndDateTimePicker.Value = Convert.ToDateTime(reader["end"]);
 
-                                // Optionally, you can also load customerId and userId
-                                // into appropriate controls if needed
                                 int customerId = Convert.ToInt32(reader["customerId"]);
-                                int userId = Convert.ToInt32(reader["userId"]);
+                                CustomerNum.Value = customerId;  // Assuming CustomerNum is a NumericUpDown control
                             }
                             else
                             {
-                                MessageBox.Show("Appointment not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                this.Close(); // Close the form if no appointment is found
+                                MessageBox.Show($"Appointment with ID {appointmentId} not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                this.Close();
                             }
                         }
                     }
                 }
                 catch (MySqlException ex)
                 {
-                    MessageBox.Show($"Error loading appointment data: {ex.Message}", "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Error loading appointment data: {ex.Message}\nAppointment ID: {appointmentId}", "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Unexpected error: {ex.Message}\nAppointment ID: {appointmentId}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -106,6 +101,7 @@ namespace c969v2.Forms
             string url = URLTextBox.Text;
             DateTime start = StartDateTimePicker.Value;
             DateTime end = EndDateTimePicker.Value;
+            int customerId = Convert.ToInt32(CustomerNum.Value);
 
             try
             {
@@ -113,28 +109,21 @@ namespace c969v2.Forms
                 {
                     connection.Open();
 
-                    string query;
-
-                    if (isEditMode) // Update existing appointment
-                    {
-                        query = @"UPDATE appointment SET 
-                                    title = @title, 
-                                    description = @description, 
-                                    location = @location, 
-                                    contact = @contact, 
-                                    type = @type, 
-                                    url = @url, 
-                                    start = @start, 
-                                    end = @end 
-                                  WHERE appointmentId = @appointmentId";
-                    }
-                    else // Insert new appointment
-                    {
-                        query = @"INSERT INTO appointment 
-                                    (customerId, userId, title, description, location, contact, type, url, start, end) 
-                                  VALUES 
-                                    (@customerId, @userId, @title, @description, @location, @contact, @type, @url, @start, @end)";
-                    }
+                    string query = isEditMode
+                        ? @"UPDATE appointment SET 
+                            title = @title, 
+                            description = @description, 
+                            location = @location, 
+                            contact = @contact, 
+                            type = @type, 
+                            url = @url, 
+                            start = @start, 
+                            end = @end 
+                          WHERE appointmentId = @appointmentId"
+                        : @"INSERT INTO appointment 
+                            (customerId, userId, title, description, location, contact, type, url, start, end) 
+                          VALUES 
+                            (@customerId, @userId, @title, @description, @location, @contact, @type, @url, @start, @end)";
 
                     using (var cmd = new MySqlCommand(query, connection))
                     {
@@ -154,21 +143,21 @@ namespace c969v2.Forms
                         }
                         else
                         {
-                            // Assuming customerId and userId are being selected or set somewhere in your form
                             cmd.Parameters.AddWithValue("@customerId", customerId);
-                            cmd.Parameters.AddWithValue("@userId", userId);
+                            // You need to set the userId here as well
+                            // cmd.Parameters.AddWithValue("@userId", userId);
                         }
 
-                        cmd.ExecuteNonQuery();
-                    }
+                        int rowsAffected = cmd.ExecuteNonQuery();
 
-                    if (isEditMode)
-                    {
-                        MessageBox.Show("Appointment updated successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-                    else
-                    {
-                        MessageBox.Show("Appointment added successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        if (rowsAffected > 0)
+                        {
+                            MessageBox.Show(isEditMode ? "Appointment updated successfully." : "Appointment added successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                        else
+                        {
+                            MessageBox.Show("No changes were made to the database.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        }
                     }
 
                     this.Close();
@@ -176,18 +165,12 @@ namespace c969v2.Forms
             }
             catch (MySqlException ex)
             {
-                MessageBox.Show($"Error saving appointment: {ex.Message}", "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error saving appointment: {ex.Message}\nAppointment ID: {appointmentId}", "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-            // Event handler logic
-        }
-
-        private void EndDateLabel_Click(object sender, EventArgs e)
-        {
-            // Event handler logic
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Unexpected error: {ex.Message}\nAppointment ID: {appointmentId}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

@@ -41,19 +41,22 @@
             this.label13 = new System.Windows.Forms.Label();
             this.SubmitButton = new System.Windows.Forms.Button();
             this.AppointmentCancelButton = new System.Windows.Forms.Button();
-            this.IDTextBox = new System.Windows.Forms.TextBox();
             this.TitleTextBox = new System.Windows.Forms.TextBox();
             this.TypeTextBox = new System.Windows.Forms.TextBox();
             this.DescriptionTextBox = new System.Windows.Forms.TextBox();
             this.LocationTextBox = new System.Windows.Forms.TextBox();
             this.StartDateTimePicker = new System.Windows.Forms.DateTimePicker();
             this.EndDateTimePicker = new System.Windows.Forms.DateTimePicker();
-            this.CustomerIDTextBox = new System.Windows.Forms.TextBox();
-            this.UserIDTextBox = new System.Windows.Forms.TextBox();
             this.ContactTextBox = new System.Windows.Forms.TextBox();
             this.MainAppointmentHeadline = new System.Windows.Forms.Label();
             this.URLLabel = new System.Windows.Forms.Label();
             this.URLTextBox = new System.Windows.Forms.TextBox();
+            this.CustomerNum = new System.Windows.Forms.NumericUpDown();
+            this.UserNum = new System.Windows.Forms.NumericUpDown();
+            this.IDNum = new System.Windows.Forms.NumericUpDown();
+            ((System.ComponentModel.ISupportInitialize)(this.CustomerNum)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.UserNum)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.IDNum)).BeginInit();
             this.SuspendLayout();
             // 
             // IDLabel
@@ -119,7 +122,6 @@
             this.EndDateLabel.Size = new System.Drawing.Size(99, 13);
             this.EndDateLabel.TabIndex = 7;
             this.EndDateLabel.Text = "End Date and Time";
-            this.EndDateLabel.Click += new System.EventHandler(this.EndDateLabel_Click);
             // 
             // CustomerIDLabel
             // 
@@ -174,13 +176,6 @@
             this.AppointmentCancelButton.Text = "Cancel";
             this.AppointmentCancelButton.UseVisualStyleBackColor = true;
             // 
-            // IDTextBox
-            // 
-            this.IDTextBox.Location = new System.Drawing.Point(107, 84);
-            this.IDTextBox.Name = "IDTextBox";
-            this.IDTextBox.Size = new System.Drawing.Size(100, 20);
-            this.IDTextBox.TabIndex = 15;
-            // 
             // TitleTextBox
             // 
             this.TitleTextBox.Location = new System.Drawing.Point(107, 124);
@@ -229,20 +224,6 @@
             this.EndDateTimePicker.Size = new System.Drawing.Size(200, 20);
             this.EndDateTimePicker.TabIndex = 21;
             // 
-            // CustomerIDTextBox
-            // 
-            this.CustomerIDTextBox.Location = new System.Drawing.Point(111, 390);
-            this.CustomerIDTextBox.Name = "CustomerIDTextBox";
-            this.CustomerIDTextBox.Size = new System.Drawing.Size(100, 20);
-            this.CustomerIDTextBox.TabIndex = 24;
-            // 
-            // UserIDTextBox
-            // 
-            this.UserIDTextBox.Location = new System.Drawing.Point(107, 423);
-            this.UserIDTextBox.Name = "UserIDTextBox";
-            this.UserIDTextBox.Size = new System.Drawing.Size(100, 20);
-            this.UserIDTextBox.TabIndex = 25;
-            // 
             // ContactTextBox
             // 
             this.ContactTextBox.Location = new System.Drawing.Point(107, 456);
@@ -259,7 +240,6 @@
             this.MainAppointmentHeadline.Size = new System.Drawing.Size(313, 40);
             this.MainAppointmentHeadline.TabIndex = 27;
             this.MainAppointmentHeadline.Text = "Appointment Form";
-            this.MainAppointmentHeadline.Click += new System.EventHandler(this.label1_Click);
             // 
             // URLLabel
             // 
@@ -277,24 +257,45 @@
             this.URLTextBox.Size = new System.Drawing.Size(100, 20);
             this.URLTextBox.TabIndex = 29;
             // 
+            // CustomerNum
+            // 
+            this.CustomerNum.Location = new System.Drawing.Point(107, 390);
+            this.CustomerNum.Name = "CustomerNum";
+            this.CustomerNum.Size = new System.Drawing.Size(120, 20);
+            this.CustomerNum.TabIndex = 30;
+            // 
+            // UserNum
+            // 
+            this.UserNum.Location = new System.Drawing.Point(107, 423);
+            this.UserNum.Name = "UserNum";
+            this.UserNum.Size = new System.Drawing.Size(120, 20);
+            this.UserNum.TabIndex = 31;
+            // 
+            // IDNum
+            // 
+            this.IDNum.Location = new System.Drawing.Point(107, 87);
+            this.IDNum.Name = "IDNum";
+            this.IDNum.Size = new System.Drawing.Size(120, 20);
+            this.IDNum.TabIndex = 32;
+            // 
             // AppointmentForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(399, 575);
+            this.Controls.Add(this.IDNum);
+            this.Controls.Add(this.UserNum);
+            this.Controls.Add(this.CustomerNum);
             this.Controls.Add(this.URLTextBox);
             this.Controls.Add(this.URLLabel);
             this.Controls.Add(this.MainAppointmentHeadline);
             this.Controls.Add(this.ContactTextBox);
-            this.Controls.Add(this.UserIDTextBox);
-            this.Controls.Add(this.CustomerIDTextBox);
             this.Controls.Add(this.EndDateTimePicker);
             this.Controls.Add(this.StartDateTimePicker);
             this.Controls.Add(this.LocationTextBox);
             this.Controls.Add(this.DescriptionTextBox);
             this.Controls.Add(this.TypeTextBox);
             this.Controls.Add(this.TitleTextBox);
-            this.Controls.Add(this.IDTextBox);
             this.Controls.Add(this.AppointmentCancelButton);
             this.Controls.Add(this.SubmitButton);
             this.Controls.Add(this.label13);
@@ -310,6 +311,9 @@
             this.Controls.Add(this.IDLabel);
             this.Name = "AppointmentForm";
             this.Text = "AppointmentForm";
+            ((System.ComponentModel.ISupportInitialize)(this.CustomerNum)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.UserNum)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.IDNum)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -330,18 +334,18 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Button SubmitButton;
         private System.Windows.Forms.Button AppointmentCancelButton;
-        private System.Windows.Forms.TextBox IDTextBox;
         private System.Windows.Forms.TextBox TitleTextBox;
         private System.Windows.Forms.TextBox TypeTextBox;
         private System.Windows.Forms.TextBox DescriptionTextBox;
         private System.Windows.Forms.TextBox LocationTextBox;
         private System.Windows.Forms.DateTimePicker StartDateTimePicker;
         private System.Windows.Forms.DateTimePicker EndDateTimePicker;
-        private System.Windows.Forms.TextBox CustomerIDTextBox;
-        private System.Windows.Forms.TextBox UserIDTextBox;
         private System.Windows.Forms.TextBox ContactTextBox;
         private System.Windows.Forms.Label MainAppointmentHeadline;
         private System.Windows.Forms.Label URLLabel;
         private System.Windows.Forms.TextBox URLTextBox;
+        private System.Windows.Forms.NumericUpDown CustomerNum;
+        private System.Windows.Forms.NumericUpDown UserNum;
+        private System.Windows.Forms.NumericUpDown IDNum;
     }
 }
