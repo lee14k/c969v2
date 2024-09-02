@@ -51,6 +51,22 @@ namespace c969v2.Forms
             return newAppointmentId;
 
         }
+        private void ValidateTextBox (TextBox textBox, string fieldName, bool isInteger=false, bool isDecimal = false)
+        {
+            if (string.IsNullOrWhiteSpace(textBox.Text) {
+                throw new Exception($"Please fill out the {fieldName}.");
+            }
+            if (isInteger && !int.TryParse(textBox.Text, out _) {
+                throw new Exception($"Please enter a valid number for{fieldName}.");
+            }
+        }
+        private void beforeSaveValidation()
+        {
+            try
+            {
+
+            }
+        }
         private void SetFormTitle()
         {
             MainAppointmentHeadline.Text = isEditMode ? "Edit Appointment" : "Add Appointment";
