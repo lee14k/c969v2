@@ -3,7 +3,6 @@ using System.Data;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using c969v2.Data;
-using System.Management;
 
 namespace c969v2.Forms
 {
@@ -11,26 +10,22 @@ namespace c969v2.Forms
     {
         private bool isEditMode;
         private int appointmentId;
+        private int userId; // Assuming you have a way to get the userId for the appointment
+        private int customerId;
         private DatabaseConnection dbConnection;
 
-        // Constructor for adding a new appointment
-        public AppointmentForm()
+        // Constructor for adding or editing an appointment
+        public AppointmentForm(int? appointmentId = null)
         {
             InitializeComponent();
-            isEditMode = false;
             dbConnection = new DatabaseConnection();
+            isEditMode = appointmentId.HasValue;
+            this.appointmentId = appointmentId ?? 0;
             SetFormTitle();
-        }
-
-        // Constructor for editing an existing appointment
-        public AppointmentForm(int appointmentId)
-        {
-            InitializeComponent();
-            isEditMode = true;
-            this.appointmentId = appointmentId;
-            dbConnection = new DatabaseConnection();
-            SetFormTitle();
-            LoadAppointmentData();  // Load data when in edit mode
+            if (isEditMode)
+            {
+                LoadAppointmentData();
+            }
         }
 
         private void SetFormTitle()
@@ -40,70 +35,56 @@ namespace c969v2.Forms
 
         private void LoadAppointmentData()
         {
-            using (var connection = dbConnection.GetConnection())
+            string query = @"SELECT customerId, userId, title, description, location, 
+                             contact, type, url, start, end 
+                             FROM appointment 
+                             WHERE appointmentId = @appointmentId";
+
+            ExecuteQuery(query, cmd =>
             {
-                try
+                cmd.Parameters.AddWithValue("@appointmentId", appointmentId);
+                using (var reader = cmd.ExecuteReader())
                 {
-                    connection.Open();
-                    string query = @"SELECT customerId, userId, title, description, location, 
-                                     contact, type, url, start, end 
-                                     FROM appointment 
-                                     WHERE appointmentId = @appointmentId";
-
-                    using (var cmd = new MySqlCommand(query, connection))
+                    if (reader.Read())
                     {
-                        cmd.Parameters.AddWithValue("@appointmentId", appointmentId);
+                        IDNum.Value = appointmentId;
+                        TitleTextBox.Text = reader["title"].ToString();
+                        DescriptionTextBox.Text = reader["description"].ToString();
+                        LocationTextBox.Text = reader["location"].ToString();
+                        ContactTextBox.Text = reader["contact"].ToString();
+                        TypeTextBox.Text = reader["type"].ToString();
+                        URLTextBox.Text = reader["url"].ToString();
+                        StartDateTimePicker.Value = Convert.ToDateTime(reader["start"]);
+                        EndDateTimePicker.Value = Convert.ToDateTime(reader["end"]);
 
-                        using (var reader = cmd.ExecuteReader())
-                        {
-                            if (reader.Read())
-                            {
-                                IDNum.Value = appointmentId;
-                                TitleTextBox.Text = reader["title"].ToString();
-                                DescriptionTextBox.Text = reader["description"].ToString();
-                                LocationTextBox.Text = reader["location"].ToString();
-                                ContactTextBox.Text = reader["contact"].ToString();
-                                TypeTextBox.Text = reader["type"].ToString();
-                                URLTextBox.Text = reader["url"].ToString();
-                                StartDateTimePicker.Value = Convert.ToDateTime(reader["start"]);
-                                EndDateTimePicker.Value = Convert.ToDateTime(reader["end"]);
-
-                                int customerId = Convert.ToInt32(reader["customerId"]);
-                                CustomerNum.Value = customerId;  // Assuming CustomerNum is a NumericUpDown control
-                            }
-                            else
-                            {
-                                MessageBox.Show($"Appointment with ID {appointmentId} not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                this.Close();
-                            }
-                        }
+                        customerId = Convert.ToInt32(reader["customerId"]);
+                        userId = Convert.ToInt32(reader["userId"]);  // Assuming userId is retrieved and stored
+                        CustomerNum.Value = customerId;
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Appointment with ID {appointmentId} not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        this.Close();
                     }
                 }
-                catch (MySqlException ex)
-                {
-                    MessageBox.Show($"Error loading appointment data: {ex.Message}\nAppointment ID: {appointmentId}", "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Unexpected error: {ex.Message}\nAppointment ID: {appointmentId}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
+            });
         }
+
         private void btnSave_Click(object sender, EventArgs e)
         {
-            string title = txtTitle.Text;
-            string description = txtDescription.Text;
-            string location = txtLocation.Text;
-            string contact = txtContact.Text;
-            string type = txtType.Text;
-            string url = txtUrl.Text;
-            DateTime start = dtpStart.Value;
-            DateTime end = dtpEnd.Value;
+            string title = TitleTextBox.Text;
+            string description = DescriptionTextBox.Text;
+            string location = LocationTextBox.Text;
+            string contact = ContactTextBox.Text;
+            string type = TypeTextBox.Text;
+            string url = URLTextBox.Text;
+            DateTime start = StartDateTimePicker.Value;
+            DateTime end = EndDateTimePicker.Value;
 
             // Validate business hours
             if (!IsWithinBusinessHours(start, end))
             {
-                MessageBox.Show("Appointments can only be scheduled during business hours (Monday through Friday, 9:00 AM to 5:00 PM).",
+                MessageBox.Show("Appointments can only be scheduled during business hours (Monday through Friday, 9:00 AM to 5:00 PM Eastern Time).",
                                 "Invalid Appointment Time", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return; // Do not proceed with saving
             }
@@ -163,22 +144,15 @@ namespace c969v2.Forms
                         }
                         else
                         {
-                            // Assuming customerId and userId are being selected or set somewhere in your form
                             cmd.Parameters.AddWithValue("@customerId", customerId);
+                            cmd.Parameters.AddWithValue("@userId", userId);
                         }
 
                         cmd.ExecuteNonQuery();
                     }
 
-                    if (isEditMode)
-                    {
-                        MessageBox.Show("Appointment updated successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-                    else
-                    {
-                        MessageBox.Show("Appointment added successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-
+                    MessageBox.Show(isEditMode ? "Appointment updated successfully." : "Appointment added successfully.",
+                                    "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     this.Close();
                 }
             }
@@ -188,8 +162,76 @@ namespace c969v2.Forms
             }
         }
 
+        private bool IsWithinBusinessHours(DateTime start, DateTime end)
+        {
+            TimeZoneInfo easternZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
+            DateTime startEastern = TimeZoneInfo.ConvertTimeFromUtc(start.ToUniversalTime(), easternZone);
+            DateTime endEastern = TimeZoneInfo.ConvertTimeFromUtc(end.ToUniversalTime(), easternZone);
 
+            // Check if the start and end times are on a weekday (Monday = 1, ..., Friday = 5)
+            if (startEastern.DayOfWeek < DayOfWeek.Monday || startEastern.DayOfWeek > DayOfWeek.Friday ||
+                endEastern.DayOfWeek < DayOfWeek.Monday || endEastern.DayOfWeek > DayOfWeek.Friday)
+            {
+                return false;
+            }
 
+            // Check if the times are within business hours (9:00 AM - 5:00 PM)
+            DateTime businessStart = DateTime.Today.AddHours(9); // 9:00 AM
+            DateTime businessEnd = DateTime.Today.AddHours(17);  // 5:00 PM
+
+            if (startEastern.TimeOfDay < businessStart.TimeOfDay || endEastern.TimeOfDay > businessEnd.TimeOfDay)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool IsOverlappingAppointment(DateTime start, DateTime end, int userId)
+        {
+            using (var connection = dbConnection.GetConnection())
+            {
+                connection.Open();
+                string query = @"SELECT COUNT(*) FROM appointment 
+                                 WHERE userId = @userId 
+                                 AND appointmentId != @appointmentId
+                                 AND ((@start < end AND @end > start) OR (@start = start AND @end = end))";
+
+                using (var cmd = new MySqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@userId", userId);
+                    cmd.Parameters.AddWithValue("@start", start);
+                    cmd.Parameters.AddWithValue("@end", end);
+                    cmd.Parameters.AddWithValue("@appointmentId", isEditMode ? appointmentId : 0);
+
+                    int count = Convert.ToInt32(cmd.ExecuteScalar());
+                    return count > 0;
+                }
+            }
+        }
+
+        private void ExecuteQuery(string query, Action<MySqlCommand> configureCommand)
+        {
+            try
+            {
+                using (var connection = dbConnection.GetConnection())
+                {
+                    connection.Open();
+                    using (var cmd = new MySqlCommand(query, connection))
+                    {
+                        configureCommand(cmd);
+                    }
+                }
+            }
+            catch (MySqlException ex)
+            {
+                MessageBox.Show($"Database error: {ex.Message}", "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Unexpected error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }
 
