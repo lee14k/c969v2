@@ -276,6 +276,7 @@
             // 
             this.IDNum.Location = new System.Drawing.Point(107, 87);
             this.IDNum.Name = "IDNum";
+            this.IDNum.ReadOnly = true;
             this.IDNum.Size = new System.Drawing.Size(120, 20);
             this.IDNum.TabIndex = 32;
             // 
