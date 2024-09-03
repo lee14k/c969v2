@@ -131,8 +131,9 @@ namespace c969v2.Forms
 
         private void CheckForUpcomingAppointments(int userId)
         {
-            DateTime currentTime = DateTime.Now;
-            DateTime alertTime = currentTime.AddMinutes(15);
+            DateTime utcNow = DateTime.UtcNow; // Get current UTC time
+            DateTime userLocalTime = TimeZoneInfo.ConvertTimeFromUtc(utcNow, userTimeZone); // Convert to user's local time
+            DateTime userAlertTime = userLocalTime.AddMinutes(15); // Alert time in user's local time
 
             using (var connection = dbConnection.GetConnection())
             {
@@ -140,15 +141,19 @@ namespace c969v2.Forms
                 {
                     connection.Open();
                     string query = @"SELECT COUNT(*) FROM appointment 
-                                     WHERE userId = @userId 
-                                     AND start > @currentTime 
-                                     AND start <= @alertTime";
+                             WHERE userId = @userId 
+                             AND start > @currentUtcTime 
+                             AND start <= @alertUtcTime";
 
                     using (var command = new MySqlCommand(query, connection))
                     {
+                        // Convert user local times back to UTC for the database query
+                        DateTime currentUtcTime = TimeZoneInfo.ConvertTimeToUtc(userLocalTime, userTimeZone);
+                        DateTime alertUtcTime = TimeZoneInfo.ConvertTimeToUtc(userAlertTime, userTimeZone);
+
                         command.Parameters.AddWithValue("@userId", userId);
-                        command.Parameters.AddWithValue("@currentTime", currentTime);
-                        command.Parameters.AddWithValue("@alertTime", alertTime);
+                        command.Parameters.AddWithValue("@currentUtcTime", currentUtcTime);
+                        command.Parameters.AddWithValue("@alertUtcTime", alertUtcTime);
 
                         int appointmentCount = Convert.ToInt32(command.ExecuteScalar());
 
@@ -165,6 +170,12 @@ namespace c969v2.Forms
                 }
             }
         }
+
+
+
+
+
+
 
         private void LoginButton_Click(object sender, EventArgs e)
         {
