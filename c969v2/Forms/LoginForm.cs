@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -66,6 +67,9 @@ namespace c969v2.Forms
                         if (result != null)
                         {
                             int userId = Convert.ToInt32(result);
+                            // Log successful login attempt
+                            LogLoginAttempt(username, true);
+
                             // Call the method to check for upcoming appointments
                             CheckForUpcomingAppointments(userId);
 
@@ -76,6 +80,8 @@ namespace c969v2.Forms
                         }
                         else
                         {
+                            // Log failed login attempt
+                            LogLoginAttempt(username, false);
                             ShowErrorMessage();
                         }
                     }
@@ -86,6 +92,30 @@ namespace c969v2.Forms
                 }
             }
         }
+
+
+        private void LogLoginAttempt(string username, bool isSuccessful)
+        {
+            string logFilePath = "Login_History.txt";
+            string timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            string logMessage = $"{timestamp} - Username: {username}, Login {(isSuccessful ? "Successful" : "Failed")}";
+
+            try
+            {
+                using (StreamWriter sw = File.AppendText(logFilePath))
+                {
+                    sw.WriteLine(logMessage);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error writing to log file: {ex.Message}", "Log Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+
+
+
 
         private void ShowErrorMessage()
         {
