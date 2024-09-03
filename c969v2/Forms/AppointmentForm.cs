@@ -92,44 +92,50 @@ namespace c969v2.Forms
             {
                 ValidateComboBox(CustomerComboBox, "Customer");
                 ValidateComboBox(UserComboBox, "User");
-                ValidateTextBox(TitleTextBox, "Title");
-                ValidateTextBox(LocationTextBox, "Location");
-                ValidateTextBox(ContactTextBox, "Contact");
-                ValidateTextBox(TypeTextBox, "Type");
 
-                int customerId=(int)CustomerComboBox.SelectedItem;
-                int userId=(int)UserComboBox.SelectedItem;
-                string title = TitleTextBox.Text;
-                string description = DescriptionTextBox.Text;
-                string location = LocationTextBox.Text;
-                string contact = ContactTextBox.Text;
-                string type = TypeTextBox.Text;
-                string url = URLTextBox.Text;
-                DateTime start = StartDateTimePicker.Value.ToUniversalTime();
-                DateTime end = EndDateTimePicker.Value.ToUniversalTime();
 
-                if (!IsWithinBusinessHours(start, end))
+                Appointment appointment = new Appointment
+                {
+                    AppointmentId = isEditMode ? this.appointmentId : GenerateNewAppointmentId(),
+                    CustomerId = (int)CustomerComboBox.SelectedItem,
+                    UserId = (int)UserComboBox.SelectedItem,
+                    Title = TitleTextBox.Text,
+                    Description = DescriptionTextBox.Text,
+                    Location = LocationTextBox.Text,
+                    Contact = ContactTextBox.Text,
+                    Type = TypeTextBox.Text,
+                    Url = URLTextBox.Text,
+                    Start = StartDateTimePicker.Value.ToUniversalTime(),
+                    End = EndDateTimePicker.Value.ToUniversalTime(),
+                    CreateDate = DateTime.UtcNow,
+                    CreatedBy = LoginForm.CurrentUserName,
+                    LastUpdate = DateTime.UtcNow,
+                    LastUpdateBy = LoginForm.CurrentUserName
+                };
+
+                appointment.ValidateFields();
+
+                if (!IsWithinBusinessHours(appointment.Start, appointment.End))
                 {
                     MessageBox.Show("Appointments can only be scheduled during business hours (Monday through Friday, 9:00 AM to 5:00 PM Eastern Time).",
                                     "Invalid Appointment Time", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return; 
+                    return;
                 }
 
-                if (IsOverlappingAppointment(start, end, userId))
+                if (IsOverlappingAppointment(appointment.Start, appointment.End, appointment.UserId))
                 {
                     MessageBox.Show("The appointment times overlap with an existing appointment.",
                                     "Appointment Overlap", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return; 
+                    return;
                 }
 
-                
                 using (var connection = dbConnection.GetConnection())
                 {
                     connection.Open();
 
                     string query;
                     DateTime currentTimestamp = DateTime.UtcNow;
-                    if (isEditMode) 
+                    if (isEditMode)
                     {
                         query = @"UPDATE appointment SET 
                             title = @title, 
@@ -140,42 +146,35 @@ namespace c969v2.Forms
                             url = @url, 
                             start = @start, 
                             end = @end,
-                            lastUpdate=@lastUpdate,
-                            lastUpdateBy=@lastUpdateBy
+                            lastUpdate = @lastUpdate,
+                            lastUpdateBy = @lastUpdateBy
                           WHERE appointmentId = @appointmentId";
                     }
-                    else 
+                    else
                     {
                         query = @"INSERT INTO appointment 
-                            (customerId, userId, title, description, location, contact, type, url, start, end, createDate, createdBy, lastUpdate, lastUpdateBy) 
+                            (appointmentId, customerId, userId, title, description, location, contact, type, url, start, end, createDate, createdBy, lastUpdate, lastUpdateBy) 
                           VALUES 
-                            (@customerId, @userId, @title, @description, @location, @contact, @type, @url, @start, @end, @createDate, @createdBy, @lastUpdate, @lastUpdateBy)";
+                            (@appointmentId, @customerId, @userId, @title, @description, @location, @contact, @type, @url, @start, @end, @createDate, @createdBy, @lastUpdate, @lastUpdateBy)";
                     }
 
                     using (var cmd = new MySqlCommand(query, connection))
                     {
-                        cmd.Parameters.AddWithValue("@title", title);
-                        cmd.Parameters.AddWithValue("@description", description);
-                        cmd.Parameters.AddWithValue("@location", location);
-                        cmd.Parameters.AddWithValue("@contact", contact);
-                        cmd.Parameters.AddWithValue("@type", type);
-                        cmd.Parameters.AddWithValue("@url", url);
-                        cmd.Parameters.AddWithValue("@start", start);
-                        cmd.Parameters.AddWithValue("@end", end);
-                        cmd.Parameters.AddWithValue("@lastUpdate", currentTimestamp);
-                        cmd.Parameters.AddWithValue("@lastUpdateBy", LoginForm.CurrentUserName);
-                        if (isEditMode)
-                        {
-                            cmd.Parameters.AddWithValue("@appointmentId", appointmentId);
-                        }
-                        else
-                        {
-                            cmd.Parameters.AddWithValue("@customerId", customerId);
-                            cmd.Parameters.AddWithValue("@userId", LoginForm.CurrentUserId);
-                            cmd.Parameters.AddWithValue("@createDate", currentTimestamp);
-                            cmd.Parameters.AddWithValue("@createdBy", LoginForm.CurrentUserName);
-
-                        }
+                        cmd.Parameters.AddWithValue("@appointmentId", appointment.AppointmentId);
+                        cmd.Parameters.AddWithValue("@customerId", appointment.CustomerId);
+                        cmd.Parameters.AddWithValue("@userId", appointment.UserId);
+                        cmd.Parameters.AddWithValue("@title", appointment.Title);
+                        cmd.Parameters.AddWithValue("@description", appointment.Description);
+                        cmd.Parameters.AddWithValue("@location", appointment.Location);
+                        cmd.Parameters.AddWithValue("@contact", appointment.Contact);
+                        cmd.Parameters.AddWithValue("@type", appointment.Type);
+                        cmd.Parameters.AddWithValue("@url", appointment.Url);
+                        cmd.Parameters.AddWithValue("@start", appointment.Start);
+                        cmd.Parameters.AddWithValue("@end", appointment.End);
+                        cmd.Parameters.AddWithValue("@createDate", appointment.CreateDate);
+                        cmd.Parameters.AddWithValue("@createdBy", appointment.CreatedBy);
+                        cmd.Parameters.AddWithValue("@lastUpdate", appointment.LastUpdate);
+                        cmd.Parameters.AddWithValue("@lastUpdateBy", appointment.LastUpdateBy);
 
                         cmd.ExecuteNonQuery();
                     }
@@ -188,27 +187,6 @@ namespace c969v2.Forms
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-        }
-        private void ValidateTextBox(TextBox textBox, string fieldName, bool isInteger = false, bool isCustomerId = false)
-        {
-            if (string.IsNullOrWhiteSpace(textBox.Text))
-            {
-                throw new Exception($"Please fill out the {fieldName}.");
-            }
-
-            if (isInteger && !int.TryParse(textBox.Text, out _))
-            {
-                throw new Exception($"Please enter a valid number for {fieldName}.");
-            }
-
-            if (isCustomerId)
-            {
-                int customerId;
-                if (!int.TryParse(textBox.Text, out customerId))
-                {
-                    throw new Exception($"Please enter a valid number for {fieldName}.");
-                }
             }
         }
         private void ValidateComboBox(ComboBox comboBox, string fieldName)
@@ -364,7 +342,6 @@ namespace c969v2.Forms
         }
 
     }
-    
 }
 
 

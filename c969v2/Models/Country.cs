@@ -15,31 +15,17 @@ namespace c969v2.Models
         public DateTime LastUpdate { get; set; }
         public string LastUpdatedBy { get; set; }
 
-        // Static list to store country records
-        private static List<Country> countries = new List<Country>();
-
-        // Method to add a new country
-        public static void AddCountry(Country country)
+        public void ValidateFields()
         {
-            countries.Add(country);
+            if (string.IsNullOrWhiteSpace(CountryName))
+            {
+                throw new Exception("Please fill out the country name.");
+            }
+            if (CountryName.Length > 45)
+            {
+                throw new Exception("Country name cannot exceed 45 characters.");
+            }
         }
 
-        // Method to update an existing country
-        public static void UpdateCountry(int index, Country country)
-        {
-            countries[index] = country;
-        }
-
-        // Method to delete a country
-        public static void DeleteCountry(int index)
-        {
-            countries.RemoveAt(index);
-        }
-
-        // Method to get all countries
-        public static List<Country> GetAllCountries()
-        {
-            return countries;
-        }
     }
 }

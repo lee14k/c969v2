@@ -11,34 +11,21 @@ public class City
     public string CreatedBy { get; set; }
     public DateTime LastUpdate { get; set; }
     public string LastUpdateBy { get; set; }
-
-    // Navigation property to link to Country
     public Country Country { get; set; }
 
-    // Static list to store city records
-    private static List<City> cities = new List<City>();
-
-    // Method to add a new city
-    public static void AddCity(City city)
+    public void ValidateFields()
     {
-        cities.Add(city);
+        if (string.IsNullOrWhiteSpace(CityName))
+        {
+            throw new Exception("Please fill out the city name.");
+        }
+        if (CityName.Length>45)
+        {
+            throw new Exception("City name cannot exceed 45 characters.");
+
+
+
+        }
     }
 
-    // Method to update an existing city
-    public static void UpdateCity(int index, City city)
-    {
-        cities[index] = city;
-    }
-
-    // Method to delete a city
-    public static void DeleteCity(int index)
-    {
-        cities.RemoveAt(index);
-    }
-
-    // Method to get all cities
-    public static List<City> GetAllCities()
-    {
-        return cities;
-    }
 }
