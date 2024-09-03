@@ -52,8 +52,8 @@
             this.URLLabel = new System.Windows.Forms.Label();
             this.URLTextBox = new System.Windows.Forms.TextBox();
             this.IDNum = new System.Windows.Forms.NumericUpDown();
-            this.customerComboBox = new System.Windows.Forms.ComboBox();
-            this.userComboBox = new System.Windows.Forms.ComboBox();
+            this.CustomerComboBox = new System.Windows.Forms.ComboBox();
+            this.UserComboBox = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.IDNum)).BeginInit();
             this.SuspendLayout();
             // 
@@ -265,29 +265,29 @@
             this.IDNum.Size = new System.Drawing.Size(120, 20);
             this.IDNum.TabIndex = 32;
             // 
-            // customerComboBox
+            // CustomerComboBox
             // 
-            this.customerComboBox.FormattingEnabled = true;
-            this.customerComboBox.Location = new System.Drawing.Point(107, 387);
-            this.customerComboBox.Name = "customerComboBox";
-            this.customerComboBox.Size = new System.Drawing.Size(121, 21);
-            this.customerComboBox.TabIndex = 33;
+            this.CustomerComboBox.FormattingEnabled = true;
+            this.CustomerComboBox.Location = new System.Drawing.Point(107, 387);
+            this.CustomerComboBox.Name = "CustomerComboBox";
+            this.CustomerComboBox.Size = new System.Drawing.Size(121, 21);
+            this.CustomerComboBox.TabIndex = 33;
             // 
-            // userComboBox
+            // UserComboBox
             // 
-            this.userComboBox.FormattingEnabled = true;
-            this.userComboBox.Location = new System.Drawing.Point(106, 420);
-            this.userComboBox.Name = "userComboBox";
-            this.userComboBox.Size = new System.Drawing.Size(121, 21);
-            this.userComboBox.TabIndex = 34;
+            this.UserComboBox.FormattingEnabled = true;
+            this.UserComboBox.Location = new System.Drawing.Point(106, 420);
+            this.UserComboBox.Name = "UserComboBox";
+            this.UserComboBox.Size = new System.Drawing.Size(121, 21);
+            this.UserComboBox.TabIndex = 34;
             // 
             // AppointmentForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(399, 575);
-            this.Controls.Add(this.userComboBox);
-            this.Controls.Add(this.customerComboBox);
+            this.Controls.Add(this.UserComboBox);
+            this.Controls.Add(this.CustomerComboBox);
             this.Controls.Add(this.IDNum);
             this.Controls.Add(this.URLTextBox);
             this.Controls.Add(this.URLLabel);
@@ -346,7 +346,7 @@
         private System.Windows.Forms.Label URLLabel;
         private System.Windows.Forms.TextBox URLTextBox;
         private System.Windows.Forms.NumericUpDown IDNum;
-        private System.Windows.Forms.ComboBox customerComboBox;
-        private System.Windows.Forms.ComboBox userComboBox;
+        private System.Windows.Forms.ComboBox CustomerComboBox;
+        private System.Windows.Forms.ComboBox UserComboBox;
     }
 }

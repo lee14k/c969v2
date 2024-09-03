@@ -13,8 +13,6 @@ namespace c969v2.Forms
         private int userId; 
         private int customerId;
         private DatabaseConnection dbConnection;
-        private ComboBox CustomerComboBox;
-        private ComboBox UserComboBox;
 
 
         public AppointmentForm(int? appointmentId = null)
@@ -41,7 +39,7 @@ namespace c969v2.Forms
 
         private int GenerateNewAppointmentId()
         {
-            int newAppointmentId = 10;
+            int newAppointmentId = 0;
             string query = "SELECT MAX(appointmentId) FROM appointment";
 
             ExecuteQuery(query, cmd =>
@@ -59,7 +57,7 @@ namespace c969v2.Forms
 
         private void LoadCustomersIntoComboBox()
         {
-            customerComboBox.Items.Clear();
+            CustomerComboBox.Items.Clear();
             string query = "SELECT customerId FROM customer";
             ExecuteQuery(query, cmd =>
             {
@@ -67,9 +65,7 @@ namespace c969v2.Forms
                 {
                     while (reader.Read())
                     {
-                        customerComboBox.Items.Add(new ComboBoxItem(
-                            reader.GetInt32("customerId")
-                            ));
+                        CustomerComboBox.Items.Add(reader.GetInt32("customerId"));
 
                     }
                 }
@@ -78,7 +74,7 @@ namespace c969v2.Forms
 
         private void LoadUsersIntoComboBox()
         {
-            userComboBox.Items.Clear();
+            UserComboBox.Items.Clear();
             string query = "SELECT userId FROM user";
             ExecuteQuery(query, cmd =>
             {
@@ -86,12 +82,11 @@ namespace c969v2.Forms
                 {
                     while (reader.Read())
                     {
-                        userComboBox.Items.Add(new ComboBoxItem(
-                            reader.GetInt32("userId")
+                        UserComboBox.Items.Add(reader.GetInt32("userId"));
 
-                            )); 
 
-                    }
+
+        }
                 }
             });
         }
@@ -100,19 +95,23 @@ namespace c969v2.Forms
         {
             try
             {
+                ValidateComboBox(CustomerComboBox, "Customer");
+                ValidateComboBox(UserComboBox, "User");
                 ValidateTextBox(TitleTextBox, "Title");
                 ValidateTextBox(LocationTextBox, "Location");
                 ValidateTextBox(ContactTextBox, "Contact");
                 ValidateTextBox(TypeTextBox, "Type");
 
+                int customerId=(int)CustomerComboBox.SelectedItem;
+                int userId=(int)UserComboBox.SelectedItem;
                 string title = TitleTextBox.Text;
                 string description = DescriptionTextBox.Text;
                 string location = LocationTextBox.Text;
                 string contact = ContactTextBox.Text;
                 string type = TypeTextBox.Text;
                 string url = URLTextBox.Text;
-                DateTime start = StartDateTimePicker.Value;
-                DateTime end = EndDateTimePicker.Value;
+                DateTime start = StartDateTimePicker.Value.ToUniversalTime();
+                DateTime end = EndDateTimePicker.Value.ToUniversalTime();
 
                 if (!IsWithinBusinessHours(start, end))
                 {
@@ -228,24 +227,13 @@ namespace c969v2.Forms
             }
         }
 
-        private void ValidateNumericUpDown(NumericUpDown numericUpDown, string fieldName, bool isCustomerId = false)
+        private void ValidateComboBox(ComboBox comboBox, string fieldName)
         {
-            if (numericUpDown.Value == 0)
+            if (comboBox.SelectedItem ==null)
             {
-                throw new Exception($"Please enter a valid number for {fieldName}.");
-            }
-
-            if (isCustomerId)
-            {
-                int customerId = (int)numericUpDown.Value;
-
-                if (!CustomerIdExists(customerId))
-                {
-                    throw new Exception($"Customer ID {customerId} does not exist. Please enter a valid customer ID.");
-                }
+                throw new Exception ($"Please select a {fieldName} ID.");
             }
         }
-
 
         private bool CustomerIdExists(int customerId)
         {
@@ -271,7 +259,6 @@ namespace c969v2.Forms
 
             return exists;
         }
-
 
         private void SetFormTitle()
         {
@@ -304,8 +291,8 @@ namespace c969v2.Forms
 
                        int customerId = Convert.ToInt32(reader["customerId"]);
                        int userId = Convert.ToInt32(reader["userId"]);
-                        SetSelectedComboBoxItem(customerComboBox, customerId);
-                        SetSelectedComboBoxItem(userComboBox, userId);
+                        CustomerComboBox.SelectedItem = customerId;
+                        UserComboBox.SelectedItem = userId;
                     }
                     else
                     {

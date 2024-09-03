@@ -14,3 +14,6 @@
 2024-09-03 11:53:31 - Login attempt by 'teste' was successful
 2024-09-03 11:54:46 - Login attempt by 'test' was successful
 2024-09-03 11:57:00 - Login attempt by 'test' was successful
+2024-09-03 12:07:24 - Login attempt by 'test' was successful
+2024-09-03 12:09:29 - Login attempt by 'test' was successful
+2024-09-03 12:12:31 - Login attempt by 'teste' was successful
