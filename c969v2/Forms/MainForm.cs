@@ -21,48 +21,14 @@ namespace c969v2.Forms
         }
         private void SetUserTimeZone()
         {
-            try
-            {
+            
+            
                 // Attempt to get the local system timezone
                 userTimeZone = TimeZoneInfo.Local;
 
                 // Log successful timezone retrieval
                 string tzInfo = $"Timezone set: {userTimeZone.Id}, Display Name: {userTimeZone.DisplayName}";
                 MessageBox.Show(tzInfo, "Timezone Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                // Additional checks
-                if (userTimeZone.Id.Contains("Mountain"))
-                {
-                    MessageBox.Show("Mountain Time detected as expected.", "Timezone Check", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                else
-                {
-                    MessageBox.Show($"Expected Mountain Time, but got: {userTimeZone.Id}", "Timezone Mismatch", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
-            }
-            catch (Exception ex)
-            {
-                // Detailed error logging
-                string errorMessage = $"Error setting timezone: {ex.GetType().Name}\n" +
-                                      $"Message: {ex.Message}\n" +
-                                      $"Stack Trace: {ex.StackTrace}";
-                MessageBox.Show(errorMessage, "Timezone Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-                // Attempt to get timezone information through alternative means
-                try
-                {
-                    string timeZoneId = TimeZone.CurrentTimeZone.StandardName;
-                    MessageBox.Show($"Alternative timezone method: {timeZoneId}", "Timezone Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                catch (Exception altEx)
-                {
-                    MessageBox.Show($"Alternative method also failed: {altEx.Message}", "Timezone Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-
-                // If unable to get the local timezone, default to UTC
-                userTimeZone = TimeZoneInfo.Utc;
-                MessageBox.Show("Defaulting to UTC due to error.", "Timezone Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
         }
 
 
