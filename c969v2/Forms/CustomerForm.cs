@@ -225,6 +225,10 @@ namespace c969v2.Forms
             this.Close();
         }
 
+        private void countryComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 
 }
