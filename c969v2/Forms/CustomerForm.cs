@@ -156,7 +156,10 @@ namespace c969v2.Forms
 
         private void ValidateTextBox() { }
         private void ValidateNumericUpDown() { }
-        private void LoadCustomerData() { }
+        private void LoadCustomerData() 
+        { 
+            string query=@"SELECT customerId, name, address, "
+        }
         private void SetFormTitle()
         {
             MainCustFormHeadline.Text = isEditMode ? "Edit Customer" : "Add Customer";

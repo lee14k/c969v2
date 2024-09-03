@@ -114,9 +114,9 @@ namespace c969v2.Forms
         }
         private void btnAddAppointment_Click(object sender, EventArgs e)
         {
-            var addAppointmentForm = new AppointmentForm(); // Opens form in "Add" mode
+            var addAppointmentForm = new AppointmentForm();
             addAppointmentForm.ShowDialog();
-            RefreshAppointmentData(); // Refresh data after form is closed
+            RefreshAppointmentData();
         }
 
         private void btnAddCustomer_Click(object sender, EventArgs e)
@@ -150,6 +150,10 @@ namespace c969v2.Forms
                 var editCustomerForm = new CustomerForm(selectedCustomerId);
                 editCustomerForm.ShowDialog();
                 RefreshCustomerData();
+            }
+            else
+            {
+                MessageBox.Show("Please select a customer to edit.", "No Customer Selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
         private void btnDeleteAppointment_Click (object sender, EventArgs e)
