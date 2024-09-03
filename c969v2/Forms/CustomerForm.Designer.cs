@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             this.MainCustFormHeadline = new System.Windows.Forms.Label();
-            this.StartTimeComboBox = new System.Windows.Forms.ComboBox();
+            this.postalCodeComboBox = new System.Windows.Forms.ComboBox();
             this.phoneNumberTextBox = new System.Windows.Forms.TextBox();
-            this.TypeTextBox = new System.Windows.Forms.TextBox();
-            this.TitleTextBox = new System.Windows.Forms.TextBox();
+            this.addressTextBox = new System.Windows.Forms.TextBox();
+            this.customerNameTextBox = new System.Windows.Forms.TextBox();
             this.AppointmentCancelButton = new System.Windows.Forms.Button();
             this.SubmitButton = new System.Windows.Forms.Button();
             this.label13 = new System.Windows.Forms.Label();
@@ -59,13 +59,13 @@
             this.MainCustFormHeadline.TabIndex = 55;
             this.MainCustFormHeadline.Text = "Customer Form";
             // 
-            // StartTimeComboBox
+            // postalCodeComboBox
             // 
-            this.StartTimeComboBox.FormattingEnabled = true;
-            this.StartTimeComboBox.Location = new System.Drawing.Point(124, 261);
-            this.StartTimeComboBox.Name = "StartTimeComboBox";
-            this.StartTimeComboBox.Size = new System.Drawing.Size(121, 21);
-            this.StartTimeComboBox.TabIndex = 50;
+            this.postalCodeComboBox.FormattingEnabled = true;
+            this.postalCodeComboBox.Location = new System.Drawing.Point(124, 261);
+            this.postalCodeComboBox.Name = "postalCodeComboBox";
+            this.postalCodeComboBox.Size = new System.Drawing.Size(121, 21);
+            this.postalCodeComboBox.TabIndex = 50;
             // 
             // phoneNumberTextBox
             // 
@@ -74,19 +74,19 @@
             this.phoneNumberTextBox.Size = new System.Drawing.Size(100, 20);
             this.phoneNumberTextBox.TabIndex = 46;
             // 
-            // TypeTextBox
+            // addressTextBox
             // 
-            this.TypeTextBox.Location = new System.Drawing.Point(116, 168);
-            this.TypeTextBox.Name = "TypeTextBox";
-            this.TypeTextBox.Size = new System.Drawing.Size(100, 20);
-            this.TypeTextBox.TabIndex = 45;
+            this.addressTextBox.Location = new System.Drawing.Point(116, 168);
+            this.addressTextBox.Name = "addressTextBox";
+            this.addressTextBox.Size = new System.Drawing.Size(100, 20);
+            this.addressTextBox.TabIndex = 45;
             // 
-            // TitleTextBox
+            // customerNameTextBox
             // 
-            this.TitleTextBox.Location = new System.Drawing.Point(116, 103);
-            this.TitleTextBox.Name = "TitleTextBox";
-            this.TitleTextBox.Size = new System.Drawing.Size(100, 20);
-            this.TitleTextBox.TabIndex = 44;
+            this.customerNameTextBox.Location = new System.Drawing.Point(116, 103);
+            this.customerNameTextBox.Name = "customerNameTextBox";
+            this.customerNameTextBox.Size = new System.Drawing.Size(100, 20);
+            this.customerNameTextBox.TabIndex = 44;
             // 
             // AppointmentCancelButton
             // 
@@ -215,10 +215,10 @@
             this.Controls.Add(this.City);
             this.Controls.Add(this.cityComboBox);
             this.Controls.Add(this.MainCustFormHeadline);
-            this.Controls.Add(this.StartTimeComboBox);
+            this.Controls.Add(this.postalCodeComboBox);
             this.Controls.Add(this.phoneNumberTextBox);
-            this.Controls.Add(this.TypeTextBox);
-            this.Controls.Add(this.TitleTextBox);
+            this.Controls.Add(this.addressTextBox);
+            this.Controls.Add(this.customerNameTextBox);
             this.Controls.Add(this.AppointmentCancelButton);
             this.Controls.Add(this.SubmitButton);
             this.Controls.Add(this.label13);
@@ -239,10 +239,10 @@
         #endregion
 
         private System.Windows.Forms.Label MainCustFormHeadline;
-        private System.Windows.Forms.ComboBox StartTimeComboBox;
+        private System.Windows.Forms.ComboBox postalCodeComboBox;
         private System.Windows.Forms.TextBox phoneNumberTextBox;
-        private System.Windows.Forms.TextBox TypeTextBox;
-        private System.Windows.Forms.TextBox TitleTextBox;
+        private System.Windows.Forms.TextBox addressTextBox;
+        private System.Windows.Forms.TextBox customerNameTextBox;
         private System.Windows.Forms.Button AppointmentCancelButton;
         private System.Windows.Forms.Button SubmitButton;
         private System.Windows.Forms.Label label13;

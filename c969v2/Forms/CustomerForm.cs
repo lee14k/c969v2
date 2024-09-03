@@ -52,12 +52,40 @@ namespace c969v2.Forms
 
             return newCustomerId;
         }
-    private void customerBtnSave_Click(object sender, EventArgs e) {
+        private void customerBtnSave_Click(object sender, EventArgs e)
+        {
+            // Trim and validate the necessary fields
+            string customerName = customerNameTextBox.Text.Trim();
+            string address = addressTextBox.Text.Trim();
             string phoneNumber = phoneNumberTextBox.Text.Trim();
-            if (!IsValidPhoneNumber(phoneNumber)){
+
+            // Validate that fields are not empty
+            if (string.IsNullOrEmpty(customerName))
+            {
+                MessageBox.Show("Please enter the customer's name.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (string.IsNullOrEmpty(address))
+            {
+                MessageBox.Show("Please enter the customer's address.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (string.IsNullOrEmpty(phoneNumber))
+            {
+                MessageBox.Show("Please enter the customer's phone number.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Validate the phone number format
+            if (!IsValidPhoneNumber(phoneNumber))
+            {
                 MessageBox.Show("Please enter a valid phone number using only digits and dashes.", "Invalid Phone Number", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
-                    }
+            }
+
+            // Rest of your code for processing the form data
             string cityName = cityComboBox.Text.Trim();
             string countryName = countryComboBox.Text.Trim();
 
@@ -68,7 +96,7 @@ namespace c969v2.Forms
             {
                 connection.Open();
 
-                // Check if country exists
+                // Check if country exists and insert if not
                 string query = "SELECT countryId FROM country WHERE LOWER(countryName) = LOWER(@countryName)";
                 using (var cmd = new MySqlCommand(query, connection))
                 {
@@ -119,10 +147,10 @@ namespace c969v2.Forms
 
             MessageBox.Show("City and Country have been validated and/or created successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             this.Close();
-
-
         }
-    private bool IsValidPhoneNumber(string phoneNumber)
+
+
+        private bool IsValidPhoneNumber(string phoneNumber)
         {
             // This regex allows only digits and dashes, with a total length between 10 and 14 characters
             return System.Text.RegularExpressions.Regex.IsMatch(phoneNumber, @"^[\d-]{10,14}$");
