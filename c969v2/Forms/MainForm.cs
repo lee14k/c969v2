@@ -26,7 +26,6 @@ namespace c969v2.Forms
                 // Attempt to get the local system timezone
                 userTimeZone = TimeZoneInfo.Local;
 
-                // Log successful timezone retrieval
                 string tzInfo = $"Timezone set: {userTimeZone.Id}, Display Name: {userTimeZone.DisplayName}";
                 MessageBox.Show(tzInfo, "Timezone Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }

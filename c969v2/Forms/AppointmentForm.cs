@@ -27,9 +27,8 @@ namespace c969v2.Forms
             }
             else
             {
-                // Generate a new appointment ID and display it in the textbox
                 this.appointmentId = GenerateNewAppointmentId();
-                IDNum.Value = this.appointmentId; // Assuming IDNum is a NumericUpDown control
+                IDNum.Value = this.appointmentId;
             }
         }
 
@@ -55,16 +54,12 @@ namespace c969v2.Forms
         {
             try
             {
-                // Validate text fields
                 ValidateNumericUpDown(CustomerNum, "Customer ID", isCustomerId: true);
                 ValidateTextBox(TitleTextBox, "Title");
                 ValidateTextBox(LocationTextBox, "Location");
                 ValidateTextBox(ContactTextBox, "Contact");
                 ValidateTextBox(TypeTextBox, "Type");
 
-           
-
-                // Gather data after validation
                 string title = TitleTextBox.Text;
                 string description = DescriptionTextBox.Text;
                 string location = LocationTextBox.Text;
@@ -74,30 +69,28 @@ namespace c969v2.Forms
                 DateTime start = StartDateTimePicker.Value;
                 DateTime end = EndDateTimePicker.Value;
 
-                // Validate business hours
                 if (!IsWithinBusinessHours(start, end))
                 {
                     MessageBox.Show("Appointments can only be scheduled during business hours (Monday through Friday, 9:00 AM to 5:00 PM Eastern Time).",
                                     "Invalid Appointment Time", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return; // Do not proceed with saving
+                    return; 
                 }
 
-                // Check for overlapping appointments
                 if (IsOverlappingAppointment(start, end, userId))
                 {
                     MessageBox.Show("The appointment times overlap with an existing appointment.",
                                     "Appointment Overlap", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return; // Do not proceed with saving
+                    return; 
                 }
 
-                // Proceed with saving the data if all validations pass
+                
                 using (var connection = dbConnection.GetConnection())
                 {
                     connection.Open();
 
                     string query;
-
-                    if (isEditMode) // Update existing appointment
+                    DateTime currentTimestamp = DateTime.UtcNow;
+                    if (isEditMode) 
                     {
                         query = @"UPDATE appointment SET 
                             title = @title, 
@@ -107,20 +100,21 @@ namespace c969v2.Forms
                             type = @type, 
                             url = @url, 
                             start = @start, 
-                            end = @end 
+                            end = @end,
+                            lastUpdate=@lastUpdate,
+                            lastUpdateBy=@lastUpdateBy
                           WHERE appointmentId = @appointmentId";
                     }
-                    else // Insert new appointment
+                    else 
                     {
                         query = @"INSERT INTO appointment 
-                            (customerId, userId, title, description, location, contact, type, url, start, end) 
+                            (customerId, userId, title, description, location, contact, type, url, start, end, createDate, createdBy, lastUpdate, lastUpdateBy) 
                           VALUES 
-                            (@customerId, @userId, @title, @description, @location, @contact, @type, @url, @start, @end)";
+                            (@customerId, @userId, @title, @description, @location, @contact, @type, @url, @start, @end, @createDate, @createdBy, @lastUpdate, @lastUpdateBy)";
                     }
 
                     using (var cmd = new MySqlCommand(query, connection))
                     {
-                        // Set parameters common to both insert and update
                         cmd.Parameters.AddWithValue("@title", title);
                         cmd.Parameters.AddWithValue("@description", description);
                         cmd.Parameters.AddWithValue("@location", location);
@@ -129,7 +123,8 @@ namespace c969v2.Forms
                         cmd.Parameters.AddWithValue("@url", url);
                         cmd.Parameters.AddWithValue("@start", start);
                         cmd.Parameters.AddWithValue("@end", end);
-
+                        cmd.Parameters.AddWithValue("@lastUpdate", currentTimestamp);
+                        cmd.Parameters.AddWithValue("@lastUpdateBy", ());
                         if (isEditMode)
                         {
                             cmd.Parameters.AddWithValue("@appointmentId", appointmentId);
@@ -138,6 +133,9 @@ namespace c969v2.Forms
                         {
                             cmd.Parameters.AddWithValue("@customerId", customerId);
                             cmd.Parameters.AddWithValue("@userId", userId);
+                            cmd.Parameters.AddWithValue("@createDate", currentTimestamp);
+                            cmd.Parameters.AddWithValue("@createdBy", GetCurrentUserName());
+
                         }
 
                         cmd.ExecuteNonQuery();
@@ -155,25 +153,21 @@ namespace c969v2.Forms
         }
         private void ValidateTextBox(TextBox textBox, string fieldName, bool isInteger = false, bool isDecimal = false, bool isCustomerId = false)
         {
-            // Check if the field is empty
             if (string.IsNullOrWhiteSpace(textBox.Text))
             {
                 throw new Exception($"Please fill out the {fieldName}.");
             }
 
-            // Validate if the input is an integer
             if (isInteger && !int.TryParse(textBox.Text, out _))
             {
                 throw new Exception($"Please enter a valid number for {fieldName}.");
             }
 
-            // Validate if the input is a decimal
             if (isDecimal && !decimal.TryParse(textBox.Text, out _))
             {
                 throw new Exception($"Please enter a valid decimal number for {fieldName}.");
             }
 
-            // Validate if the input is a customer ID
             if (isCustomerId)
             {
                 int customerId;
@@ -275,26 +269,21 @@ namespace c969v2.Forms
                 }
             });
         }
-
-
-
-
+        private void
         private bool IsWithinBusinessHours(DateTime start, DateTime end)
         {
             TimeZoneInfo easternZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
             DateTime startEastern = TimeZoneInfo.ConvertTimeFromUtc(start.ToUniversalTime(), easternZone);
             DateTime endEastern = TimeZoneInfo.ConvertTimeFromUtc(end.ToUniversalTime(), easternZone);
 
-            // Check if the start and end times are on a weekday (Monday = 1, ..., Friday = 5)
             if (startEastern.DayOfWeek < DayOfWeek.Monday || startEastern.DayOfWeek > DayOfWeek.Friday ||
                 endEastern.DayOfWeek < DayOfWeek.Monday || endEastern.DayOfWeek > DayOfWeek.Friday)
             {
                 return false;
             }
 
-            // Check if the times are within business hours (9:00 AM - 5:00 PM)
-            DateTime businessStart = DateTime.Today.AddHours(9); // 9:00 AM
-            DateTime businessEnd = DateTime.Today.AddHours(17);  // 5:00 PM
+            DateTime businessStart = DateTime.Today.AddHours(9);
+            DateTime businessEnd = DateTime.Today.AddHours(17); 
 
             if (startEastern.TimeOfDay < businessStart.TimeOfDay || endEastern.TimeOfDay > businessEnd.TimeOfDay)
             {

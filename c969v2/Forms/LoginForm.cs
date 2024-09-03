@@ -18,6 +18,8 @@ namespace c969v2.Forms
     {
         private DatabaseConnection dbConnection;
         private TimeZoneInfo userTimeZone;
+        public static int CurrentUserId { get; private set; }
+        public static string CurrentUserName { get; private set; }
         public LoginForm()
         {
             InitializeComponent();
@@ -26,6 +28,17 @@ namespace c969v2.Forms
             userTimeZone = TimeZoneInfo.Local;
         }
 
+        public static void SetCurrentUser (int userId, string userName)
+        {
+            CurrentUserId = userId;
+            CurrentUserName = userName;
+        }
+
+        public static void ClearCurrentUser ()
+        {
+            CurrentUserId = 0;
+            CurrentUserName = null;
+        }
         private void SetLanguageBasedOnRegion()
         {
             RegionInfo region = RegionInfo.CurrentRegion;
@@ -41,7 +54,6 @@ namespace c969v2.Forms
             }
             else
             {
-                // Set text to English or your default language
                 this.Text = "Login Form";
                 loginButton.Text = "Login";
             }
@@ -61,16 +73,19 @@ namespace c969v2.Forms
                         command.Parameters.AddWithValue("@password", password);
                         var result = command.ExecuteScalar();
                         bool loginSuccess = result != null;
-
-                        // Log the login attempt
                         LogLoginHistory(username, loginSuccess);
 
                         if (loginSuccess)
                         {
                             int userId = Convert.ToInt32(result);
+                            SetCurrentUser(userId, username);
                             CheckForUpcomingAppointments(userId);
                             MainForm mainForm = new MainForm();
-                            mainForm.FormClosed += (s, args) => this.Close();
+                            mainForm.FormClosed += (s, args) => 
+                            {
+                               ClearCurrentUser();
+                                this.Close(); 
+                            };
                             mainForm.Show();
                             this.Hide();
                         }
@@ -113,7 +128,7 @@ namespace c969v2.Forms
 
         private void CheckForUpcomingAppointments(int userId)
         {
-            DateTime utcNow = DateTime.UtcNow; // Get current UTC time
+            DateTime utcNow = DateTime.UtcNow;
             DateTime userLocalTime = TimeZoneInfo.ConvertTimeFromUtc(utcNow, userTimeZone); // Convert to user's local time
             DateTime userAlertTime = userLocalTime.AddMinutes(15); // Alert time in user's local time
 
@@ -129,7 +144,6 @@ namespace c969v2.Forms
 
                     using (var command = new MySqlCommand(query, connection))
                     {
-                        // Convert user local times back to UTC for the database query
                         DateTime currentUtcTime = TimeZoneInfo.ConvertTimeToUtc(userLocalTime, userTimeZone);
                         DateTime alertUtcTime = TimeZoneInfo.ConvertTimeToUtc(userAlertTime, userTimeZone);
 
@@ -152,13 +166,6 @@ namespace c969v2.Forms
                 }
             }
         }
-
-
-
-
-
-
-
         private void LoginButton_Click(object sender, EventArgs e)
         {
             string username = usernameEnter.Text;

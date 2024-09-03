@@ -84,8 +84,6 @@ namespace c969v2.Forms
                 MessageBox.Show("Please enter the postal code.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-
-            // Validate the phone number format
             if (!IsValidPhoneNumber(phoneNumber))
             {
                 MessageBox.Show("Please enter a valid phone number using only digits and dashes.", "Invalid Phone Number", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -103,7 +101,6 @@ namespace c969v2.Forms
             {
                 connection.Open();
 
-                // Check if country exists and insert if not
                 string query = "SELECT countryId FROM country WHERE LOWER(country) = LOWER(@country)";
                 using (var cmd = new MySqlCommand(query, connection))
                 {
@@ -125,8 +122,6 @@ namespace c969v2.Forms
                         }
                     }
                 }
-
-                // Check if city exists and insert if not
                 query = "SELECT cityId FROM city WHERE LOWER(city) = LOWER(@city) AND countryId = @countryId";
                 using (var cmd = new MySqlCommand(query, connection))
                 {
@@ -151,7 +146,6 @@ namespace c969v2.Forms
                     }
                 }
 
-                // Check if address exists, and insert or update as needed
                 query = "SELECT addressId FROM address WHERE LOWER(address) = LOWER(@address) AND cityId = @cityId AND postalCode = @postalCode AND phone = @phone";
                 using (var cmd = new MySqlCommand(query, connection))
                 {
@@ -179,8 +173,6 @@ namespace c969v2.Forms
                         }
                     }
                 }
-
-                // Now, insert or update the customer record with the addressId
                 if (isEditMode)
                 {
                     query = @"UPDATE customer 
@@ -210,7 +202,6 @@ namespace c969v2.Forms
 
         private bool IsValidPhoneNumber(string phoneNumber)
         {
-            // This regex allows only digits and dashes, with a total length between 10 and 14 characters
             return System.Text.RegularExpressions.Regex.IsMatch(phoneNumber, @"^[\d-]{10,14}$");
         }
 
