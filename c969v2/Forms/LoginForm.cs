@@ -17,12 +17,13 @@ namespace c969v2.Forms
     public partial class LoginForm : Form
     {
         private DatabaseConnection dbConnection;
-
+        private TimeZoneInfo userTimeZone;
         public LoginForm()
         {
             InitializeComponent();
             SetLanguageBasedOnRegion();
             dbConnection = new DatabaseConnection();
+            userTimeZone = TimeZoneInfo.Local;
         }
 
         private void SetLanguageBasedOnRegion()

@@ -237,6 +237,11 @@ namespace c969v2.Forms
 
         }
 
+        private void OpenReports_Click(object sender, EventArgs e)
+        {
+            var addReportsForm = new ReportsForm();
+            addReportsForm.ShowDialog();
+        }
 
 
     }

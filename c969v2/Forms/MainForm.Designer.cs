@@ -168,6 +168,7 @@
             this.ViewReports.TabIndex = 13;
             this.ViewReports.Text = "View Reports";
             this.ViewReports.UseVisualStyleBackColor = true;
+            this.ViewReports.Click += new System.EventHandler(this.OpenReports_Click);
             // 
             // MainForm
             // 
