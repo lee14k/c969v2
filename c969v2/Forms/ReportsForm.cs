@@ -1,4 +1,5 @@
-﻿using MySql.Data.MySqlClient;
+﻿using c969v2.Data;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -12,10 +13,12 @@ namespace c969v2.Forms
 {
     public partial class ReportsForm : Form
     {
+        private DatabaseConnection dbConnection;
         public ReportsForm()
         {
             InitializeComponent();
             this.Load += new System.EventHandler(this.ReportsForm_Load);
+            dbConnection = new DatabaseConnection();    
         }
 
         private void ReportsForm_Load(object sender, EventArgs e)
@@ -30,7 +33,7 @@ namespace c969v2.Forms
             using (var connection = dbConnection.GetConnection())
             {
                 connection.Open();
-                string query = "SELECT CustomerId, CustomerName FROM customers";
+                string query = "SELECT customerId, customerName FROM customer";
 
                 using (var command = new MySqlCommand(query, connection))
                 {
@@ -52,7 +55,7 @@ namespace c969v2.Forms
             using (var connection = dbConnection.GetConnection())
             {
                 connection.Open();
-                string query = "SELECT UserId, UserName FROM users";
+                string query = "SELECT userId, userName FROM user";
 
                 using (var command = new MySqlCommand(query, connection))
                 {
@@ -110,8 +113,8 @@ namespace c969v2.Forms
             {
                 connection.Open();
                 string query = @"SELECT Start, End, Title 
-                                 FROM appointments 
-                                 WHERE CustomerId = @customerId";
+                                 FROM appointment 
+                                 WHERE customerId = @customerId";
 
                 using (var command = new MySqlCommand(query, connection))
                 {
@@ -149,8 +152,8 @@ namespace c969v2.Forms
             {
                 connection.Open();
                 string query = @"SELECT Start, End, Title, Type 
-                         FROM appointments 
-                         WHERE UserId = @userId";
+                         FROM appointment 
+                         WHERE userId = @userId";
 
                 using (var command = new MySqlCommand(query, connection))
                 {
@@ -191,8 +194,8 @@ namespace c969v2.Forms
             {
                 connection.Open();
                 string query = @"SELECT Type 
-                         FROM appointments 
-                         WHERE MONTH(Start) = @month";
+                         FROM appointment
+                         WHERE MONTH(start) = @month";
 
                 using (var command = new MySqlCommand(query, connection))
                 {
@@ -220,7 +223,20 @@ namespace c969v2.Forms
             }
         }
 
+        private void label3_Click(object sender, EventArgs e)
+        {
 
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label6_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
 

@@ -41,6 +41,7 @@
             this.customerComboBox = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
             this.monthComboBox = new System.Windows.Forms.ComboBox();
+            this.backButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.appointmentTypesDataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.userScheduleDataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.customerAppointmentsDataGridView)).BeginInit();
@@ -50,7 +51,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 28.25F);
-            this.label1.Location = new System.Drawing.Point(322, 115);
+            this.label1.Location = new System.Drawing.Point(733, 347);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(152, 44);
             this.label1.TabIndex = 0;
@@ -59,32 +60,32 @@
             // appointmentTypesDataGridView
             // 
             this.appointmentTypesDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.appointmentTypesDataGridView.Location = new System.Drawing.Point(12, 79);
+            this.appointmentTypesDataGridView.Location = new System.Drawing.Point(12, 75);
             this.appointmentTypesDataGridView.Name = "appointmentTypesDataGridView";
-            this.appointmentTypesDataGridView.Size = new System.Drawing.Size(240, 150);
+            this.appointmentTypesDataGridView.Size = new System.Drawing.Size(441, 150);
             this.appointmentTypesDataGridView.TabIndex = 1;
             // 
             // userScheduleDataGridView
             // 
             this.userScheduleDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.userScheduleDataGridView.Location = new System.Drawing.Point(548, 79);
+            this.userScheduleDataGridView.Location = new System.Drawing.Point(510, 75);
             this.userScheduleDataGridView.Name = "userScheduleDataGridView";
-            this.userScheduleDataGridView.Size = new System.Drawing.Size(240, 150);
+            this.userScheduleDataGridView.Size = new System.Drawing.Size(478, 150);
             this.userScheduleDataGridView.TabIndex = 2;
             // 
             // customerAppointmentsDataGridView
             // 
             this.customerAppointmentsDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.customerAppointmentsDataGridView.Location = new System.Drawing.Point(273, 254);
+            this.customerAppointmentsDataGridView.Location = new System.Drawing.Point(17, 375);
             this.customerAppointmentsDataGridView.Name = "customerAppointmentsDataGridView";
-            this.customerAppointmentsDataGridView.Size = new System.Drawing.Size(240, 150);
+            this.customerAppointmentsDataGridView.Size = new System.Drawing.Size(436, 150);
             this.customerAppointmentsDataGridView.TabIndex = 3;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.25F);
-            this.label2.Location = new System.Drawing.Point(12, 47);
+            this.label2.Location = new System.Drawing.Point(57, 47);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(294, 25);
             this.label2.TabIndex = 4;
@@ -94,26 +95,28 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.25F);
-            this.label3.Location = new System.Drawing.Point(587, 47);
+            this.label3.Location = new System.Drawing.Point(662, 47);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(164, 25);
             this.label3.TabIndex = 5;
             this.label3.Text = "User Schedules";
+            this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.25F);
-            this.label4.Location = new System.Drawing.Point(268, 226);
+            this.label4.Location = new System.Drawing.Point(106, 347);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(245, 25);
             this.label4.TabIndex = 6;
             this.label4.Text = "Total Appt. By Customer";
+            this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
             // userComboBox
             // 
             this.userComboBox.FormattingEnabled = true;
-            this.userComboBox.Location = new System.Drawing.Point(667, 235);
+            this.userComboBox.Location = new System.Drawing.Point(645, 231);
             this.userComboBox.Name = "userComboBox";
             this.userComboBox.Size = new System.Drawing.Size(121, 21);
             this.userComboBox.TabIndex = 7;
@@ -122,7 +125,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(589, 238);
+            this.label5.Location = new System.Drawing.Point(567, 234);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(71, 13);
             this.label5.TabIndex = 8;
@@ -131,18 +134,19 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(270, 413);
+            this.label6.Location = new System.Drawing.Point(25, 534);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(93, 13);
             this.label6.TabIndex = 10;
             this.label6.Text = "Select a Customer";
+            this.label6.Click += new System.EventHandler(this.label6_Click);
             // 
             // customerComboBox
             // 
             this.customerComboBox.FormattingEnabled = true;
-            this.customerComboBox.Location = new System.Drawing.Point(380, 410);
+            this.customerComboBox.Location = new System.Drawing.Point(124, 531);
             this.customerComboBox.Name = "customerComboBox";
-            this.customerComboBox.Size = new System.Drawing.Size(121, 21);
+            this.customerComboBox.Size = new System.Drawing.Size(132, 21);
             this.customerComboBox.TabIndex = 9;
             this.customerComboBox.SelectedIndexChanged += new System.EventHandler(this.customerComboBox_SelectedIndexChanged);
             // 
@@ -164,11 +168,21 @@
             this.monthComboBox.TabIndex = 11;
             this.monthComboBox.SelectedIndexChanged += new System.EventHandler(this.monthComboBox_SelectedIndexChanged);
             // 
+            // backButton
+            // 
+            this.backButton.Location = new System.Drawing.Point(765, 424);
+            this.backButton.Name = "backButton";
+            this.backButton.Size = new System.Drawing.Size(75, 23);
+            this.backButton.TabIndex = 13;
+            this.backButton.Text = "Go Back";
+            this.backButton.UseVisualStyleBackColor = true;
+            // 
             // ReportsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1020, 611);
+            this.Controls.Add(this.backButton);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.monthComboBox);
             this.Controls.Add(this.label6);
@@ -207,5 +221,6 @@
         private System.Windows.Forms.ComboBox customerComboBox;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.ComboBox monthComboBox;
+        private System.Windows.Forms.Button backButton;
     }
 }
