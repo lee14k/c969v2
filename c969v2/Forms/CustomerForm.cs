@@ -1,4 +1,5 @@
-﻿using System;
+﻿using c969v2.Data;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,89 +8,63 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MySql.Data.MySqlClient;
 
 namespace c969v2.Forms
 {
     public partial class CustomerForm : Form
     {
-        public CustomerForm()
+        private bool isEditMode;
+        private int customerId;
+        private int userId;
+        private DatabaseConnection dbConnection;
+        public CustomerForm(int? customerId=null)
         {
             InitializeComponent();
+            dbConnection = new DatabaseConnection();
+            isEditMode=customerId.HasValue;
+            this.customerId = customerId ?? 0;
+            SetFormTitle();
+            if (isEditMode)
+            {
+                LoadCustomerData();
+            }
+            else
+            {
+                this.customerId = GenerateNewCustomerId();
+                IDNum.Value = this.customerId;
+            }
         }
 
-        private void label1_Click(object sender, EventArgs e)
+
+        private int GenerateNewCustomerId() {
+            int newCustomerId = 10;
+            string query = "SELECT MAX(customerId) FROM customer";
+            ExecuteQuery(query, cmd =>
+            {
+                object result = cmd.ExecuteScalar();
+                if (result != DBNull.Value && result != null)
+                {
+                    newCustomerId = Convert.ToInt32(result) + 1;
+                }
+            });
+
+            return newCustomerId;
+
+
+
+        })
+
+    private void SetFormTitle()
         {
-
+            MainCustFormHeadline.Text = isEditMode ? "Edit Appointment" : "Add Appointment";
         }
 
-        private void StartTimeLabel_Click(object sender, EventArgs e)
-        {
 
-        }
 
-        private void CustomerForm_Load(object sender, EventArgs e)
-        {
 
-        }
 
-        private void EndDateTimePicker_ValueChanged(object sender, EventArgs e)
-        {
 
-        }
 
-        private void EndTimeComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void EndTimeLabel_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void CustomerIDLabel_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void CustomerIDTextBox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void ContactTextBox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void UserIDTextBox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void UserIDLabel_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void ContactLabel_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void EndDateLabel_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void SubmitButton_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void AppointmentCancelButton_Click(object sender, EventArgs e)
-        {
-
-        }
     }
 }

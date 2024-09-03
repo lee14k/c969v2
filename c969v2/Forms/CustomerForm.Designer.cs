@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
+            this.MainCustFormHeadline = new System.Windows.Forms.Label();
             this.StartTimeComboBox = new System.Windows.Forms.ComboBox();
             this.LocationTextBox = new System.Windows.Forms.TextBox();
             this.DescriptionTextBox = new System.Windows.Forms.TextBox();
@@ -46,16 +46,15 @@
             this.IDLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // label1
+            // MainCustFormHeadline
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.6F);
-            this.label1.Location = new System.Drawing.Point(36, 2);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(334, 52);
-            this.label1.TabIndex = 55;
-            this.label1.Text = "Customer Form";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
+            this.MainCustFormHeadline.AutoSize = true;
+            this.MainCustFormHeadline.Font = new System.Drawing.Font("Microsoft Sans Serif", 26.6F);
+            this.MainCustFormHeadline.Location = new System.Drawing.Point(35, 9);
+            this.MainCustFormHeadline.Name = "MainCustFormHeadline";
+            this.MainCustFormHeadline.Size = new System.Drawing.Size(267, 40);
+            this.MainCustFormHeadline.TabIndex = 55;
+            this.MainCustFormHeadline.Text = "Customer Form";
             // 
             // StartTimeComboBox
             // 
@@ -108,7 +107,6 @@
             this.AppointmentCancelButton.TabIndex = 42;
             this.AppointmentCancelButton.Text = "Cancel";
             this.AppointmentCancelButton.UseVisualStyleBackColor = true;
-            this.AppointmentCancelButton.Click += new System.EventHandler(this.AppointmentCancelButton_Click);
             // 
             // SubmitButton
             // 
@@ -118,14 +116,13 @@
             this.SubmitButton.TabIndex = 41;
             this.SubmitButton.Text = "Submit";
             this.SubmitButton.UseVisualStyleBackColor = true;
-            this.SubmitButton.Click += new System.EventHandler(this.SubmitButton_Click);
             // 
             // label13
             // 
             this.label13.AutoSize = true;
             this.label13.Location = new System.Drawing.Point(368, 386);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(0, 15);
+            this.label13.Size = new System.Drawing.Size(0, 13);
             this.label13.TabIndex = 40;
             // 
             // StartTimeLabel
@@ -133,17 +130,16 @@
             this.StartTimeLabel.AutoSize = true;
             this.StartTimeLabel.Location = new System.Drawing.Point(42, 261);
             this.StartTimeLabel.Name = "StartTimeLabel";
-            this.StartTimeLabel.Size = new System.Drawing.Size(73, 15);
+            this.StartTimeLabel.Size = new System.Drawing.Size(64, 13);
             this.StartTimeLabel.TabIndex = 34;
             this.StartTimeLabel.Text = "Postal Code";
-            this.StartTimeLabel.Click += new System.EventHandler(this.StartTimeLabel_Click);
             // 
             // LocationLabel
             // 
             this.LocationLabel.AutoSize = true;
             this.LocationLabel.Location = new System.Drawing.Point(42, 224);
             this.LocationLabel.Name = "LocationLabel";
-            this.LocationLabel.Size = new System.Drawing.Size(48, 15);
+            this.LocationLabel.Size = new System.Drawing.Size(43, 13);
             this.LocationLabel.TabIndex = 32;
             this.LocationLabel.Text = "Country";
             // 
@@ -152,7 +148,7 @@
             this.DescriptionLabel.AutoSize = true;
             this.DescriptionLabel.Location = new System.Drawing.Point(42, 192);
             this.DescriptionLabel.Name = "DescriptionLabel";
-            this.DescriptionLabel.Size = new System.Drawing.Size(91, 15);
+            this.DescriptionLabel.Size = new System.Drawing.Size(78, 13);
             this.DescriptionLabel.TabIndex = 31;
             this.DescriptionLabel.Text = "Phone Number";
             // 
@@ -162,7 +158,7 @@
             this.TypeLabel.Location = new System.Drawing.Point(42, 157);
             this.TypeLabel.Name = "TypeLabel";
             this.TypeLabel.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.TypeLabel.Size = new System.Drawing.Size(51, 15);
+            this.TypeLabel.Size = new System.Drawing.Size(45, 13);
             this.TypeLabel.TabIndex = 30;
             this.TypeLabel.Text = "Address";
             // 
@@ -171,7 +167,7 @@
             this.TitleLabel.AutoSize = true;
             this.TitleLabel.Location = new System.Drawing.Point(45, 122);
             this.TitleLabel.Name = "TitleLabel";
-            this.TitleLabel.Size = new System.Drawing.Size(41, 15);
+            this.TitleLabel.Size = new System.Drawing.Size(35, 13);
             this.TitleLabel.TabIndex = 29;
             this.TitleLabel.Text = "Name";
             // 
@@ -180,7 +176,7 @@
             this.IDLabel.AutoSize = true;
             this.IDLabel.Location = new System.Drawing.Point(45, 84);
             this.IDLabel.Name = "IDLabel";
-            this.IDLabel.Size = new System.Drawing.Size(19, 15);
+            this.IDLabel.Size = new System.Drawing.Size(18, 13);
             this.IDLabel.TabIndex = 28;
             this.IDLabel.Text = "ID";
             // 
@@ -189,7 +185,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(405, 369);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.MainCustFormHeadline);
             this.Controls.Add(this.StartTimeComboBox);
             this.Controls.Add(this.LocationTextBox);
             this.Controls.Add(this.DescriptionTextBox);
@@ -207,7 +203,6 @@
             this.Controls.Add(this.IDLabel);
             this.Name = "CustomerForm";
             this.Text = "CustomerForm";
-            this.Load += new System.EventHandler(this.CustomerForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -215,7 +210,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label MainCustFormHeadline;
         private System.Windows.Forms.ComboBox StartTimeComboBox;
         private System.Windows.Forms.TextBox LocationTextBox;
         private System.Windows.Forms.TextBox DescriptionTextBox;
