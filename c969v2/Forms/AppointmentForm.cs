@@ -13,6 +13,9 @@ namespace c969v2.Forms
         private int userId; 
         private int customerId;
         private DatabaseConnection dbConnection;
+        private ComboBox CustomerComboBox;
+        private ComboBox UserComboBox;
+
 
         public AppointmentForm(int? appointmentId = null)
         {
@@ -21,6 +24,9 @@ namespace c969v2.Forms
             isEditMode = appointmentId.HasValue;
             this.appointmentId = appointmentId ?? 0;
             SetFormTitle();
+            LoadCustomersIntoComboBox();
+            LoadUsersIntoComboBox();
+
             if (isEditMode)
             {
                 LoadAppointmentData();
@@ -50,11 +56,50 @@ namespace c969v2.Forms
             return newAppointmentId;
 
         }
+
+        private void LoadCustomersIntoComboBox()
+        {
+            customerComboBox.Items.Clear();
+            string query = "SELECT customerId FROM customer";
+            ExecuteQuery(query, cmd =>
+            {
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        customerComboBox.Items.Add(new ComboBoxItem(
+                            reader.GetInt32("customerId")
+                            ));
+
+                    }
+                }
+            });
+        }
+
+        private void LoadUsersIntoComboBox()
+        {
+            userComboBox.Items.Clear();
+            string query = "SELECT userId FROM user";
+            ExecuteQuery(query, cmd =>
+            {
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        userComboBox.Items.Add(new ComboBoxItem(
+                            reader.GetInt32("userId")
+
+                            )); 
+
+                    }
+                }
+            });
+        }
+
         private void btnSave_Click(object sender, EventArgs e)
         {
             try
             {
-                ValidateNumericUpDown(CustomerNum, "Customer ID", isCustomerId: true);
                 ValidateTextBox(TitleTextBox, "Title");
                 ValidateTextBox(LocationTextBox, "Location");
                 ValidateTextBox(ContactTextBox, "Contact");
@@ -124,7 +169,7 @@ namespace c969v2.Forms
                         cmd.Parameters.AddWithValue("@start", start);
                         cmd.Parameters.AddWithValue("@end", end);
                         cmd.Parameters.AddWithValue("@lastUpdate", currentTimestamp);
-                        cmd.Parameters.AddWithValue("@lastUpdateBy", ());
+                        cmd.Parameters.AddWithValue("@lastUpdateBy", LoginForm.CurrentUserName);
                         if (isEditMode)
                         {
                             cmd.Parameters.AddWithValue("@appointmentId", appointmentId);
@@ -132,9 +177,9 @@ namespace c969v2.Forms
                         else
                         {
                             cmd.Parameters.AddWithValue("@customerId", customerId);
-                            cmd.Parameters.AddWithValue("@userId", userId);
+                            cmd.Parameters.AddWithValue("@userId", LoginForm.CurrentUserId);
                             cmd.Parameters.AddWithValue("@createDate", currentTimestamp);
-                            cmd.Parameters.AddWithValue("@createdBy", GetCurrentUserName());
+                            cmd.Parameters.AddWithValue("@createdBy", LoginForm.CurrentUserName);
 
                         }
 
@@ -257,9 +302,10 @@ namespace c969v2.Forms
                         StartDateTimePicker.Value = Convert.ToDateTime(reader["start"]);
                         EndDateTimePicker.Value = Convert.ToDateTime(reader["end"]);
 
-                        customerId = Convert.ToInt32(reader["customerId"]);
-                        userId = Convert.ToInt32(reader["userId"]);  // Assuming userId is retrieved and stored
-                        CustomerNum.Value = customerId;
+                       int customerId = Convert.ToInt32(reader["customerId"]);
+                       int userId = Convert.ToInt32(reader["userId"]);
+                        SetSelectedComboBoxItem(customerComboBox, customerId);
+                        SetSelectedComboBoxItem(userComboBox, userId);
                     }
                     else
                     {
@@ -269,7 +315,27 @@ namespace c969v2.Forms
                 }
             });
         }
-        private void
+
+        private void SetSelectedComboBoxItem(ComboBox comboBox, int id)
+        {
+            foreach(ComboBoxItem item in comboBox.Items)
+            {
+                if(item.Id == id)
+                {
+                    comboBox.SelectedItem = item;
+                    break;
+                }
+            }
+        }
+        public class ComboBoxItem
+        {
+            public int Id { get; set; }
+            public ComboBoxItem (int id)
+            {
+                Id = id;
+            }
+       
+        }
         private bool IsWithinBusinessHours(DateTime start, DateTime end)
         {
             TimeZoneInfo easternZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");

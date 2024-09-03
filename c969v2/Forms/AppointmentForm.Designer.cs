@@ -51,11 +51,9 @@
             this.MainAppointmentHeadline = new System.Windows.Forms.Label();
             this.URLLabel = new System.Windows.Forms.Label();
             this.URLTextBox = new System.Windows.Forms.TextBox();
-            this.CustomerNum = new System.Windows.Forms.NumericUpDown();
-            this.UserNum = new System.Windows.Forms.NumericUpDown();
             this.IDNum = new System.Windows.Forms.NumericUpDown();
-            ((System.ComponentModel.ISupportInitialize)(this.CustomerNum)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.UserNum)).BeginInit();
+            this.customerComboBox = new System.Windows.Forms.ComboBox();
+            this.userComboBox = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.IDNum)).BeginInit();
             this.SuspendLayout();
             // 
@@ -228,7 +226,7 @@
             // 
             // ContactTextBox
             // 
-            this.ContactTextBox.Location = new System.Drawing.Point(107, 456);
+            this.ContactTextBox.Location = new System.Drawing.Point(107, 453);
             this.ContactTextBox.Name = "ContactTextBox";
             this.ContactTextBox.Size = new System.Drawing.Size(100, 20);
             this.ContactTextBox.TabIndex = 26;
@@ -259,20 +257,6 @@
             this.URLTextBox.Size = new System.Drawing.Size(100, 20);
             this.URLTextBox.TabIndex = 29;
             // 
-            // CustomerNum
-            // 
-            this.CustomerNum.Location = new System.Drawing.Point(107, 390);
-            this.CustomerNum.Name = "CustomerNum";
-            this.CustomerNum.Size = new System.Drawing.Size(120, 20);
-            this.CustomerNum.TabIndex = 30;
-            // 
-            // UserNum
-            // 
-            this.UserNum.Location = new System.Drawing.Point(107, 423);
-            this.UserNum.Name = "UserNum";
-            this.UserNum.Size = new System.Drawing.Size(120, 20);
-            this.UserNum.TabIndex = 31;
-            // 
             // IDNum
             // 
             this.IDNum.Location = new System.Drawing.Point(107, 87);
@@ -281,14 +265,30 @@
             this.IDNum.Size = new System.Drawing.Size(120, 20);
             this.IDNum.TabIndex = 32;
             // 
+            // customerComboBox
+            // 
+            this.customerComboBox.FormattingEnabled = true;
+            this.customerComboBox.Location = new System.Drawing.Point(107, 387);
+            this.customerComboBox.Name = "customerComboBox";
+            this.customerComboBox.Size = new System.Drawing.Size(121, 21);
+            this.customerComboBox.TabIndex = 33;
+            // 
+            // userComboBox
+            // 
+            this.userComboBox.FormattingEnabled = true;
+            this.userComboBox.Location = new System.Drawing.Point(106, 420);
+            this.userComboBox.Name = "userComboBox";
+            this.userComboBox.Size = new System.Drawing.Size(121, 21);
+            this.userComboBox.TabIndex = 34;
+            // 
             // AppointmentForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(399, 575);
+            this.Controls.Add(this.userComboBox);
+            this.Controls.Add(this.customerComboBox);
             this.Controls.Add(this.IDNum);
-            this.Controls.Add(this.UserNum);
-            this.Controls.Add(this.CustomerNum);
             this.Controls.Add(this.URLTextBox);
             this.Controls.Add(this.URLLabel);
             this.Controls.Add(this.MainAppointmentHeadline);
@@ -314,8 +314,6 @@
             this.Controls.Add(this.IDLabel);
             this.Name = "AppointmentForm";
             this.Text = "AppointmentForm";
-            ((System.ComponentModel.ISupportInitialize)(this.CustomerNum)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.UserNum)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.IDNum)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -347,8 +345,8 @@
         private System.Windows.Forms.Label MainAppointmentHeadline;
         private System.Windows.Forms.Label URLLabel;
         private System.Windows.Forms.TextBox URLTextBox;
-        private System.Windows.Forms.NumericUpDown CustomerNum;
-        private System.Windows.Forms.NumericUpDown UserNum;
         private System.Windows.Forms.NumericUpDown IDNum;
+        private System.Windows.Forms.ComboBox customerComboBox;
+        private System.Windows.Forms.ComboBox userComboBox;
     }
 }
