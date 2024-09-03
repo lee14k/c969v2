@@ -119,7 +119,12 @@ namespace c969v2.Forms
             RefreshAppointmentData(); // Refresh data after form is closed
         }
 
-        // Event handler for editing an existing appointment
+        private void btnAddCustomer_Click(object sender, EventArgs e)
+        {
+            var addCustomerForm = new CustomerForm();
+            addCustomerForm.ShowDialog();
+            RefreshCustomerData();
+        }
         private void btnEditAppointment_Click(object sender, EventArgs e)
         {
             if (AppointmentData.SelectedRows.Count > 0)
@@ -134,6 +139,17 @@ namespace c969v2.Forms
             else
             {
                 MessageBox.Show("Please select an appointment to edit.", "No Appointment Selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void btnEditCustomer_Click(object sender, EventArgs e)
+        {
+            if (CustomerData.SelectedRows.Count>0)
+            {
+                int selectedCustomerId = Convert.ToInt32(CustomerData.SelectedRows[0].Cells[0].Value);
+                var editCustomerForm = new CustomerForm(selectedCustomerId);
+                editCustomerForm.ShowDialog();
+                RefreshCustomerData();
             }
         }
         private void btnDeleteAppointment_Click (object sender, EventArgs e)
@@ -154,6 +170,26 @@ namespace c969v2.Forms
             }
         }
 
+        private void btnDeleteCustomer_Click(object sender, EventArgs e)
+        {
+            if (CustomerData.SelectedRows.Count > 0)
+            {
+                int selectedCustomerId = Convert.ToInt32(CustomerData.SelectedRows[0].Cells[0].Value);
+
+                var result = MessageBox.Show("Are you sure you want to delete this customer?", "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (result == DialogResult.Yes)
+                {
+                    DeleteCustomer(selectedCustomerId);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please select a customer to delete.", "No Customer Selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+
+
+
+        }
         private void SignOutButton_Click(object sender, EventArgs e)
         {
             DialogResult result = MessageBox.Show("Are you sure you want to sign out?", "Confirm Sign Out", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
