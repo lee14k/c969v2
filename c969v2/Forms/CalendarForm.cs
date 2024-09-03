@@ -25,6 +25,12 @@ namespace c969v2.Forms
             dbConnection = new DatabaseConnection();
 
         }
+        private void backButton_click(object sender, EventArgs e)
+        {
+            MainForm mainForm = new MainForm();
+            mainForm.Show();
+            this.Close();
+        }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -36,7 +42,7 @@ namespace c969v2.Forms
             {
                 connection.Open();
                 string query = @"SELECT Start, End, Title, Type 
-                             FROM appointments 
+                             FROM appointment 
                              WHERE Start >= @today
                              ORDER BY Start";
 
@@ -63,14 +69,11 @@ namespace c969v2.Forms
             }
         }
 
-        // Handle the button click to view appointments for the selected date
         private void viewAppointmentsButton_Click(object sender, EventArgs e)
         {
             DateTime selectedDate = monthCalendar.SelectionStart;
             DisplayAppointmentsForDate(selectedDate);
         }
-
-        // Display appointments for the selected date in the DataGridView
         private void DisplayAppointmentsForDate(DateTime date)
         {
             var appointmentsForDate = upcomingAppointments
@@ -83,6 +86,5 @@ namespace c969v2.Forms
     }
 
 
+}
 
-}
-}

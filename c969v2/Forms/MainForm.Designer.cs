@@ -151,6 +151,7 @@
             this.button7.TabIndex = 12;
             this.button7.Text = "Calendar View";
             this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.OpenCalendar_Click);
             // 
             // button3
             // 

@@ -176,6 +176,7 @@
             this.backButton.TabIndex = 13;
             this.backButton.Text = "Go Back";
             this.backButton.UseVisualStyleBackColor = true;
+            this.backButton.Click += new System.EventHandler(this.backButton_click);
             // 
             // ReportsForm
             // 

@@ -20,6 +20,12 @@ namespace c969v2.Forms
             this.Load += new System.EventHandler(this.ReportsForm_Load);
             dbConnection = new DatabaseConnection();    
         }
+        private void backButton_click(object sender, EventArgs e)
+        {
+            MainForm mainForm = new MainForm();
+            mainForm.Show();
+            this.Close();
+        }
 
         private void ReportsForm_Load(object sender, EventArgs e)
         {

@@ -31,10 +31,8 @@
             this.appointmentsDataGridView = new System.Windows.Forms.DataGridView();
             this.monthCalendar = new System.Windows.Forms.MonthCalendar();
             this.label1 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.appointmentsDataGridView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -62,33 +60,6 @@
             this.label1.TabIndex = 3;
             this.label1.Text = "Select a date and appointments on that date will show";
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(57, 322);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 42);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "Add Appointment";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(166, 322);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 42);
-            this.button2.TabIndex = 5;
-            this.button2.Text = "Edit Appointment";
-            this.button2.UseVisualStyleBackColor = true;
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(272, 322);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 42);
-            this.button3.TabIndex = 6;
-            this.button3.Text = "Delete Appointment";
-            this.button3.UseVisualStyleBackColor = true;
-            // 
             // button4
             // 
             this.button4.Location = new System.Drawing.Point(490, 94);
@@ -97,16 +68,25 @@
             this.button4.TabIndex = 7;
             this.button4.Text = "Go Back";
             this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.backButton_click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 28.25F);
+            this.label2.Location = new System.Drawing.Point(49, 25);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(265, 44);
+            this.label2.TabIndex = 8;
+            this.label2.Text = "Calendar View";
             // 
             // CalendarForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.button4);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.monthCalendar);
             this.Controls.Add(this.appointmentsDataGridView);
@@ -123,9 +103,7 @@
         private System.Windows.Forms.DataGridView appointmentsDataGridView;
         private System.Windows.Forms.MonthCalendar monthCalendar;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Label label2;
     }
 }
