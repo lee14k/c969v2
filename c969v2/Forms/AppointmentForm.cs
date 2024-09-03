@@ -35,8 +35,6 @@ namespace c969v2.Forms
                 IDNum.Value = this.appointmentId;
             }
         }
-
-
         private int GenerateNewAppointmentId()
         {
             int newAppointmentId = 0;
@@ -54,7 +52,6 @@ namespace c969v2.Forms
             return newAppointmentId;
 
         }
-
         private void LoadCustomersIntoComboBox()
         {
             CustomerComboBox.Items.Clear();
@@ -71,7 +68,6 @@ namespace c969v2.Forms
                 }
             });
         }
-
         private void LoadUsersIntoComboBox()
         {
             UserComboBox.Items.Clear();
@@ -90,7 +86,6 @@ namespace c969v2.Forms
                 }
             });
         }
-
         private void btnSave_Click(object sender, EventArgs e)
         {
             try
@@ -226,7 +221,6 @@ namespace c969v2.Forms
                 }
             }
         }
-
         private void ValidateComboBox(ComboBox comboBox, string fieldName)
         {
             if (comboBox.SelectedItem ==null)
@@ -234,7 +228,6 @@ namespace c969v2.Forms
                 throw new Exception ($"Please select a {fieldName} ID.");
             }
         }
-
         private bool CustomerIdExists(int customerId)
         {
             bool exists = false;
@@ -259,12 +252,10 @@ namespace c969v2.Forms
 
             return exists;
         }
-
         private void SetFormTitle()
         {
             MainAppointmentHeadline.Text = isEditMode ? "Edit Appointment" : "Add Appointment";
         }
-
         private void LoadAppointmentData()
         {
             string query = @"SELECT customerId, userId, title, description, location, 
@@ -302,18 +293,6 @@ namespace c969v2.Forms
                 }
             });
         }
-
-        private void SetSelectedComboBoxItem(ComboBox comboBox, int id)
-        {
-            foreach(ComboBoxItem item in comboBox.Items)
-            {
-                if(item.Id == id)
-                {
-                    comboBox.SelectedItem = item;
-                    break;
-                }
-            }
-        }
         public class ComboBoxItem
         {
             public int Id { get; set; }
@@ -345,7 +324,6 @@ namespace c969v2.Forms
 
             return true;
         }
-
         private bool IsOverlappingAppointment(DateTime start, DateTime end, int userId)
         {
             using (var connection = dbConnection.GetConnection())
@@ -368,7 +346,6 @@ namespace c969v2.Forms
                 }
             }
         }
-
         private void ExecuteQuery(string query, Action<MySqlCommand> configureCommand)
         {
             try

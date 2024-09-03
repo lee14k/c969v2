@@ -11,7 +11,6 @@ namespace c969v2.Forms
         private int customerId;
         private int userId;
         private DatabaseConnection dbConnection;
-
         public CustomerForm(int? customerId = null)
         {
             InitializeComponent();
@@ -36,7 +35,6 @@ namespace c969v2.Forms
             // Attach event handler for country selection change
             countryComboBox.SelectedIndexChanged += countryComboBox_SelectedIndexChanged;
         }
-
         private int GenerateNewCustomerId()
         {
             int newCustomerId = 10;
@@ -52,7 +50,6 @@ namespace c969v2.Forms
 
             return newCustomerId;
         }
-
         private void customerBtnSave_Click(object sender, EventArgs e)
         {
             string customerName = customerNameTextBox.Text.Trim();
@@ -197,14 +194,10 @@ namespace c969v2.Forms
             MessageBox.Show("Customer and Address have been saved successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             this.Close();
         }
-
-
-
         private bool IsValidPhoneNumber(string phoneNumber)
         {
             return System.Text.RegularExpressions.Regex.IsMatch(phoneNumber, @"^[\d-]{10,14}$");
         }
-
         private void ValidateTextBox() { }
         private void ValidateNumericUpDown() { }
         private void LoadCustomerData()
@@ -242,13 +235,10 @@ namespace c969v2.Forms
                 }
             }
         }
-
-
         private void SetFormTitle()
         {
             MainCustFormHeadline.Text = isEditMode ? "Edit Customer" : "Add Customer";
         }
-
         private void LoadCountryDropdown()
         {
             using (var connection = dbConnection.GetConnection())
@@ -270,7 +260,6 @@ namespace c969v2.Forms
             countryComboBox.DisplayMember = "Text";
             countryComboBox.ValueMember = "Value";
         }
-
         private void LoadCityDropdown(int countryId)
         {
             cityComboBox.Items.Clear();
@@ -295,7 +284,6 @@ namespace c969v2.Forms
             cityComboBox.DisplayMember = "Text";
             cityComboBox.ValueMember = "Value";
         }
-
         private void ExecuteQuery(string query, Action<MySqlCommand> configureCommmand)
         {
             try
@@ -318,12 +306,10 @@ namespace c969v2.Forms
                 MessageBox.Show($"Unexpected error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
         private void BtnCancel_Click(object sender, EventArgs e)
         {
             this.Close();
         }
-
         private void countryComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (countryComboBox.SelectedItem != null)
