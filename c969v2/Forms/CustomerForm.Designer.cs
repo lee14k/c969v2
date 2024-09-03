@@ -48,6 +48,8 @@
             this.postalCodeTextBox = new System.Windows.Forms.TextBox();
             this.addressLineTwo = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.IDNum)).BeginInit();
             this.SuspendLayout();
             // 
@@ -84,7 +86,7 @@
             // 
             // AppointmentCancelButton
             // 
-            this.AppointmentCancelButton.Location = new System.Drawing.Point(170, 334);
+            this.AppointmentCancelButton.Location = new System.Drawing.Point(170, 367);
             this.AppointmentCancelButton.Name = "AppointmentCancelButton";
             this.AppointmentCancelButton.Size = new System.Drawing.Size(75, 23);
             this.AppointmentCancelButton.TabIndex = 42;
@@ -94,7 +96,7 @@
             // 
             // SubmitButton
             // 
-            this.SubmitButton.Location = new System.Drawing.Point(45, 334);
+            this.SubmitButton.Location = new System.Drawing.Point(45, 367);
             this.SubmitButton.Name = "SubmitButton";
             this.SubmitButton.Size = new System.Drawing.Size(75, 23);
             this.SubmitButton.TabIndex = 36;
@@ -168,9 +170,9 @@
             // cityComboBox
             // 
             this.cityComboBox.FormattingEnabled = true;
-            this.cityComboBox.Location = new System.Drawing.Point(126, 258);
+            this.cityComboBox.Location = new System.Drawing.Point(122, 258);
             this.cityComboBox.Name = "cityComboBox";
-            this.cityComboBox.Size = new System.Drawing.Size(121, 21);
+            this.cityComboBox.Size = new System.Drawing.Size(123, 21);
             this.cityComboBox.TabIndex = 34;
             // 
             // City
@@ -198,7 +200,6 @@
             this.countryComboBox.Name = "countryComboBox";
             this.countryComboBox.Size = new System.Drawing.Size(121, 21);
             this.countryComboBox.TabIndex = 33;
-            this.countryComboBox.SelectedIndexChanged += new System.EventHandler(this.countryComboBox_SelectedIndexChanged);
             // 
             // postalCodeTextBox
             // 
@@ -224,11 +225,32 @@
             this.label1.TabIndex = 96;
             this.label1.Text = "Address Line 2";
             // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(187, 322);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(44, 17);
+            this.checkBox1.TabIndex = 97;
+            this.checkBox1.Text = "Yes";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(42, 323);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(118, 13);
+            this.label2.TabIndex = 98;
+            this.label2.Text = "Is this customer active?";
+            // 
             // CustomerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(405, 369);
+            this.ClientSize = new System.Drawing.Size(405, 402);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.addressLineTwo);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.postalCodeTextBox);
@@ -279,5 +301,7 @@
         private System.Windows.Forms.TextBox postalCodeTextBox;
         private System.Windows.Forms.TextBox addressLineTwo;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.Label label2;
     }
 }

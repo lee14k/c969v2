@@ -13,4 +13,15 @@ public class Customer
     public string LastUpdateBy { get; set; }
     public Address Address { get; set; }
 
+    public void ValidateFields()
+    {
+        if (string.IsNullOrWhiteSpace(CustomerName))
+        {
+            throw new Exception("Please fill out the customer name.");
+        }
+        if (CustomerName.Length > 45)
+        {
+            throw new Exception("Customer name cannot exceed 45 characters.");
+        }
+    }
 }

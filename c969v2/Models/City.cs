@@ -22,9 +22,6 @@ public class City
         if (CityName.Length>45)
         {
             throw new Exception("City name cannot exceed 45 characters.");
-
-
-
         }
     }
 
