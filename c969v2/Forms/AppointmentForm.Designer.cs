@@ -176,6 +176,7 @@
             this.AppointmentCancelButton.TabIndex = 14;
             this.AppointmentCancelButton.Text = "Cancel";
             this.AppointmentCancelButton.UseVisualStyleBackColor = true;
+            this.AppointmentCancelButton.Click += new System.EventHandler(this.BtnCancel_Click);
             // 
             // TitleTextBox
             // 
