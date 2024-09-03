@@ -41,6 +41,8 @@
             this.button7 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.ViewReports = new System.Windows.Forms.Button();
+            this.timezoneComboBox = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.AppointmentData)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CustomerData)).BeginInit();
             this.SuspendLayout();
@@ -170,11 +172,30 @@
             this.ViewReports.UseVisualStyleBackColor = true;
             this.ViewReports.Click += new System.EventHandler(this.OpenReports_Click);
             // 
+            // timezoneComboBox
+            // 
+            this.timezoneComboBox.FormattingEnabled = true;
+            this.timezoneComboBox.Location = new System.Drawing.Point(256, 363);
+            this.timezoneComboBox.Name = "timezoneComboBox";
+            this.timezoneComboBox.Size = new System.Drawing.Size(121, 21);
+            this.timezoneComboBox.TabIndex = 14;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(94, 366);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(156, 13);
+            this.label3.TabIndex = 15;
+            this.label3.Text = "Timezone for appointment times";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.timezoneComboBox);
             this.Controls.Add(this.ViewReports);
             this.Controls.Add(this.button7);
             this.Controls.Add(this.label2);
@@ -212,5 +233,7 @@
         private System.Windows.Forms.Button button7;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button ViewReports;
+        private System.Windows.Forms.ComboBox timezoneComboBox;
+        private System.Windows.Forms.Label label3;
     }
 }

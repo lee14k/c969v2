@@ -28,13 +28,10 @@ namespace c969v2.Forms
 
         private void SetLanguageBasedOnRegion()
         {
-            // Get the current region information
             RegionInfo region = RegionInfo.CurrentRegion;
 
-            // Check if the region is France
             if (region.TwoLetterISORegionName == "FR")
             {
-                // Set text to French
                 this.Text = "Formulaire de connexion";
                 MainAppHeadline.Text = "Planificateur de rendez-vous";
                 WelcomeMessage.Text = "Bienvenue, veuillez vous connecter.";
@@ -89,11 +86,6 @@ namespace c969v2.Forms
                 MessageBox.Show($"Database error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
-
-
-
-
         private void LogLoginHistory(string username, bool success)
         {
             try
@@ -109,16 +101,6 @@ namespace c969v2.Forms
                 MessageBox.Show($"Error logging login history: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
-
-
-
-
-
-
-
-
-
 
         private void ShowErrorMessage()
         {

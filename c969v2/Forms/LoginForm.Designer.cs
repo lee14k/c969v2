@@ -35,8 +35,6 @@
             this.UsernameLabel = new System.Windows.Forms.Label();
             this.PasswordLabel = new System.Windows.Forms.Label();
             this.MainAppHeadline = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // loginButton
@@ -102,31 +100,11 @@
             this.MainAppHeadline.TabIndex = 6;
             this.MainAppHeadline.Text = "Appointment Scheduler";
             // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(282, 242);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(58, 13);
-            this.label3.TabIndex = 7;
-            this.label3.Text = "Language:";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(282, 204);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(56, 13);
-            this.label5.TabIndex = 8;
-            this.label5.Text = "Timezone:";
-            // 
             // LoginForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(435, 278);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.label3);
             this.Controls.Add(this.MainAppHeadline);
             this.Controls.Add(this.PasswordLabel);
             this.Controls.Add(this.UsernameLabel);
@@ -151,7 +129,5 @@
         private System.Windows.Forms.Label UsernameLabel;
         private System.Windows.Forms.Label PasswordLabel;
         private System.Windows.Forms.Label MainAppHeadline;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label5;
     }
 }

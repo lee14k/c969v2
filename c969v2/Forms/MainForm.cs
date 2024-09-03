@@ -14,8 +14,6 @@ namespace c969v2.Forms
         {
             InitializeComponent();
             dbConnection = new DatabaseConnection();
-
-            // Load data when the form is initialized
             LoadAppointmentData();
             LoadCustomerData();
         }
@@ -243,6 +241,11 @@ namespace c969v2.Forms
             addReportsForm.ShowDialog();
         }
 
+        private void OpenCalendar_Click(object sender, EventArgs e)
+        {
+            var addCalendarViewForm = new CalendarForm();
+            addCalendarViewForm.ShowDialog();
+        }
 
     }
 }

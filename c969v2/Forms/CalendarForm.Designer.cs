@@ -28,30 +28,30 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.monthCalendar1 = new System.Windows.Forms.MonthCalendar();
+            this.appointmentsDataGridView = new System.Windows.Forms.DataGridView();
+            this.monthCalendar = new System.Windows.Forms.MonthCalendar();
             this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.appointmentsDataGridView)).BeginInit();
             this.SuspendLayout();
             // 
-            // dataGridView1
+            // appointmentsDataGridView
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(57, 122);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(351, 184);
-            this.dataGridView1.TabIndex = 0;
-            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
+            this.appointmentsDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.appointmentsDataGridView.Location = new System.Drawing.Point(57, 122);
+            this.appointmentsDataGridView.Name = "appointmentsDataGridView";
+            this.appointmentsDataGridView.Size = new System.Drawing.Size(351, 184);
+            this.appointmentsDataGridView.TabIndex = 0;
+            this.appointmentsDataGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
-            // monthCalendar1
+            // monthCalendar
             // 
-            this.monthCalendar1.Location = new System.Drawing.Point(490, 129);
-            this.monthCalendar1.Name = "monthCalendar1";
-            this.monthCalendar1.TabIndex = 2;
+            this.monthCalendar.Location = new System.Drawing.Point(490, 129);
+            this.monthCalendar.Name = "monthCalendar";
+            this.monthCalendar.TabIndex = 2;
             // 
             // label1
             // 
@@ -108,11 +108,11 @@
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.monthCalendar1);
-            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.monthCalendar);
+            this.Controls.Add(this.appointmentsDataGridView);
             this.Name = "CalendarForm";
             this.Text = "CalendarForm";
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.appointmentsDataGridView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -120,8 +120,8 @@
 
         #endregion
 
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.MonthCalendar monthCalendar1;
+        private System.Windows.Forms.DataGridView appointmentsDataGridView;
+        private System.Windows.Forms.MonthCalendar monthCalendar;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
