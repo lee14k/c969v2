@@ -111,6 +111,7 @@
             this.button6.TabIndex = 7;
             this.button6.Text = "Delete Customer";
             this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.btnDeleteCustomer_Click);
             // 
             // SignOutButton
             // 

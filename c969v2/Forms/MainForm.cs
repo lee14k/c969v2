@@ -200,6 +200,40 @@ namespace c969v2.Forms
                 this.Close();
             }
         }
+        private void DeleteCustomer(int customerId)
+        {
+            using (var connection = dbConnection.GetConnection())
+            {
+                try
+                {
+                    connection.Open();
+                    string query = "DELETE FROM customer WHERE customerId = @customerId";
+
+                    using (var cmd = new MySqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@customerId", customerId);
+                        int rowsAffected = cmd.ExecuteNonQuery();
+
+                        if (rowsAffected > 0)
+                        {
+                            MessageBox.Show("Customer deleted successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            RefreshAppointmentData();
+                        }
+                        else
+                        {
+                            MessageBox.Show("No customer found with the given ID.", "Delete Failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        }
+                    }
+                }
+                catch (MySqlException ex)
+                {
+                    MessageBox.Show($"Error deleting customer: {ex.Message}", "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+
+        }
+
+
 
     }
 }
