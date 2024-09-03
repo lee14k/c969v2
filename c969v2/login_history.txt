@@ -29,3 +29,14 @@
 2024-09-03 15:05:09 - Login attempt by 'test' was successful
 2024-09-03 15:38:49 - Login attempt by 'test' was successful
 2024-09-03 14:41:05 - Login attempt by 'test' was successful
+2024-09-03 14:43:43 - Login attempt by 'test' was successful
+2024-09-03 14:45:20 - Login attempt by 'teste' was successful
+2024-09-03 14:45:31 - Login attempt by 'test' was successful
+2024-09-03 11:47:19 - Login attempt by 'test' was successful
+2024-09-03 10:47:56 - Login attempt by 'teste' was successful
+2024-09-03 10:48:14 - Login attempt by 'test' was successful
+2024-09-03 13:49:57 - Login attempt by 'test' was successful
+2024-09-03 13:52:12 - Login attempt by 'teste' was successful
+2024-09-03 16:56:09 - Login attempt by 'test' was successful
+2024-09-03 15:56:59 - Login attempt by 'test' was successful
+2024-09-03 17:58:31 - Login attempt by 'test' was successful

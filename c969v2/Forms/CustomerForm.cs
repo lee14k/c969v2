@@ -74,6 +74,7 @@ namespace c969v2.Forms
         {
             try
             {
+
                 int cityId=GetCityId(cityComboBox.Text.Trim(), countryComboBox.Text.Trim()); 
                 Address address = new Address
                 {

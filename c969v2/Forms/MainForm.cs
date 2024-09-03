@@ -248,7 +248,7 @@ namespace c969v2.Forms
                         if (rowsAffected > 0)
                         {
                             MessageBox.Show("Customer deleted successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            RefreshAppointmentData();
+                            RefreshCustomerData();
                         }
                         else
                         {
