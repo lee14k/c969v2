@@ -190,7 +190,7 @@ namespace c969v2.Forms
                 MessageBox.Show(ex.Message, "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
-        private void ValidateTextBox(TextBox textBox, string fieldName, bool isInteger = false, bool isDecimal = false, bool isCustomerId = false)
+        private void ValidateTextBox(TextBox textBox, string fieldName, bool isInteger = false, bool isCustomerId = false)
         {
             if (string.IsNullOrWhiteSpace(textBox.Text))
             {
@@ -200,11 +200,6 @@ namespace c969v2.Forms
             if (isInteger && !int.TryParse(textBox.Text, out _))
             {
                 throw new Exception($"Please enter a valid number for {fieldName}.");
-            }
-
-            if (isDecimal && !decimal.TryParse(textBox.Text, out _))
-            {
-                throw new Exception($"Please enter a valid decimal number for {fieldName}.");
             }
 
             if (isCustomerId)
@@ -369,7 +364,7 @@ namespace c969v2.Forms
         }
 
     }
-
+    
 }
 
 

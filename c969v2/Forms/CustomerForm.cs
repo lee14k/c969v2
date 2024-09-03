@@ -197,34 +197,6 @@ namespace c969v2.Forms
         {
             return System.Text.RegularExpressions.Regex.IsMatch(phoneNumber, @"^[\d-]{10,20}$");
         }
-        private void ValidateTextBox(TextBox textBox, string fieldName, bool isInteger = false, bool isDecimal = false, bool isCustomerId = false) 
-        {
-            if (string.IsNullOrWhiteSpace(textBox.Text))
-            {
-                throw new Exception($"Please fill out the {fieldName}.");
-            }
-
-            if (isInteger && !int.TryParse(textBox.Text, out _))
-            {
-                throw new Exception($"Please enter a valid number for {fieldName}.");
-            }
-
-            if (isDecimal && !decimal.TryParse(textBox.Text, out _))
-            {
-                throw new Exception($"Please enter a valid decimal number for {fieldName}.");
-            }
-
-            if (isCustomerId)
-            {
-                int customerId;
-                if (!int.TryParse(textBox.Text, out customerId))
-                {
-                    throw new Exception($"Please enter a valid number for {fieldName}.");
-                }
-            }
-
-        }
-        private void ValidateNumericUpDown() { }
         private void LoadCustomerData()
         {
             using (var connection = dbConnection.GetConnection())
@@ -247,12 +219,8 @@ namespace c969v2.Forms
                             addressTextBox.Text = reader["address"].ToString();
                             postalCodeTextBox.Text = reader["postalCode"].ToString();
                             phoneNumberTextBox.Text = reader["phone"].ToString();
-
-                            // Select the correct country and city in the ComboBoxes
                             countryComboBox.Text = reader["country"].ToString();
                             cityComboBox.Text = reader["city"].ToString();
-
-                            // Load the cities based on the country
                             int countryId = Convert.ToInt32(reader["cityId"]);
                             LoadCityDropdown(countryId);
                         }

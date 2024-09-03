@@ -21,8 +21,4 @@ public class Appointment
     public DateTime LastUpdate { get; set; }
     public string LastUpdateBy { get; set; }
 
-
-
-
-
 }
