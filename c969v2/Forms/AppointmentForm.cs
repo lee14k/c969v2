@@ -10,7 +10,7 @@ namespace c969v2.Forms
     {
         private bool isEditMode;
         private int appointmentId;
-        private int userId; // Assuming you have a way to get the userId for the appointment
+        private int userId; 
         private int customerId;
         private DatabaseConnection dbConnection;
 

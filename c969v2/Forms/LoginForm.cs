@@ -67,20 +67,16 @@ namespace c969v2.Forms
                         if (result != null)
                         {
                             int userId = Convert.ToInt32(result);
-                            // Log successful login attempt
                             LogLoginAttempt(username, true);
 
-                            // Call the method to check for upcoming appointments
                             CheckForUpcomingAppointments(userId);
-
-                            // Proceed to open the main form or dashboard
-                            this.Hide();
                             MainForm mainForm = new MainForm();
+                            mainForm.FormClosed += (s, args) => this.Close();
                             mainForm.Show();
+                            this.Hide();
                         }
                         else
                         {
-                            // Log failed login attempt
                             LogLoginAttempt(username, false);
                             ShowErrorMessage();
                         }

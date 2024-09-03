@@ -118,6 +118,7 @@
             this.SignOutButton.TabIndex = 9;
             this.SignOutButton.Text = "Sign Out";
             this.SignOutButton.UseVisualStyleBackColor = true;
+            this.SignOutButton.Click += new System.EventHandler(this.SignOutButton_Click);
             // 
             // label1
             // 
