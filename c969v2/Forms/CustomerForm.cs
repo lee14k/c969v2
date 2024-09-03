@@ -96,7 +96,7 @@ namespace c969v2.Forms
                     CustomerId = isEditMode ? this.customerId : GenerateNewCustomerId(),
                     CustomerName = customerNameTextBox.Text.Trim(),
                     AddressId = address.AddressId,
-                    Active = true, // Assuming Active is always true; adjust as needed
+                    Active = activeCheckBox.Checked,
                     CreateDate = DateTime.UtcNow,
                     CreatedBy = LoginForm.CurrentUserName,
                     LastUpdate = DateTime.UtcNow,
@@ -111,10 +111,10 @@ namespace c969v2.Forms
                     connection.Open();
 
                     string query = isEditMode ?
-                        @"UPDATE address SET address = @address, address2=@address2 cityId = @cityId, postalCode = @postalCode, phone = @phone, lastUpdate = NOW(), lastUpdateBy = 'current user' 
+                        @"UPDATE address SET address = @address, address2=@address2, cityId = @cityId, postalCode = @postalCode, phone = @phone, lastUpdate = NOW(), lastUpdateBy = @lastUpdate
                           WHERE addressId = @addressId" :
-                        @"INSERT INTO address (addressId, address, address2 cityId, postalCode, phone, createDate, createdBy, lastUpdate, lastUpdateBy) 
-                          VALUES (@addressId, @address, @cityId, @postalCode, @phone, NOW(), 'current user', NOW(), 'current user')";
+                        @"INSERT INTO address (addressId, address, address2, cityId, postalCode, phone, createDate, createdBy, lastUpdate, lastUpdateBy) 
+                          VALUES (@addressId, @address, @address2, @cityId, @postalCode, @phone, NOW(), @createdBy, NOW(), @lastUpdateBy)";
 
                     using (var cmd = new MySqlCommand(query, connection))
                     {
@@ -124,20 +124,29 @@ namespace c969v2.Forms
                         cmd.Parameters.AddWithValue("@cityId", address.CityId); 
                         cmd.Parameters.AddWithValue("@postalCode", address.PostalCode);
                         cmd.Parameters.AddWithValue("@phone", address.Phone);
+                        cmd.Parameters.AddWithValue("@createDate", address.CreateDate);
+                        cmd.Parameters.AddWithValue("@createdBy", address.CreatedBy);
+                        cmd.Parameters.AddWithValue("@lastUpdate", address.LastUpdate);
+                        cmd.Parameters.AddWithValue("@lastUpdateBy", address.LastUpdateBy);
                         cmd.ExecuteNonQuery();
                     }
 
                     query = isEditMode ?
-                        @"UPDATE customer SET customerName = @customerName, addressId = @addressId, lastUpdate = NOW(), lastUpdateBy = 'current user' 
+                        @"UPDATE customer SET customerName = @customerName, addressId = @addressId, active=@active, lastUpdate = NOW(), lastUpdateBy = @lastUpdateBy
                           WHERE customerId = @customerId" :
-                        @"INSERT INTO customer (customerId, customerName, addressId, createDate, createdBy, lastUpdate, lastUpdateBy) 
-                          VALUES (@customerId, @customerName, @addressId, NOW(), 'current user', NOW(), 'current user')";
+                        @"INSERT INTO customer (customerId, customerName, addressId, active, createDate, createdBy, lastUpdate, lastUpdateBy) 
+                          VALUES (@customerId, @customerName, @addressId, @active, NOW(), @createdBy, NOW(), @lastUpdateBy)";
 
                     using (var cmd = new MySqlCommand(query, connection))
                     {
                         cmd.Parameters.AddWithValue("@customerId", customer.CustomerId);
                         cmd.Parameters.AddWithValue("@customerName", customer.CustomerName);
                         cmd.Parameters.AddWithValue("@addressId", customer.AddressId);
+                        cmd.Parameters.AddWithValue("@active", customer.Active);
+                        cmd.Parameters.AddWithValue("@createDate", customer.CreateDate);
+                        cmd.Parameters.AddWithValue("@createdBy", customer.CreatedBy);
+                        cmd.Parameters.AddWithValue("@lastUpdate", customer.LastUpdate);
+                        cmd.Parameters.AddWithValue("@lastUpdateBy", customer.LastUpdateBy);
                         cmd.ExecuteNonQuery();
                     }
                 }
@@ -180,10 +189,12 @@ namespace c969v2.Forms
         private int CreateCountry(string countryName, MySqlConnection connection)
         {
             string query = @"INSERT INTO country (country, createDate, createdBy, lastUpdate, lastUpdateBy) 
-                             VALUES (@country, NOW(), 'current user', NOW(), 'current user')";
+                             VALUES (@country, NOW(), @createdBy, NOW(), @lastUpdateBy)";
             using (var cmd = new MySqlCommand(query, connection))
             {
                 cmd.Parameters.AddWithValue("@country", countryName);
+                cmd.Parameters.AddWithValue("@createdBy", LoginForm.CurrentUserName);
+                cmd.Parameters.AddWithValue("@lastUpdateBy", LoginForm.CurrentUserName);
                 cmd.ExecuteNonQuery();
                 return (int)cmd.LastInsertedId;
             }
@@ -192,11 +203,14 @@ namespace c969v2.Forms
         private int CreateCity(string cityName, int countryId, MySqlConnection connection)
         {
             string query = @"INSERT INTO city (city, countryId, createDate, createdBy, lastUpdate, lastUpdateBy) 
-                             VALUES (@city, @countryId, NOW(), 'current user', NOW(), 'current user')";
+                             VALUES (@city, @countryId, NOW(),@createdBy, NOW(), @lastUpdateBy";
             using (var cmd = new MySqlCommand(query, connection))
             {
                 cmd.Parameters.AddWithValue("@city", cityName);
                 cmd.Parameters.AddWithValue("@countryId", countryId);
+                cmd.Parameters.AddWithValue("@createdBy", LoginForm.CurrentUserName);
+                cmd.Parameters.AddWithValue("@lastUpdateBy", LoginForm.CurrentUserName);
+
                 cmd.ExecuteNonQuery();
                 return (int)cmd.LastInsertedId;
             }

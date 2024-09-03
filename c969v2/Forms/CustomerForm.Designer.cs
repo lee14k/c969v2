@@ -48,7 +48,7 @@
             this.postalCodeTextBox = new System.Windows.Forms.TextBox();
             this.addressLineTwo = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.activeCheckBox = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.IDNum)).BeginInit();
             this.SuspendLayout();
@@ -225,15 +225,15 @@
             this.label1.TabIndex = 96;
             this.label1.Text = "Address Line 2";
             // 
-            // checkBox1
+            // activeCheckBox
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(187, 322);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(44, 17);
-            this.checkBox1.TabIndex = 97;
-            this.checkBox1.Text = "Yes";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.activeCheckBox.AutoSize = true;
+            this.activeCheckBox.Location = new System.Drawing.Point(187, 322);
+            this.activeCheckBox.Name = "activeCheckBox";
+            this.activeCheckBox.Size = new System.Drawing.Size(44, 17);
+            this.activeCheckBox.TabIndex = 97;
+            this.activeCheckBox.Text = "Yes";
+            this.activeCheckBox.UseVisualStyleBackColor = true;
             // 
             // label2
             // 
@@ -250,7 +250,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(405, 402);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.checkBox1);
+            this.Controls.Add(this.activeCheckBox);
             this.Controls.Add(this.addressLineTwo);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.postalCodeTextBox);
@@ -301,7 +301,7 @@
         private System.Windows.Forms.TextBox postalCodeTextBox;
         private System.Windows.Forms.TextBox addressLineTwo;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox activeCheckBox;
         private System.Windows.Forms.Label label2;
     }
 }
