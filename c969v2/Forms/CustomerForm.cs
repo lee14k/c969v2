@@ -58,6 +58,7 @@ namespace c969v2.Forms
             string customerName = customerNameTextBox.Text.Trim();
             string address = addressTextBox.Text.Trim();
             string phoneNumber = phoneNumberTextBox.Text.Trim();
+            string postalCode = postalCodeTextBox.Text.Trim(); // Assuming there's a TextBox for postal code
 
             // Validate that fields are not empty
             if (string.IsNullOrEmpty(customerName))
@@ -78,6 +79,12 @@ namespace c969v2.Forms
                 return;
             }
 
+            if (string.IsNullOrEmpty(postalCode))
+            {
+                MessageBox.Show("Please enter the postal code.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             // Validate the phone number format
             if (!IsValidPhoneNumber(phoneNumber))
             {
@@ -90,6 +97,7 @@ namespace c969v2.Forms
 
             int countryId;
             int cityId;
+            int addressId;
 
             using (var connection = dbConnection.GetConnection())
             {
@@ -142,11 +150,63 @@ namespace c969v2.Forms
                         }
                     }
                 }
+
+                // Check if address exists, and insert or update as needed
+                query = "SELECT addressId FROM address WHERE LOWER(address) = LOWER(@address) AND cityId = @cityId AND postalCode = @postalCode AND phone = @phone";
+                using (var cmd = new MySqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@address", address);
+                    cmd.Parameters.AddWithValue("@cityId", cityId);
+                    cmd.Parameters.AddWithValue("@postalCode", postalCode);
+                    cmd.Parameters.AddWithValue("@phone", phoneNumber);
+                    var result = cmd.ExecuteScalar();
+                    if (result != null)
+                    {
+                        addressId = Convert.ToInt32(result);
+                    }
+                    else
+                    {
+                        query = @"INSERT INTO address (address, cityId, postalCode, phone, createDate, createdBy, lastUpdate, lastUpdateBy) 
+                          VALUES (@address, @cityId, @postalCode, @phone, NOW(), 'current user', NOW(), 'current user')";
+                        using (var insertCmd = new MySqlCommand(query, connection))
+                        {
+                            insertCmd.Parameters.AddWithValue("@address", address);
+                            insertCmd.Parameters.AddWithValue("@cityId", cityId);
+                            insertCmd.Parameters.AddWithValue("@postalCode", postalCode);
+                            insertCmd.Parameters.AddWithValue("@phone", phoneNumber);
+                            insertCmd.ExecuteNonQuery();
+                            addressId = (int)insertCmd.LastInsertedId;
+                        }
+                    }
+                }
+
+                // Now, insert or update the customer record with the addressId
+                if (isEditMode)
+                {
+                    query = @"UPDATE customer 
+                      SET name = @customerName, addressId = @addressId, lastUpdate = NOW(), lastUpdateBy = 'current user' 
+                      WHERE customerId = @customerId";
+                }
+                else
+                {
+                    query = @"INSERT INTO customer (customerId, name, addressId, createDate, createdBy, lastUpdate, lastUpdateBy) 
+                      VALUES (@customerId, @customerName, @addressId, NOW(), 'current user', NOW(), 'current user')";
+                }
+
+                using (var cmd = new MySqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@customerId", customerId);
+                    cmd.Parameters.AddWithValue("@customerName", customerName);
+                    cmd.Parameters.AddWithValue("@addressId", addressId);
+                    cmd.ExecuteNonQuery();
+                }
             }
 
-            MessageBox.Show("City and Country have been validated and/or created successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("Customer and Address have been saved successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             this.Close();
         }
+
+
 
         private bool IsValidPhoneNumber(string phoneNumber)
         {
@@ -156,10 +216,43 @@ namespace c969v2.Forms
 
         private void ValidateTextBox() { }
         private void ValidateNumericUpDown() { }
-        private void LoadCustomerData() 
-        { 
-            string query=@"SELECT customerId, name, address, "
+        private void LoadCustomerData()
+        {
+            using (var connection = dbConnection.GetConnection())
+            {
+                connection.Open();
+                string query = @"SELECT c.customerId, c.customerName, a.address, a.cityId, ci.city, co.country, a.postalCode, a.phone 
+                         FROM customer c
+                         JOIN address a ON c.addressId = a.addressId
+                         JOIN city ci ON a.cityId = ci.cityId
+                         JOIN country co ON ci.countryId = co.countryId
+                         WHERE c.customerId = @customerId";
+                using (var cmd = new MySqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@customerId", customerId);
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            customerNameTextBox.Text = reader["customerName"].ToString();
+                            addressTextBox.Text = reader["address"].ToString();
+                            postalCodeTextBox.Text = reader["postalCode"].ToString();
+                            phoneNumberTextBox.Text = reader["phone"].ToString();
+
+                            // Select the correct country and city in the ComboBoxes
+                            countryComboBox.Text = reader["country"].ToString();
+                            cityComboBox.Text = reader["city"].ToString();
+
+                            // Load the cities based on the country
+                            int countryId = Convert.ToInt32(reader["cityId"]);
+                            LoadCityDropdown(countryId);
+                        }
+                    }
+                }
+            }
         }
+
+
         private void SetFormTitle()
         {
             MainCustFormHeadline.Text = isEditMode ? "Edit Customer" : "Add Customer";
