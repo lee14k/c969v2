@@ -1,15 +1,7 @@
 ﻿using c969v2.Data;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
-using System.Data.Common;
 
 namespace c969v2.Forms
 {
@@ -19,13 +11,18 @@ namespace c969v2.Forms
         private int customerId;
         private int userId;
         private DatabaseConnection dbConnection;
-        public CustomerForm(int? customerId=null)
+
+        public CustomerForm(int? customerId = null)
         {
             InitializeComponent();
             dbConnection = new DatabaseConnection();
-            isEditMode=customerId.HasValue;
+            isEditMode = customerId.HasValue;
             this.customerId = customerId ?? 0;
             SetFormTitle();
+
+            // Load the country dropdown when the form initializes
+            LoadCountryDropdown();
+
             if (isEditMode)
             {
                 LoadCustomerData();
@@ -35,10 +32,13 @@ namespace c969v2.Forms
                 this.customerId = GenerateNewCustomerId();
                 IDNum.Value = this.customerId;
             }
+
+            // Attach event handler for country selection change
+            countryComboBox.SelectedIndexChanged += countryComboBox_SelectedIndexChanged;
         }
 
-
-    private int GenerateNewCustomerId() {
+        private int GenerateNewCustomerId()
+        {
             int newCustomerId = 10;
             string query = "SELECT MAX(customerId) FROM customer";
             ExecuteQuery(query, cmd =>
@@ -52,9 +52,9 @@ namespace c969v2.Forms
 
             return newCustomerId;
         }
+
         private void customerBtnSave_Click(object sender, EventArgs e)
         {
-            // Trim and validate the necessary fields
             string customerName = customerNameTextBox.Text.Trim();
             string address = addressTextBox.Text.Trim();
             string phoneNumber = phoneNumberTextBox.Text.Trim();
@@ -85,7 +85,6 @@ namespace c969v2.Forms
                 return;
             }
 
-            // Rest of your code for processing the form data
             string cityName = cityComboBox.Text.Trim();
             string countryName = countryComboBox.Text.Trim();
 
@@ -97,10 +96,10 @@ namespace c969v2.Forms
                 connection.Open();
 
                 // Check if country exists and insert if not
-                string query = "SELECT countryId FROM country WHERE LOWER(countryName) = LOWER(@countryName)";
+                string query = "SELECT countryId FROM country WHERE LOWER(country) = LOWER(@country)";
                 using (var cmd = new MySqlCommand(query, connection))
                 {
-                    cmd.Parameters.AddWithValue("@countryName", countryName);
+                    cmd.Parameters.AddWithValue("@country", countryName);
                     var result = cmd.ExecuteScalar();
                     if (result != null)
                     {
@@ -108,21 +107,22 @@ namespace c969v2.Forms
                     }
                     else
                     {
-                        query = @"INSERT INTO country (countryName, createDate, createdBy, lastUpdate, lastUpdateBy) 
-                          VALUES (@countryName, NOW(), 'current user', NOW(), 'current user')";
+                        query = @"INSERT INTO country (country, createDate, createdBy, lastUpdate, lastUpdateBy) 
+                          VALUES (@country, NOW(), 'current user', NOW(), 'current user')";
                         using (var insertCmd = new MySqlCommand(query, connection))
                         {
-                            insertCmd.Parameters.AddWithValue("@countryName", countryName);
+                            insertCmd.Parameters.AddWithValue("@country", countryName);
                             insertCmd.ExecuteNonQuery();
                             countryId = (int)insertCmd.LastInsertedId;
                         }
                     }
                 }
 
-                query = "SELECT cityId FROM city WHERE LOWER(cityName) = LOWER(@cityName) AND countryId = @countryId";
+                // Check if city exists and insert if not
+                query = "SELECT cityId FROM city WHERE LOWER(city) = LOWER(@city) AND countryId = @countryId";
                 using (var cmd = new MySqlCommand(query, connection))
                 {
-                    cmd.Parameters.AddWithValue("@cityName", cityName);
+                    cmd.Parameters.AddWithValue("@city", cityName);
                     cmd.Parameters.AddWithValue("@countryId", countryId);
                     var result = cmd.ExecuteScalar();
                     if (result != null)
@@ -131,12 +131,11 @@ namespace c969v2.Forms
                     }
                     else
                     {
-                        // City doesn't exist, create a new one
-                        query = @"INSERT INTO city (cityName, countryId, createDate, createdBy, lastUpdate, lastUpdateBy) 
-                          VALUES (@cityName, @countryId, NOW(), 'current user', NOW(), 'current user')";
+                        query = @"INSERT INTO city (city, countryId, createDate, createdBy, lastUpdate, lastUpdateBy) 
+                          VALUES (@city, @countryId, NOW(), 'current user', NOW(), 'current user')";
                         using (var insertCmd = new MySqlCommand(query, connection))
                         {
-                            insertCmd.Parameters.AddWithValue("@cityName", cityName);
+                            insertCmd.Parameters.AddWithValue("@city", cityName);
                             insertCmd.Parameters.AddWithValue("@countryId", countryId);
                             insertCmd.ExecuteNonQuery();
                             cityId = (int)insertCmd.LastInsertedId;
@@ -149,7 +148,6 @@ namespace c969v2.Forms
             this.Close();
         }
 
-
         private bool IsValidPhoneNumber(string phoneNumber)
         {
             // This regex allows only digits and dashes, with a total length between 10 and 14 characters
@@ -157,31 +155,43 @@ namespace c969v2.Forms
         }
 
         private void ValidateTextBox() { }
-    private void ValidateNumericUpDown () { }
-
-    private void LoadCustomerData () { }
-    private void SetFormTitle()
+        private void ValidateNumericUpDown() { }
+        private void LoadCustomerData() { }
+        private void SetFormTitle()
         {
             MainCustFormHeadline.Text = isEditMode ? "Edit Customer" : "Add Customer";
         }
 
-    private void IDLabel_Click(object sender, EventArgs e)
+        private void LoadCountryDropdown()
         {
+            using (var connection = dbConnection.GetConnection())
+            {
+                connection.Open();
+                string query = "SELECT countryId, country FROM country";
+                using (var cmd = new MySqlCommand(query, connection))
+                {
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            countryComboBox.Items.Add(new { Text = reader["country"].ToString(), Value = reader["countryId"].ToString() });
+                        }
+                    }
+                }
+            }
 
+            countryComboBox.DisplayMember = "Text";
+            countryComboBox.ValueMember = "Value";
         }
 
-    private void IDTextBox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-    private void LoadCityDropdown(int countryId)
+        private void LoadCityDropdown(int countryId)
         {
             cityComboBox.Items.Clear();
 
             using (var connection = dbConnection.GetConnection())
             {
                 connection.Open();
-                string query = "SELECT cityId, cityName FROM city WHERE countryId = @countryId";
+                string query = "SELECT cityId, city FROM city WHERE countryId = @countryId";
                 using (var cmd = new MySqlCommand(query, connection))
                 {
                     cmd.Parameters.AddWithValue("@countryId", countryId);
@@ -189,7 +199,7 @@ namespace c969v2.Forms
                     {
                         while (reader.Read())
                         {
-                            cityComboBox.Items.Add(new { Text = reader["cityName"].ToString(), Value = reader["cityId"].ToString() });
+                            cityComboBox.Items.Add(new { Text = reader["city"].ToString(), Value = reader["cityId"].ToString() });
                         }
                     }
                 }
@@ -198,7 +208,8 @@ namespace c969v2.Forms
             cityComboBox.DisplayMember = "Text";
             cityComboBox.ValueMember = "Value";
         }
-    private void ExecuteQuery(string query, Action<MySqlCommand> configureCommmand)
+
+        private void ExecuteQuery(string query, Action<MySqlCommand> configureCommmand)
         {
             try
             {
@@ -220,15 +231,21 @@ namespace c969v2.Forms
                 MessageBox.Show($"Unexpected error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-    private void BtnCancel_Click(object sender, EventArgs e)
+
+        private void BtnCancel_Click(object sender, EventArgs e)
         {
             this.Close();
         }
 
         private void countryComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            if (countryComboBox.SelectedItem != null)
+            {
+                int selectedCountryId = int.Parse((countryComboBox.SelectedItem as dynamic).Value);
+                LoadCityDropdown(selectedCountryId);
+            }
         }
     }
-
 }
+
+

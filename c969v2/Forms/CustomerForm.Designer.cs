@@ -64,21 +64,21 @@
             this.phoneNumberTextBox.Location = new System.Drawing.Point(126, 170);
             this.phoneNumberTextBox.Name = "phoneNumberTextBox";
             this.phoneNumberTextBox.Size = new System.Drawing.Size(119, 20);
-            this.phoneNumberTextBox.TabIndex = 46;
+            this.phoneNumberTextBox.TabIndex = 31;
             // 
             // addressTextBox
             // 
             this.addressTextBox.Location = new System.Drawing.Point(124, 198);
             this.addressTextBox.Name = "addressTextBox";
             this.addressTextBox.Size = new System.Drawing.Size(121, 20);
-            this.addressTextBox.TabIndex = 45;
+            this.addressTextBox.TabIndex = 32;
             // 
             // customerNameTextBox
             // 
             this.customerNameTextBox.Location = new System.Drawing.Point(124, 140);
             this.customerNameTextBox.Name = "customerNameTextBox";
             this.customerNameTextBox.Size = new System.Drawing.Size(121, 20);
-            this.customerNameTextBox.TabIndex = 44;
+            this.customerNameTextBox.TabIndex = 30;
             // 
             // AppointmentCancelButton
             // 
@@ -95,7 +95,7 @@
             this.SubmitButton.Location = new System.Drawing.Point(45, 334);
             this.SubmitButton.Name = "SubmitButton";
             this.SubmitButton.Size = new System.Drawing.Size(75, 23);
-            this.SubmitButton.TabIndex = 41;
+            this.SubmitButton.TabIndex = 36;
             this.SubmitButton.Text = "Submit";
             this.SubmitButton.UseVisualStyleBackColor = true;
             this.SubmitButton.Click += new System.EventHandler(this.customerBtnSave_Click);
@@ -114,16 +114,16 @@
             this.StartTimeLabel.Location = new System.Drawing.Point(42, 288);
             this.StartTimeLabel.Name = "StartTimeLabel";
             this.StartTimeLabel.Size = new System.Drawing.Size(64, 13);
-            this.StartTimeLabel.TabIndex = 34;
+            this.StartTimeLabel.TabIndex = 94;
             this.StartTimeLabel.Text = "Postal Code";
             // 
             // LocationLabel
             // 
             this.LocationLabel.AutoSize = true;
-            this.LocationLabel.Location = new System.Drawing.Point(42, 258);
+            this.LocationLabel.Location = new System.Drawing.Point(41, 235);
             this.LocationLabel.Name = "LocationLabel";
             this.LocationLabel.Size = new System.Drawing.Size(43, 13);
-            this.LocationLabel.TabIndex = 32;
+            this.LocationLabel.TabIndex = 93;
             this.LocationLabel.Text = "Country";
             // 
             // DescriptionLabel
@@ -142,7 +142,7 @@
             this.TypeLabel.Name = "TypeLabel";
             this.TypeLabel.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.TypeLabel.Size = new System.Drawing.Size(45, 13);
-            this.TypeLabel.TabIndex = 30;
+            this.TypeLabel.TabIndex = 91;
             this.TypeLabel.Text = "Address";
             // 
             // TitleLabel
@@ -162,20 +162,19 @@
             this.IDLabel.Size = new System.Drawing.Size(18, 13);
             this.IDLabel.TabIndex = 28;
             this.IDLabel.Text = "ID";
-            this.IDLabel.Click += new System.EventHandler(this.IDLabel_Click);
             // 
             // cityComboBox
             // 
             this.cityComboBox.FormattingEnabled = true;
-            this.cityComboBox.Location = new System.Drawing.Point(124, 227);
+            this.cityComboBox.Location = new System.Drawing.Point(126, 258);
             this.cityComboBox.Name = "cityComboBox";
             this.cityComboBox.Size = new System.Drawing.Size(121, 21);
-            this.cityComboBox.TabIndex = 56;
+            this.cityComboBox.TabIndex = 34;
             // 
             // City
             // 
             this.City.AutoSize = true;
-            this.City.Location = new System.Drawing.Point(45, 230);
+            this.City.Location = new System.Drawing.Point(44, 261);
             this.City.Name = "City";
             this.City.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.City.Size = new System.Drawing.Size(24, 13);
@@ -193,10 +192,10 @@
             // countryComboBox
             // 
             this.countryComboBox.FormattingEnabled = true;
-            this.countryComboBox.Location = new System.Drawing.Point(124, 258);
+            this.countryComboBox.Location = new System.Drawing.Point(123, 231);
             this.countryComboBox.Name = "countryComboBox";
             this.countryComboBox.Size = new System.Drawing.Size(121, 21);
-            this.countryComboBox.TabIndex = 59;
+            this.countryComboBox.TabIndex = 33;
             this.countryComboBox.SelectedIndexChanged += new System.EventHandler(this.countryComboBox_SelectedIndexChanged);
             // 
             // postalCodeTextBox
@@ -204,7 +203,7 @@
             this.postalCodeTextBox.Location = new System.Drawing.Point(124, 285);
             this.postalCodeTextBox.Name = "postalCodeTextBox";
             this.postalCodeTextBox.Size = new System.Drawing.Size(121, 20);
-            this.postalCodeTextBox.TabIndex = 60;
+            this.postalCodeTextBox.TabIndex = 35;
             // 
             // CustomerForm
             // 
