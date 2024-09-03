@@ -97,6 +97,11 @@ namespace c969v2.Forms
                 DateTime startLocal = StartDateTimePicker.Value;
                 DateTime endLocal = EndDateTimePicker.Value;
 
+                if (startLocal < DateTime.Now)
+                {
+                    MessageBox.Show("Appointments cannot be scheduled for dates in the past.", "Invalid Appointment Time", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+
                 if (!IsWithinBusinessHours(startLocal, endLocal))
                 {
                     MessageBox.Show("Appointments can only be scheduled during business hours (Monday through Friday, 9:00 AM to 5:00 PM Eastern Time).",

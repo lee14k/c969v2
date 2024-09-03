@@ -41,6 +41,7 @@
             this.button7 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.ViewReports = new System.Windows.Forms.Button();
+            this.timezoneLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.AppointmentData)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CustomerData)).BeginInit();
             this.SuspendLayout();
@@ -173,11 +174,22 @@
             this.ViewReports.UseVisualStyleBackColor = true;
             this.ViewReports.Click += new System.EventHandler(this.OpenReports_Click);
             // 
+            // timezoneLabel
+            // 
+            this.timezoneLabel.AutoSize = true;
+            this.timezoneLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 18.25F);
+            this.timezoneLabel.Location = new System.Drawing.Point(905, 194);
+            this.timezoneLabel.Name = "timezoneLabel";
+            this.timezoneLabel.Size = new System.Drawing.Size(125, 29);
+            this.timezoneLabel.TabIndex = 14;
+            this.timezoneLabel.Text = "Timezone";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(838, 544);
+            this.ClientSize = new System.Drawing.Size(1073, 544);
+            this.Controls.Add(this.timezoneLabel);
             this.Controls.Add(this.ViewReports);
             this.Controls.Add(this.button7);
             this.Controls.Add(this.label2);
@@ -215,5 +227,6 @@
         private System.Windows.Forms.Button button7;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button ViewReports;
+        private System.Windows.Forms.Label timezoneLabel;
     }
 }
