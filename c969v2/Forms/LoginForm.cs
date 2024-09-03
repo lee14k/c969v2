@@ -137,10 +137,14 @@ namespace c969v2.Forms
                 try
                 {
                     connection.Open();
-                    string query = @"SELECT COUNT(*) FROM appointment 
-                             WHERE userId = @userId 
-                             AND start > @currentUtcTime 
-                             AND start <= @alertUtcTime";
+                    string query = @"SELECT c.customerName, a.start 
+                             FROM appointment a
+                             INNER JOIN customer c ON a.customerId = c.customerId
+                             WHERE a.userId = @userId 
+                             AND a.start > @currentUtcTime 
+                             AND a.start <= @alertUtcTime
+                             ORDER BY a.start ASC
+                             LIMIT 1";  // Get the next upcoming appointment
 
                     using (var command = new MySqlCommand(query, connection))
                     {
@@ -151,12 +155,18 @@ namespace c969v2.Forms
                         command.Parameters.AddWithValue("@currentUtcTime", currentUtcTime);
                         command.Parameters.AddWithValue("@alertUtcTime", alertUtcTime);
 
-                        int appointmentCount = Convert.ToInt32(command.ExecuteScalar());
-
-                        if (appointmentCount > 0)
+                        using (var reader = command.ExecuteReader())
                         {
-                            string message = "You have an appointment within the next 15 minutes.";
-                            MessageBox.Show(message, "Upcoming Appointment Alert", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            if (reader.Read())
+                            {
+                                string customerName = reader.GetString("customerName");
+                                DateTime appointmentTime = reader.GetDateTime("start");
+
+                                DateTime appointmentLocalTime = TimeZoneInfo.ConvertTimeFromUtc(appointmentTime, userTimeZone);
+
+                                string message = $"You have a meeting with {customerName} at {appointmentLocalTime:HH:mm}.";
+                                MessageBox.Show(message, "Upcoming Appointment Alert", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            }
                         }
                     }
                 }
@@ -166,26 +176,14 @@ namespace c969v2.Forms
                 }
             }
         }
+
+
+
         private void LoginButton_Click(object sender, EventArgs e)
         {
             string username = usernameEnter.Text;
             string password = passwordEnter.Text;
             ValidateLogin(username, password);
-        }
-
-        private void usernameEnter_TextChanged(object sender, EventArgs e)
-        {
-            // Implement if needed
-        }
-
-        private void LoginForm_Load(object sender, EventArgs e)
-        {
-            // Implement if needed
-        }
-
-        private void passwordEnter_TextChanged(object sender, EventArgs e)
-        {
-            // Implement if needed
         }
     }
 }

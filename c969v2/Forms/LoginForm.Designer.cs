@@ -53,7 +53,6 @@
             this.usernameEnter.Name = "usernameEnter";
             this.usernameEnter.Size = new System.Drawing.Size(68, 20);
             this.usernameEnter.TabIndex = 1;
-            this.usernameEnter.TextChanged += new System.EventHandler(this.usernameEnter_TextChanged);
             // 
             // WelcomeMessage
             // 
@@ -70,7 +69,6 @@
             this.passwordEnter.Name = "passwordEnter";
             this.passwordEnter.Size = new System.Drawing.Size(68, 20);
             this.passwordEnter.TabIndex = 3;
-            this.passwordEnter.TextChanged += new System.EventHandler(this.passwordEnter_TextChanged);
             // 
             // UsernameLabel
             // 
@@ -114,7 +112,6 @@
             this.Controls.Add(this.loginButton);
             this.Name = "LoginForm";
             this.Text = "LoginForm";
-            this.Load += new System.EventHandler(this.LoginForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

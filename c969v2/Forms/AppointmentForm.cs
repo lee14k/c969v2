@@ -214,11 +214,6 @@ namespace c969v2.Forms
                 {
                     throw new Exception($"Please enter a valid number for {fieldName}.");
                 }
-
-                if (!CustomerIdExists(customerId))
-                {
-                    throw new Exception($"Customer ID {customerId} does not exist. Please enter a valid customer ID.");
-                }
             }
         }
         private void ValidateComboBox(ComboBox comboBox, string fieldName)

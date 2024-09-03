@@ -55,9 +55,8 @@ namespace c969v2.Forms
             string customerName = customerNameTextBox.Text.Trim();
             string address = addressTextBox.Text.Trim();
             string phoneNumber = phoneNumberTextBox.Text.Trim();
-            string postalCode = postalCodeTextBox.Text.Trim(); // Assuming there's a TextBox for postal code
+            string postalCode = postalCodeTextBox.Text.Trim(); 
 
-            // Validate that fields are not empty
             if (string.IsNullOrEmpty(customerName))
             {
                 MessageBox.Show("Please enter the customer's name.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -196,9 +195,35 @@ namespace c969v2.Forms
         }
         private bool IsValidPhoneNumber(string phoneNumber)
         {
-            return System.Text.RegularExpressions.Regex.IsMatch(phoneNumber, @"^[\d-]{10,14}$");
+            return System.Text.RegularExpressions.Regex.IsMatch(phoneNumber, @"^[\d-]{10,20}$");
         }
-        private void ValidateTextBox() { }
+        private void ValidateTextBox(TextBox textBox, string fieldName, bool isInteger = false, bool isDecimal = false, bool isCustomerId = false) 
+        {
+            if (string.IsNullOrWhiteSpace(textBox.Text))
+            {
+                throw new Exception($"Please fill out the {fieldName}.");
+            }
+
+            if (isInteger && !int.TryParse(textBox.Text, out _))
+            {
+                throw new Exception($"Please enter a valid number for {fieldName}.");
+            }
+
+            if (isDecimal && !decimal.TryParse(textBox.Text, out _))
+            {
+                throw new Exception($"Please enter a valid decimal number for {fieldName}.");
+            }
+
+            if (isCustomerId)
+            {
+                int customerId;
+                if (!int.TryParse(textBox.Text, out customerId))
+                {
+                    throw new Exception($"Please enter a valid number for {fieldName}.");
+                }
+            }
+
+        }
         private void ValidateNumericUpDown() { }
         private void LoadCustomerData()
         {
