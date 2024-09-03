@@ -51,93 +51,46 @@ namespace c969v2.Forms
             return newAppointmentId;
 
         }
-        private void ValidateTextBox (TextBox textBox, string fieldName, bool isInteger=false, bool isDecimal = false)
-        {
-            if (string.IsNullOrWhiteSpace(textBox.Text) {
-                throw new Exception($"Please fill out the {fieldName}.");
-            }
-            if (isInteger && !int.TryParse(textBox.Text, out _) {
-                throw new Exception($"Please enter a valid number for{fieldName}.");
-            }
-        }
-        private void beforeSaveValidation()
-        {
-            try
-            {
-
-            }
-        }
-        private void SetFormTitle()
-        {
-            MainAppointmentHeadline.Text = isEditMode ? "Edit Appointment" : "Add Appointment";
-        }
-
-        private void LoadAppointmentData()
-        {
-            string query = @"SELECT customerId, userId, title, description, location, 
-                             contact, type, url, start, end 
-                             FROM appointment 
-                             WHERE appointmentId = @appointmentId";
-
-            ExecuteQuery(query, cmd =>
-            {
-                cmd.Parameters.AddWithValue("@appointmentId", appointmentId);
-                using (var reader = cmd.ExecuteReader())
-                {
-                    if (reader.Read())
-                    {
-                        IDNum.Value = appointmentId;
-                        TitleTextBox.Text = reader["title"].ToString();
-                        DescriptionTextBox.Text = reader["description"].ToString();
-                        LocationTextBox.Text = reader["location"].ToString();
-                        ContactTextBox.Text = reader["contact"].ToString();
-                        TypeTextBox.Text = reader["type"].ToString();
-                        URLTextBox.Text = reader["url"].ToString();
-                        StartDateTimePicker.Value = Convert.ToDateTime(reader["start"]);
-                        EndDateTimePicker.Value = Convert.ToDateTime(reader["end"]);
-
-                        customerId = Convert.ToInt32(reader["customerId"]);
-                        userId = Convert.ToInt32(reader["userId"]);  // Assuming userId is retrieved and stored
-                        CustomerNum.Value = customerId;
-                    }
-                    else
-                    {
-                        MessageBox.Show($"Appointment with ID {appointmentId} not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        this.Close();
-                    }
-                }
-            });
-        }
-
         private void btnSave_Click(object sender, EventArgs e)
         {
-            string title = TitleTextBox.Text;
-            string description = DescriptionTextBox.Text;
-            string location = LocationTextBox.Text;
-            string contact = ContactTextBox.Text;
-            string type = TypeTextBox.Text;
-            string url = URLTextBox.Text;
-            DateTime start = StartDateTimePicker.Value;
-            DateTime end = EndDateTimePicker.Value;
-
-            // Validate business hours
-            if (!IsWithinBusinessHours(start, end))
-            {
-                MessageBox.Show("Appointments can only be scheduled during business hours (Monday through Friday, 9:00 AM to 5:00 PM Eastern Time).",
-                                "Invalid Appointment Time", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return; // Do not proceed with saving
-            }
-
-            // Check for overlapping appointments
-            if (IsOverlappingAppointment(start, end, userId))
-            {
-                MessageBox.Show("The appointment times overlap with an existing appointment.",
-                                "Appointment Overlap", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return; // Do not proceed with saving
-            }
-
             try
             {
+                // Validate text fields
+                ValidateNumericUpDown(CustomerNum, "Customer ID", isCustomerId: true);
+                ValidateTextBox(TitleTextBox, "Title");
+                ValidateTextBox(LocationTextBox, "Location");
+                ValidateTextBox(ContactTextBox, "Contact");
+                ValidateTextBox(TypeTextBox, "Type");
+
+           
+
+                // Gather data after validation
+                string title = TitleTextBox.Text;
+                string description = DescriptionTextBox.Text;
+                string location = LocationTextBox.Text;
+                string contact = ContactTextBox.Text;
+                string type = TypeTextBox.Text;
+                string url = URLTextBox.Text;
+                DateTime start = StartDateTimePicker.Value;
+                DateTime end = EndDateTimePicker.Value;
+
+                // Validate business hours
+                if (!IsWithinBusinessHours(start, end))
+                {
+                    MessageBox.Show("Appointments can only be scheduled during business hours (Monday through Friday, 9:00 AM to 5:00 PM Eastern Time).",
+                                    "Invalid Appointment Time", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return; // Do not proceed with saving
+                }
+
+                // Check for overlapping appointments
+                if (IsOverlappingAppointment(start, end, userId))
+                {
+                    MessageBox.Show("The appointment times overlap with an existing appointment.",
+                                    "Appointment Overlap", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return; // Do not proceed with saving
+                }
+
+                // Proceed with saving the data if all validations pass
                 using (var connection = dbConnection.GetConnection())
                 {
                     connection.Open();
@@ -195,11 +148,136 @@ namespace c969v2.Forms
                     this.Close();
                 }
             }
-            catch (MySqlException ex)
+            catch (Exception ex)
             {
-                MessageBox.Show($"Error saving appointment: {ex.Message}", "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
+        private void ValidateTextBox(TextBox textBox, string fieldName, bool isInteger = false, bool isDecimal = false, bool isCustomerId = false)
+        {
+            // Check if the field is empty
+            if (string.IsNullOrWhiteSpace(textBox.Text))
+            {
+                throw new Exception($"Please fill out the {fieldName}.");
+            }
+
+            // Validate if the input is an integer
+            if (isInteger && !int.TryParse(textBox.Text, out _))
+            {
+                throw new Exception($"Please enter a valid number for {fieldName}.");
+            }
+
+            // Validate if the input is a decimal
+            if (isDecimal && !decimal.TryParse(textBox.Text, out _))
+            {
+                throw new Exception($"Please enter a valid decimal number for {fieldName}.");
+            }
+
+            // Validate if the input is a customer ID
+            if (isCustomerId)
+            {
+                int customerId;
+                if (!int.TryParse(textBox.Text, out customerId))
+                {
+                    throw new Exception($"Please enter a valid number for {fieldName}.");
+                }
+
+                if (!CustomerIdExists(customerId))
+                {
+                    throw new Exception($"Customer ID {customerId} does not exist. Please enter a valid customer ID.");
+                }
+            }
+        }
+
+        private void ValidateNumericUpDown(NumericUpDown numericUpDown, string fieldName, bool isCustomerId = false)
+        {
+            if (numericUpDown.Value == 0)
+            {
+                throw new Exception($"Please enter a valid number for {fieldName}.");
+            }
+
+            if (isCustomerId)
+            {
+                int customerId = (int)numericUpDown.Value;
+
+                if (!CustomerIdExists(customerId))
+                {
+                    throw new Exception($"Customer ID {customerId} does not exist. Please enter a valid customer ID.");
+                }
+            }
+        }
+
+
+        private bool CustomerIdExists(int customerId)
+        {
+            bool exists = false;
+            string query = "SELECT COUNT(*) FROM customer WHERE customerId = @customerId";
+
+            try
+            {
+                using (var connection = dbConnection.GetConnection())
+                {
+                    connection.Open();
+                    using (var cmd = new MySqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@customerId", customerId);
+                        exists = Convert.ToInt32(cmd.ExecuteScalar()) > 0;
+                    }
+                }
+            }
+            catch (MySqlException ex)
+            {
+                MessageBox.Show($"Database error: {ex.Message}", "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            return exists;
+        }
+
+
+        private void SetFormTitle()
+        {
+            MainAppointmentHeadline.Text = isEditMode ? "Edit Appointment" : "Add Appointment";
+        }
+
+        private void LoadAppointmentData()
+        {
+            string query = @"SELECT customerId, userId, title, description, location, 
+                             contact, type, url, start, end 
+                             FROM appointment 
+                             WHERE appointmentId = @appointmentId";
+
+            ExecuteQuery(query, cmd =>
+            {
+                cmd.Parameters.AddWithValue("@appointmentId", appointmentId);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        IDNum.Value = appointmentId;
+                        TitleTextBox.Text = reader["title"].ToString();
+                        DescriptionTextBox.Text = reader["description"].ToString();
+                        LocationTextBox.Text = reader["location"].ToString();
+                        ContactTextBox.Text = reader["contact"].ToString();
+                        TypeTextBox.Text = reader["type"].ToString();
+                        URLTextBox.Text = reader["url"].ToString();
+                        StartDateTimePicker.Value = Convert.ToDateTime(reader["start"]);
+                        EndDateTimePicker.Value = Convert.ToDateTime(reader["end"]);
+
+                        customerId = Convert.ToInt32(reader["customerId"]);
+                        userId = Convert.ToInt32(reader["userId"]);  // Assuming userId is retrieved and stored
+                        CustomerNum.Value = customerId;
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Appointment with ID {appointmentId} not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        this.Close();
+                    }
+                }
+            });
+        }
+
+
+
 
         private bool IsWithinBusinessHours(DateTime start, DateTime end)
         {
