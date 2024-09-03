@@ -101,7 +101,6 @@ namespace c969v2.Forms
                 GetUserSchedule(selectedUserId);
             }
         }
-
         private void monthComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (monthComboBox.SelectedValue != null)
@@ -110,15 +109,12 @@ namespace c969v2.Forms
                 GetAppointmentTypesByMonth(selectedMonth);
             }
         }
-
-
-
         private void GetAppointmentsByCustomer(int customerId)
         {
             using (var connection = dbConnection.GetConnection())
             {
                 connection.Open();
-                string query = @"SELECT Start, End, Title 
+                string query = @"SELECT Start, End, Title, Type 
                                  FROM appointment 
                                  WHERE customerId = @customerId";
 
@@ -136,17 +132,26 @@ namespace c969v2.Forms
                             {
                                 Start = Convert.ToDateTime(reader["Start"]),
                                 End = Convert.ToDateTime(reader["End"]),
-                                Title = reader["Title"].ToString()
+                                Title = reader["Title"].ToString(),
+                                Type = reader["Type"].ToString()
                             });
                         }
 
-                        // Apply a lambda expression to order the appointments
                         var customerAppointments = appointments
                             .OrderBy(a => a.Start)
+                            .Select(a => new
+                            {
+                                Date = a.Start.ToShortDateString(),
+                                Time = $"{a.Start.ToShortTimeString()} - {a.End.ToShortTimeString()}",
+                                Title = a.Title,
+                                Type = a.Type,
+                            })
                             .ToList();
 
-                        // Bind the ordered list to the DataGridView
                         customerAppointmentsDataGridView.DataSource = customerAppointments;
+                        customerAppointmentsDataGridView.AutoResizeColumns();
+
+                        int totalAppointments = customerAppointments.Count;
                     }
                 }
             }
@@ -180,19 +185,28 @@ namespace c969v2.Forms
                             });
                         }
 
-                        // Use a lambda expression to order the appointments by start time
+                        // Order the appointments by start time
                         var orderedSchedule = userSchedule
                             .OrderBy(a => a.Start)
                             .ToList();
 
-                        // Bind the ordered schedule to the DataGridView
+                        userScheduleDataGridView.AutoGenerateColumns = false;
                         userScheduleDataGridView.DataSource = orderedSchedule;
+
+                        userScheduleDataGridView.Columns.Clear();
+                        userScheduleDataGridView.Columns.Add("Start", "Start Time");
+                        userScheduleDataGridView.Columns.Add("End", "End Time");
+                        userScheduleDataGridView.Columns.Add("Title", "Title");
+                        userScheduleDataGridView.Columns.Add("Type", "Type");
+
+                        userScheduleDataGridView.Columns["Start"].DataPropertyName = "Start";
+                        userScheduleDataGridView.Columns["End"].DataPropertyName = "End";
+                        userScheduleDataGridView.Columns["Title"].DataPropertyName = "Title";
+                        userScheduleDataGridView.Columns["Type"].DataPropertyName = "Type";
                     }
                 }
             }
         }
-
-
 
         private void GetAppointmentTypesByMonth(int month)
         {

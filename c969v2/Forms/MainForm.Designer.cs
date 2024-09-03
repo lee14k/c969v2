@@ -48,24 +48,24 @@
             // AppointmentData
             // 
             this.AppointmentData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.AppointmentData.Location = new System.Drawing.Point(12, 54);
+            this.AppointmentData.Location = new System.Drawing.Point(12, 35);
             this.AppointmentData.Name = "AppointmentData";
             this.AppointmentData.RowHeadersWidth = 51;
-            this.AppointmentData.Size = new System.Drawing.Size(365, 150);
+            this.AppointmentData.Size = new System.Drawing.Size(801, 172);
             this.AppointmentData.TabIndex = 0;
             // 
             // CustomerData
             // 
             this.CustomerData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.CustomerData.Location = new System.Drawing.Point(431, 54);
+            this.CustomerData.Location = new System.Drawing.Point(12, 292);
             this.CustomerData.Name = "CustomerData";
             this.CustomerData.RowHeadersWidth = 51;
-            this.CustomerData.Size = new System.Drawing.Size(341, 151);
+            this.CustomerData.Size = new System.Drawing.Size(801, 179);
             this.CustomerData.TabIndex = 1;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(12, 210);
+            this.button1.Location = new System.Drawing.Point(7, 212);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(90, 42);
             this.button1.TabIndex = 2;
@@ -75,7 +75,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(108, 210);
+            this.button2.Location = new System.Drawing.Point(103, 212);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(90, 42);
             this.button2.TabIndex = 3;
@@ -85,7 +85,7 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(431, 211);
+            this.button4.Location = new System.Drawing.Point(10, 477);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(75, 41);
             this.button4.TabIndex = 5;
@@ -95,7 +95,7 @@
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(527, 211);
+            this.button5.Location = new System.Drawing.Point(106, 477);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(75, 41);
             this.button5.TabIndex = 6;
@@ -105,7 +105,7 @@
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(620, 211);
+            this.button6.Location = new System.Drawing.Point(199, 477);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(75, 41);
             this.button6.TabIndex = 7;
@@ -115,9 +115,10 @@
             // 
             // SignOutButton
             // 
-            this.SignOutButton.Location = new System.Drawing.Point(687, 361);
+            this.SignOutButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.25F);
+            this.SignOutButton.Location = new System.Drawing.Point(666, 492);
             this.SignOutButton.Name = "SignOutButton";
-            this.SignOutButton.Size = new System.Drawing.Size(75, 23);
+            this.SignOutButton.Size = new System.Drawing.Size(160, 40);
             this.SignOutButton.TabIndex = 9;
             this.SignOutButton.Text = "Sign Out";
             this.SignOutButton.UseVisualStyleBackColor = true;
@@ -126,7 +127,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(231, 28);
+            this.label1.Location = new System.Drawing.Point(9, 19);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(122, 13);
             this.label1.TabIndex = 10;
@@ -135,7 +136,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(716, 28);
+            this.label2.Location = new System.Drawing.Point(12, 276);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(56, 13);
             this.label2.TabIndex = 11;
@@ -143,7 +144,7 @@
             // 
             // button7
             // 
-            this.button7.Location = new System.Drawing.Point(300, 211);
+            this.button7.Location = new System.Drawing.Point(295, 213);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(77, 42);
             this.button7.TabIndex = 12;
@@ -153,7 +154,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(204, 211);
+            this.button3.Location = new System.Drawing.Point(199, 213);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(88, 42);
             this.button3.TabIndex = 4;
@@ -163,9 +164,10 @@
             // 
             // ViewReports
             // 
-            this.ViewReports.Location = new System.Drawing.Point(518, 361);
+            this.ViewReports.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.25F);
+            this.ViewReports.Location = new System.Drawing.Point(430, 492);
             this.ViewReports.Name = "ViewReports";
-            this.ViewReports.Size = new System.Drawing.Size(129, 23);
+            this.ViewReports.Size = new System.Drawing.Size(215, 40);
             this.ViewReports.TabIndex = 13;
             this.ViewReports.Text = "View Reports";
             this.ViewReports.UseVisualStyleBackColor = true;
@@ -175,7 +177,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(838, 544);
             this.Controls.Add(this.ViewReports);
             this.Controls.Add(this.button7);
             this.Controls.Add(this.label2);
