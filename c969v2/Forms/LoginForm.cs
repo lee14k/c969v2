@@ -51,9 +51,9 @@ namespace c969v2.Forms
 
         private void ValidateLogin(string username, string password)
         {
-            using (var connection = dbConnection.GetConnection())
+            try
             {
-                try
+                using (var connection = dbConnection.GetConnection())
                 {
                     connection.Open();
                     string query = "SELECT userId FROM user WHERE username = @username AND password = @password";
@@ -61,14 +61,15 @@ namespace c969v2.Forms
                     {
                         command.Parameters.AddWithValue("@username", username);
                         command.Parameters.AddWithValue("@password", password);
-
                         var result = command.ExecuteScalar();
+                        bool loginSuccess = result != null;
 
-                        if (result != null)
+                        // Log the login attempt
+                        LogLoginHistory(username, loginSuccess);
+
+                        if (loginSuccess)
                         {
                             int userId = Convert.ToInt32(result);
-                            LogLoginAttempt(username, true);
-
                             CheckForUpcomingAppointments(userId);
                             MainForm mainForm = new MainForm();
                             mainForm.FormClosed += (s, args) => this.Close();
@@ -77,37 +78,42 @@ namespace c969v2.Forms
                         }
                         else
                         {
-                            LogLoginAttempt(username, false);
                             ShowErrorMessage();
                         }
                     }
                 }
-                catch (MySqlException ex)
-                {
-                    MessageBox.Show($"Database error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+            }
+            catch (MySqlException ex)
+            {
+                MessageBox.Show($"Database error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
 
-        private void LogLoginAttempt(string username, bool isSuccessful)
-        {
-            string logFilePath = "Login_History.txt";
-            string timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-            string logMessage = $"{timestamp} - Username: {username}, Login {(isSuccessful ? "Successful" : "Failed")}";
 
+
+
+        private void LogLoginHistory(string username, bool success)
+        {
             try
             {
-                using (StreamWriter sw = File.AppendText(logFilePath))
-                {
-                    sw.WriteLine(logMessage);
-                }
+                string solutionDirectory = Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).Parent.Parent.FullName;
+                string filePath = Path.Combine(solutionDirectory, "login_history.txt");
+                string status = success ? "successful" : "unsuccessful";
+                string logEntry = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss} - Login attempt by '{username}' was {status}{Environment.NewLine}";
+                File.AppendAllText(filePath, logEntry);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error writing to log file: {ex.Message}", "Log Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error logging login history: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+
+
+
+
+
 
 
 
