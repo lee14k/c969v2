@@ -13,6 +13,7 @@ namespace c969v2.Forms
         private int userId; 
         private int customerId;
         private DatabaseConnection dbConnection;
+        private TimeZoneInfo easternTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
 
 
         public AppointmentForm(int? appointmentId = null)
@@ -93,8 +94,24 @@ namespace c969v2.Forms
                 ValidateComboBox(CustomerComboBox, "Customer");
                 ValidateComboBox(UserComboBox, "User");
 
+                DateTime startLocal = StartDateTimePicker.Value;
+                DateTime endLocal = EndDateTimePicker.Value;
 
-                Appointment appointment = new Appointment
+                if (!IsWithinBusinessHours(startLocal, endLocal))
+                {
+                    MessageBox.Show("Appointments can only be scheduled during business hours (Monday through Friday, 9:00 AM to 5:00 PM Eastern Time).",
+                                    "Invalid Appointment Time", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                int userId = (int)UserComboBox.SelectedItem;
+                if (IsOverlappingAppointment(startLocal, endLocal, userId))
+                {
+                    MessageBox.Show("The appointment times overlap with an existing appointment for this user.",
+                                    "Appointment Overlap", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+            Appointment appointment = new Appointment
                 {
                     AppointmentId = isEditMode ? this.appointmentId : GenerateNewAppointmentId(),
                     CustomerId = (int)CustomerComboBox.SelectedItem,
@@ -105,8 +122,8 @@ namespace c969v2.Forms
                     Contact = ContactTextBox.Text,
                     Type = TypeTextBox.Text,
                     Url = URLTextBox.Text,
-                    Start = StartDateTimePicker.Value.ToUniversalTime(),
-                    End = EndDateTimePicker.Value.ToUniversalTime(),
+                    Start = startLocal.ToUniversalTime(),
+                    End = endLocal.ToUniversalTime(),
                     CreateDate = DateTime.UtcNow,
                     CreatedBy = LoginForm.CurrentUserName,
                     LastUpdate = DateTime.UtcNow,
@@ -245,10 +262,9 @@ namespace c969v2.Forms
                         ContactTextBox.Text = reader["contact"].ToString();
                         TypeTextBox.Text = reader["type"].ToString();
                         URLTextBox.Text = reader["url"].ToString();
-                        StartDateTimePicker.Value = Convert.ToDateTime(reader["start"]);
-                        EndDateTimePicker.Value = Convert.ToDateTime(reader["end"]);
-
-                       int customerId = Convert.ToInt32(reader["customerId"]);
+                        StartDateTimePicker.Value = TimeZoneInfo.ConvertTimeFromUtc(Convert.ToDateTime(reader["start"]), TimeZoneInfo.Local);
+                        EndDateTimePicker.Value = TimeZoneInfo.ConvertTimeFromUtc(Convert.ToDateTime(reader["end"]), TimeZoneInfo.Local);
+                        int customerId = Convert.ToInt32(reader["customerId"]);
                        int userId = Convert.ToInt32(reader["userId"]);
                         CustomerComboBox.SelectedItem = customerId;
                         UserComboBox.SelectedItem = userId;
@@ -270,29 +286,7 @@ namespace c969v2.Forms
             }
        
         }
-        private bool IsWithinBusinessHours(DateTime start, DateTime end)
-        {
-            TimeZoneInfo easternZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
-            DateTime startEastern = TimeZoneInfo.ConvertTimeFromUtc(start.ToUniversalTime(), easternZone);
-            DateTime endEastern = TimeZoneInfo.ConvertTimeFromUtc(end.ToUniversalTime(), easternZone);
-
-            if (startEastern.DayOfWeek < DayOfWeek.Monday || startEastern.DayOfWeek > DayOfWeek.Friday ||
-                endEastern.DayOfWeek < DayOfWeek.Monday || endEastern.DayOfWeek > DayOfWeek.Friday)
-            {
-                return false;
-            }
-
-            DateTime businessStart = DateTime.Today.AddHours(9);
-            DateTime businessEnd = DateTime.Today.AddHours(17); 
-
-            if (startEastern.TimeOfDay < businessStart.TimeOfDay || endEastern.TimeOfDay > businessEnd.TimeOfDay)
-            {
-                return false;
-            }
-
-            return true;
-        }
-        private bool IsOverlappingAppointment(DateTime start, DateTime end, int userId)
+        private bool IsOverlappingAppointment(DateTime startLocal, DateTime endLocal, int userId)
         {
             using (var connection = dbConnection.GetConnection())
             {
@@ -305,8 +299,8 @@ namespace c969v2.Forms
                 using (var cmd = new MySqlCommand(query, connection))
                 {
                     cmd.Parameters.AddWithValue("@userId", userId);
-                    cmd.Parameters.AddWithValue("@start", start);
-                    cmd.Parameters.AddWithValue("@end", end);
+                    cmd.Parameters.AddWithValue("@start", startLocal.ToUniversalTime());
+                    cmd.Parameters.AddWithValue("@end", endLocal.ToUniversalTime());
                     cmd.Parameters.AddWithValue("@appointmentId", isEditMode ? appointmentId : 0);
 
                     int count = Convert.ToInt32(cmd.ExecuteScalar());
@@ -340,8 +334,32 @@ namespace c969v2.Forms
         {
             this.Close();
         }
+        private bool IsWithinBusinessHours(DateTime startLocal, DateTime endLocal)
+        {
+            DateTime startEastern = TimeZoneInfo.ConvertTime(startLocal, easternTimeZone);
+            DateTime endEastern = TimeZoneInfo.ConvertTime(endLocal, easternTimeZone);
 
+
+            if (startEastern.DayOfWeek < DayOfWeek.Monday || startEastern.DayOfWeek > DayOfWeek.Friday ||
+                endEastern.DayOfWeek < DayOfWeek.Monday || endEastern.DayOfWeek > DayOfWeek.Friday)
+            {
+                return false;
+            }
+
+            TimeSpan businessStart = new TimeSpan(9, 0, 0);
+            TimeSpan businessEnd = new TimeSpan(17, 0, 0);
+
+            if (startEastern.TimeOfDay < businessStart || endEastern.TimeOfDay > businessEnd)
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
+
+
 }
+
 
 
