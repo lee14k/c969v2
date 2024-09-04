@@ -251,7 +251,6 @@ namespace c969v2.Forms
                 MessageBox.Show("Please select a customer to delete.", "No Customer Selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
-
         private void SignOutButton_Click(object sender, EventArgs e)
         {
             DialogResult result = MessageBox.Show("Are you sure you want to sign out?", "Confirm Sign Out", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -296,13 +295,32 @@ namespace c969v2.Forms
         }
         private void OpenReports_Click(object sender, EventArgs e)
         {
-            var addReportsForm = new ReportsForm();
-            addReportsForm.ShowDialog();
+            ReportsForm reportsForm = new ReportsForm(this);
+            reportsForm.Show();
+            this.Hide();
+
         }
         private void OpenCalendar_Click(object sender, EventArgs e)
         {
-            var addCalendarViewForm = new CalendarForm();
-            addCalendarViewForm.ShowDialog();
+            CalendarForm calendarForm = new CalendarForm(this);
+            calendarForm.Show();
+            this.Hide();
+        }
+        private void btnDeleteAppointment_Click(object sender, EventArgs e)
+        {
+            if (AppointmentData.SelectedRows.Count > 0)
+            {
+                int selectedAppointmentId = Convert.ToInt32(AppointmentData.SelectedRows[0].Cells[0].Value);
+                var result = MessageBox.Show("Are you sure you want to delete this appointment?", "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (result == DialogResult.Yes)
+                {
+                    DeleteAppointment(selectedAppointmentId);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please select an appointment to delete.", "No Appointment Selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
     }
 }

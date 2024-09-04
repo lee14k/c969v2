@@ -10,21 +10,22 @@ namespace c969v2.Forms
 {
     public partial class CalendarForm : Form
     {
+        private MainForm _mainForm;
         private List<Appointment> upcomingAppointments;
         private DatabaseConnection dbConnection;
 
-        public CalendarForm()
+        public CalendarForm(MainForm mainForm)
         {
             InitializeComponent();
             dbConnection = new DatabaseConnection();
             LoadUpcomingAppointments();
             monthCalendar.DateChanged += new DateRangeEventHandler(monthCalendar_DateChanged);
+            _mainForm = mainForm;
         }
 
         private void backButton_click(object sender, EventArgs e)
         {
-            MainForm mainForm = new MainForm();
-            mainForm.Show();
+            _mainForm.Show();
             this.Close();
         }
 

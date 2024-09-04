@@ -13,17 +13,18 @@ namespace c969v2.Forms
 {
     public partial class ReportsForm : Form
     {
+        private MainForm _mainForm;
         private DatabaseConnection dbConnection;
-        public ReportsForm()
+        public ReportsForm(MainForm mainForm)
         {
             InitializeComponent();
             this.Load += new System.EventHandler(this.ReportsForm_Load);
-            dbConnection = new DatabaseConnection();    
+            dbConnection = new DatabaseConnection();
+            _mainForm = mainForm;
         }
         private void backButton_click(object sender, EventArgs e)
         {
-            MainForm mainForm = new MainForm();
-            mainForm.Show();
+            _mainForm.Show();
             this.Close();
         }
         private void ReportsForm_Load(object sender, EventArgs e)
