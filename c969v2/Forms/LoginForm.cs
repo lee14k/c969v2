@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
@@ -26,6 +27,7 @@ namespace c969v2.Forms
             SetLanguageBasedOnRegion();
             dbConnection = new DatabaseConnection();
             userTimeZone = TimeZoneInfo.Local;
+            Debug.WriteLine(RegionInfo.CurrentRegion);
         }
         public static void SetCurrentUser (int userId, string userName)
         {
@@ -39,9 +41,8 @@ namespace c969v2.Forms
         }
         private void SetLanguageBasedOnRegion()
         {
-            RegionInfo region = RegionInfo.CurrentRegion;
-
-            if (region.TwoLetterISORegionName == "FR")
+            RegionInfo currentRegion = RegionInfo.CurrentRegion;
+            if (currentRegion.TwoLetterISORegionName == "FR")
             {
                 this.Text = "Formulaire de connexion";
                 MainAppHeadline.Text = "Planificateur de rendez-vous";
@@ -49,11 +50,6 @@ namespace c969v2.Forms
                 UsernameLabel.Text = "Nom d'utilisateur";
                 PasswordLabel.Text = "Mot de passe";
                 loginButton.Text = "Connexion";
-            }
-            else
-            {
-                this.Text = "Login Form";
-                loginButton.Text = "Login";
             }
         }
         private void ValidateLogin(string username, string password)
