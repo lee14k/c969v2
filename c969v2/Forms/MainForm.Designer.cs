@@ -42,6 +42,7 @@
             this.button3 = new System.Windows.Forms.Button();
             this.ViewReports = new System.Windows.Forms.Button();
             this.timezoneLabel = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.AppointmentData)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CustomerData)).BeginInit();
             this.SuspendLayout();
@@ -178,17 +179,29 @@
             // 
             this.timezoneLabel.AutoSize = true;
             this.timezoneLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 18.25F);
-            this.timezoneLabel.Location = new System.Drawing.Point(905, 194);
+            this.timezoneLabel.Location = new System.Drawing.Point(842, 201);
+            this.timezoneLabel.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.timezoneLabel.Name = "timezoneLabel";
             this.timezoneLabel.Size = new System.Drawing.Size(125, 29);
             this.timezoneLabel.TabIndex = 14;
             this.timezoneLabel.Text = "Timezone";
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 18.25F);
+            this.label3.Location = new System.Drawing.Point(842, 172);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(209, 29);
+            this.label3.TabIndex = 15;
+            this.label3.Text = "Your timezone is:";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1073, 544);
+            this.ClientSize = new System.Drawing.Size(1333, 544);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.timezoneLabel);
             this.Controls.Add(this.ViewReports);
             this.Controls.Add(this.button7);
@@ -228,5 +241,6 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button ViewReports;
         private System.Windows.Forms.Label timezoneLabel;
+        private System.Windows.Forms.Label label3;
     }
 }

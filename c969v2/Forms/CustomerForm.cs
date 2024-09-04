@@ -34,7 +34,6 @@ namespace c969v2.Forms
                 IDNum.Value = this.customerId;
             }
 
-            // Attach event handler for country selection change
             countryComboBox.SelectedIndexChanged += countryComboBox_SelectedIndexChanged;
         }
 

@@ -18,16 +18,12 @@ namespace c969v2.Forms
             dbConnection = new DatabaseConnection();
             LoadAppointmentData();
             LoadCustomerData();
+            timezoneLabel.Text = userTimeZone.DisplayName;
+
         }
         private void SetUserTimeZone()
         {
-            
-            
-                // Attempt to get the local system timezone
-                userTimeZone = TimeZoneInfo.Local;
-
-                string tzInfo = $"Timezone set: {userTimeZone.Id}, Display Name: {userTimeZone.DisplayName}";
-                MessageBox.Show(tzInfo, "Timezone Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+             userTimeZone = TimeZoneInfo.Local;
         }
 
 
