@@ -26,8 +26,6 @@ namespace c969v2.Forms
              userTimeZone = TimeZoneInfo.Local;
         }
 
-
-
         private void LoadAppointmentData()
         {
             using (var connection = dbConnection.GetConnection())
@@ -179,21 +177,51 @@ namespace c969v2.Forms
                 MessageBox.Show("Please select a customer to edit.", "No Customer Selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
-        private void btnDeleteAppointment_Click (object sender, EventArgs e)
+        private bool CustomerHasAppointments(int customerId)
         {
-            if (AppointmentData.SelectedRows.Count > 0)
+            using (var connection = dbConnection.GetConnection())
             {
-                int selectedAppointmentId = Convert.ToInt32(AppointmentData.SelectedRows[0].Cells[0].Value);
-
-                var result = MessageBox.Show("Are you sure you want to delete this appointment?", "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (result == DialogResult.Yes)
+                connection.Open();
+                string query = "SELECT COUNT(*) FROM appointment WHERE customerId = @customerId";
+                using (var cmd = new MySqlCommand(query, connection))
                 {
-                    DeleteAppointment(selectedAppointmentId);
+                    cmd.Parameters.AddWithValue("@customerId", customerId);
+                    var count = Convert.ToInt32(cmd.ExecuteScalar());
+                    return count > 0;
                 }
             }
-            else
+        }
+
+
+
+        private void DeleteCustomerAndAppointments(int customerId)
+        {
+            try
             {
-                MessageBox.Show("Please select an appointment to delete.", "No Appointment Selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                using (var connection = dbConnection.GetConnection())
+                {
+                    connection.Open();
+
+                    string deleteAppointmentsQuery = "DELETE FROM appointment WHERE customerId = @customerId";
+                    using (var cmd = new MySqlCommand(deleteAppointmentsQuery, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@customerId", customerId);
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    string deleteCustomerQuery = "DELETE FROM customer WHERE customerId = @customerId";
+                    using (var cmd = new MySqlCommand(deleteCustomerQuery, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@customerId", customerId);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                MessageBox.Show("Customer and related appointments have been deleted.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                RefreshCustomerData();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -201,22 +229,49 @@ namespace c969v2.Forms
         {
             if (CustomerData.SelectedRows.Count > 0)
             {
-                int selectedCustomerId = Convert.ToInt32(CustomerData.SelectedRows[0].Cells[0].Value);
+                int customerId = Convert.ToInt32(CustomerData.SelectedRows[0].Cells["customerId"].Value);
 
-                var result = MessageBox.Show("Are you sure you want to delete this customer?", "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (result == DialogResult.Yes)
+                if (CustomerHasAppointments(customerId))
                 {
-                    DeleteCustomer(selectedCustomerId);
+                    var result = MessageBox.Show(
+                        "This customer has associated appointments. Would you also like to delete those appointments?",
+                        "Confirm Deletion",
+                        MessageBoxButtons.YesNoCancel,
+                        MessageBoxIcon.Warning);
+
+                    if (result == DialogResult.Yes) // Delete both customer and appointments
+                    {
+                        DeleteCustomerAndAppointments(customerId); // Delete both customer and appointments
+                    }
+                    else if (result == DialogResult.No) // Delete only the customer
+                    {
+                        DeleteCustomer(customerId); // Only delete the customer
+                    }
+                    // If the user clicks Cancel, do nothing
+                }
+                else
+                {
+                    // Prompt user to confirm customer deletion when there are no appointments
+                    var result = MessageBox.Show(
+                        "Are you sure you want to delete this customer?",
+                        "Confirm Deletion",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Warning);
+
+                    if (result == DialogResult.Yes)
+                    {
+                        DeleteCustomer(customerId); 
+                    }
                 }
             }
             else
             {
                 MessageBox.Show("Please select a customer to delete.", "No Customer Selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-
-
-
         }
+
+
+
         private void SignOutButton_Click(object sender, EventArgs e)
         {
             DialogResult result = MessageBox.Show("Are you sure you want to sign out?", "Confirm Sign Out", MessageBoxButtons.YesNo, MessageBoxIcon.Question);

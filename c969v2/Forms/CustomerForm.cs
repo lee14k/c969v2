@@ -3,6 +3,7 @@ using c969v2.Data;
 using System;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
+using c969v2.Models;
 
 namespace c969v2.Forms
 {
@@ -68,13 +69,20 @@ namespace c969v2.Forms
 
             return newAddressId;
         }
-
         private void customerBtnSave_Click(object sender, EventArgs e)
         {
             try
             {
+                string countryName = countryComboBox.Text.Trim();
+                string cityName = cityComboBox.Text.Trim();
 
-                int cityId=GetCityId(cityComboBox.Text.Trim(), countryComboBox.Text.Trim()); 
+                Country country = new Country { CountryName = countryName };
+                country.ValidateFields();
+
+                City city = new City { CityName = cityName };
+                city.ValidateFields();
+
+                int cityId =GetCityId(cityComboBox.Text.Trim(), countryComboBox.Text.Trim()); 
                 Address address = new Address
                 {
                     AddressId = isEditMode ? this.addressId : GenerateNewAddressId(),
@@ -159,7 +167,6 @@ namespace c969v2.Forms
                 MessageBox.Show(ex.Message, "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
-
         private int GetCityId(string cityName, string countryName)
         {
             using (var connection = dbConnection.GetConnection())
@@ -183,9 +190,7 @@ namespace c969v2.Forms
                     }
                 }
 
-            }
-       
-
+            }    
         private int CreateCountry(string countryName, MySqlConnection connection)
         {
             string query = @"INSERT INTO country (country, createDate, createdBy, lastUpdate, lastUpdateBy) 
@@ -199,11 +204,10 @@ namespace c969v2.Forms
                 return (int)cmd.LastInsertedId;
             }
         }
-
         private int CreateCity(string cityName, int countryId, MySqlConnection connection)
         {
             string query = @"INSERT INTO city (city, countryId, createDate, createdBy, lastUpdate, lastUpdateBy) 
-                             VALUES (@city, @countryId, NOW(),@createdBy, NOW(), @lastUpdateBy";
+                             VALUES (@city, @countryId, NOW(),@createdBy, NOW(), @lastUpdateBy)";
             using (var cmd = new MySqlCommand(query, connection))
             {
                 cmd.Parameters.AddWithValue("@city", cityName);
@@ -215,7 +219,6 @@ namespace c969v2.Forms
                 return (int)cmd.LastInsertedId;
             }
         }
-
         private void LoadCustomerData()
         {
             using (var connection = dbConnection.GetConnection())
@@ -247,12 +250,10 @@ namespace c969v2.Forms
                 }
             }
         }
-
         private void SetFormTitle()
         {
             MainCustFormHeadline.Text = isEditMode ? "Edit Customer" : "Add Customer";
         }
-
         private void LoadCountryDropdown()
         {
             using (var connection = dbConnection.GetConnection())
@@ -274,7 +275,6 @@ namespace c969v2.Forms
             countryComboBox.DisplayMember = "Text";
             countryComboBox.ValueMember = "Value";
         }
-
         private void LoadCityDropdown(int countryId)
         {
             cityComboBox.Items.Clear();
@@ -299,7 +299,6 @@ namespace c969v2.Forms
             cityComboBox.DisplayMember = "Text";
             cityComboBox.ValueMember = "Value";
         }
-
         private void ExecuteQuery(string query, Action<MySqlCommand> configureCommmand)
         {
             try
@@ -322,12 +321,10 @@ namespace c969v2.Forms
                 MessageBox.Show($"Unexpected error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
         private void BtnCancel_Click(object sender, EventArgs e)
         {
             this.Close();
         }
-
         private void countryComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (countryComboBox.SelectedItem != null)
