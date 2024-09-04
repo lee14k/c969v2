@@ -43,7 +43,6 @@
             this.appointmentsDataGridView.Name = "appointmentsDataGridView";
             this.appointmentsDataGridView.Size = new System.Drawing.Size(351, 184);
             this.appointmentsDataGridView.TabIndex = 0;
-            this.appointmentsDataGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
             // monthCalendar
             // 

@@ -72,7 +72,50 @@ namespace c969v2.Forms
                 string countryName = countryComboBox.Text.Trim();
                 string cityName = cityComboBox.Text.Trim();
 
-                int cityId = GetCityId(cityName, countryName);
+                Country country = new Country { CountryName = countryName };
+                country.ValidateFields();
+
+                City city = new City { CityName = cityName };
+                city.ValidateFields();
+
+                int cityId = GetCityId(cityComboBox.Text.Trim(), countryComboBox.Text.Trim());
+
+                // Ensure addressId is set for edit mode
+                if (isEditMode && this.addressId <= 0)
+                {
+                    throw new Exception("Invalid address ID for editing. Please ensure the customer data is loaded correctly.");
+                }
+
+                Address address = new Address
+                {
+                    AddressId = isEditMode ? this.addressId : GenerateNewAddressId(),
+                    AddressLine1 = addressTextBox.Text.Trim(),
+                    AddressLine2 = addressLineTwo.Text.Trim(),
+                    CityId = cityId,
+                    PostalCode = postalCodeTextBox.Text.Trim(),
+                    Phone = phoneNumberTextBox.Text.Trim(),
+                    CreateDate = DateTime.UtcNow,
+                    CreatedBy = LoginForm.CurrentUserName,
+                    LastUpdate = DateTime.UtcNow,
+                    LastUpdateBy = LoginForm.CurrentUserName
+                };
+
+                address.ValidateFields();
+
+                Customer customer = new Customer
+                {
+                    CustomerId = isEditMode ? this.customerId : GenerateNewCustomerId(),
+                    CustomerName = customerNameTextBox.Text.Trim(),
+                    AddressId = address.AddressId,
+                    Active = activeCheckBox.Checked,
+                    CreateDate = DateTime.UtcNow,
+                    CreatedBy = LoginForm.CurrentUserName,
+                    LastUpdate = DateTime.UtcNow,
+                    LastUpdateBy = LoginForm.CurrentUserName,
+                    Address = address
+                };
+
+                customer.ValidateFields();
 
                 using (var connection = dbConnection.GetConnection())
                 {
@@ -81,108 +124,60 @@ namespace c969v2.Forms
                     {
                         try
                         {
-                            int addressId;
-
                             // Handle address first
-                            if (isEditMode)
+                            string addressQuery = isEditMode ?
+                                @"UPDATE address SET address = @address, address2=@address2, cityId = @cityId, postalCode = @postalCode, phone = @phone, lastUpdate = NOW(), lastUpdateBy = @lastUpdateBy
+                          WHERE addressId = @addressId" :
+                                @"INSERT INTO address (addressId, address, address2, cityId, postalCode, phone, createDate, createdBy, lastUpdate, lastUpdateBy) 
+                          VALUES (@addressId, @address, @address2, @cityId, @postalCode, @phone, NOW(), @createdBy, NOW(), @lastUpdateBy)";
+
+                            using (var cmd = new MySqlCommand(addressQuery, connection, transaction))
                             {
-                                // Update existing address
-                                string addressQuery = @"UPDATE address 
-                                                SET address = @address, 
-                                                    address2 = @address2, 
-                                                    cityId = @cityId, 
-                                                    postalCode = @postalCode, 
-                                                    phone = @phone, 
-                                                    lastUpdate = NOW(), 
-                                                    lastUpdateBy = @lastUpdateBy
-                                                WHERE addressId = @addressId";
+                                cmd.Parameters.AddWithValue("@addressId", address.AddressId);
+                                cmd.Parameters.AddWithValue("@address", address.AddressLine1);
+                                cmd.Parameters.AddWithValue("@address2", address.AddressLine2);
+                                cmd.Parameters.AddWithValue("@cityId", address.CityId);
+                                cmd.Parameters.AddWithValue("@postalCode", address.PostalCode);
+                                cmd.Parameters.AddWithValue("@phone", address.Phone);
+                                cmd.Parameters.AddWithValue("@createdBy", address.CreatedBy);
+                                cmd.Parameters.AddWithValue("@lastUpdateBy", address.LastUpdateBy);
 
-                                using (var cmd = new MySqlCommand(addressQuery, connection, transaction))
+                                int rowsAffected = cmd.ExecuteNonQuery();
+                                if (isEditMode && rowsAffected == 0)
                                 {
-                                    cmd.Parameters.AddWithValue("@addressId", this.addressId);
-                                    cmd.Parameters.AddWithValue("@address", addressTextBox.Text.Trim());
-                                    cmd.Parameters.AddWithValue("@address2", addressLineTwo.Text.Trim());
-                                    cmd.Parameters.AddWithValue("@cityId", cityId);
-                                    cmd.Parameters.AddWithValue("@postalCode", postalCodeTextBox.Text.Trim());
-                                    cmd.Parameters.AddWithValue("@phone", phoneNumberTextBox.Text.Trim());
-                                    cmd.Parameters.AddWithValue("@lastUpdateBy", LoginForm.CurrentUserName);
-
-                                    int rowsAffected = cmd.ExecuteNonQuery();
-                                    if (rowsAffected == 0)
-                                    {
-                                        throw new Exception("No address record found to update. Please check the address ID.");
-                                    }
-                                }
-                                addressId = this.addressId;
-                            }
-                            else
-                            {
-                                // Insert new address
-                                string addressQuery = @"INSERT INTO address (address, address2, cityId, postalCode, phone, createDate, createdBy, lastUpdate, lastUpdateBy) 
-                                                VALUES (@address, @address2, @cityId, @postalCode, @phone, NOW(), @createdBy, NOW(), @lastUpdateBy);
-                                                SELECT LAST_INSERT_ID();";
-
-                                using (var cmd = new MySqlCommand(addressQuery, connection, transaction))
-                                {
-                                    cmd.Parameters.AddWithValue("@address", addressTextBox.Text.Trim());
-                                    cmd.Parameters.AddWithValue("@address2", addressLineTwo.Text.Trim());
-                                    cmd.Parameters.AddWithValue("@cityId", cityId);
-                                    cmd.Parameters.AddWithValue("@postalCode", postalCodeTextBox.Text.Trim());
-                                    cmd.Parameters.AddWithValue("@phone", phoneNumberTextBox.Text.Trim());
-                                    cmd.Parameters.AddWithValue("@createdBy", LoginForm.CurrentUserName);
-                                    cmd.Parameters.AddWithValue("@lastUpdateBy", LoginForm.CurrentUserName);
-                                    addressId = Convert.ToInt32(cmd.ExecuteScalar());
+                                    throw new Exception($"No address record found to update. Address ID: {address.AddressId}");
                                 }
                             }
 
-                            // Now handle customer
-                            if (isEditMode)
+                            // Then handle customer
+                            string customerQuery = isEditMode ?
+                                @"UPDATE customer SET customerName = @customerName, addressId = @addressId, active=@active, lastUpdate = NOW(), lastUpdateBy = @lastUpdateBy
+                          WHERE customerId = @customerId" :
+                                @"INSERT INTO customer (customerId, customerName, addressId, active, createDate, createdBy, lastUpdate, lastUpdateBy) 
+                          VALUES (@customerId, @customerName, @addressId, @active, NOW(), @createdBy, NOW(), @lastUpdateBy)";
+
+                            using (var cmd = new MySqlCommand(customerQuery, connection, transaction))
                             {
-                                string customerQuery = @"UPDATE customer 
-                                                 SET customerName = @customerName, 
-                                                     addressId = @addressId,
-                                                     active = @active, 
-                                                     lastUpdate = NOW(), 
-                                                     lastUpdateBy = @lastUpdateBy
-                                                 WHERE customerId = @customerId";
+                                cmd.Parameters.AddWithValue("@customerId", customer.CustomerId);
+                                cmd.Parameters.AddWithValue("@customerName", customer.CustomerName);
+                                cmd.Parameters.AddWithValue("@addressId", customer.AddressId);
+                                cmd.Parameters.AddWithValue("@active", customer.Active);
+                                cmd.Parameters.AddWithValue("@createdBy", customer.CreatedBy);
+                                cmd.Parameters.AddWithValue("@lastUpdateBy", customer.LastUpdateBy);
 
-                                using (var cmd = new MySqlCommand(customerQuery, connection, transaction))
+                                int rowsAffected = cmd.ExecuteNonQuery();
+                                if (isEditMode && rowsAffected == 0)
                                 {
-                                    cmd.Parameters.AddWithValue("@customerId", this.customerId);
-                                    cmd.Parameters.AddWithValue("@customerName", customerNameTextBox.Text.Trim());
-                                    cmd.Parameters.AddWithValue("@addressId", addressId);
-                                    cmd.Parameters.AddWithValue("@active", activeCheckBox.Checked);
-                                    cmd.Parameters.AddWithValue("@lastUpdateBy", LoginForm.CurrentUserName);
-
-                                    int rowsAffected = cmd.ExecuteNonQuery();
-                                    if (rowsAffected == 0)
-                                    {
-                                        throw new Exception("No customer record found to update. Please check the customer ID.");
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                string customerQuery = @"INSERT INTO customer (customerName, addressId, active, createDate, createdBy, lastUpdate, lastUpdateBy) 
-                                                 VALUES (@customerName, @addressId, @active, NOW(), @createdBy, NOW(), @lastUpdateBy)";
-
-                                using (var cmd = new MySqlCommand(customerQuery, connection, transaction))
-                                {
-                                    cmd.Parameters.AddWithValue("@customerName", customerNameTextBox.Text.Trim());
-                                    cmd.Parameters.AddWithValue("@addressId", addressId);
-                                    cmd.Parameters.AddWithValue("@active", activeCheckBox.Checked);
-                                    cmd.Parameters.AddWithValue("@createdBy", LoginForm.CurrentUserName);
-                                    cmd.Parameters.AddWithValue("@lastUpdateBy", LoginForm.CurrentUserName);
-                                    cmd.ExecuteNonQuery();
+                                    throw new Exception($"No customer record found to update. Customer ID: {customer.CustomerId}");
                                 }
                             }
 
                             transaction.Commit();
                         }
-                        catch (Exception ex)
+                        catch
                         {
                             transaction.Rollback();
-                            throw new Exception($"Transaction failed: {ex.Message}", ex);
+                            throw;
                         }
                     }
                 }
@@ -192,11 +187,9 @@ namespace c969v2.Forms
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
-
         private int GetCityId(string cityName, string countryName)
         {
             using (var connection = dbConnection.GetConnection())
@@ -254,27 +247,45 @@ namespace c969v2.Forms
             using (var connection = dbConnection.GetConnection())
             {
                 connection.Open();
-                string query = @"SELECT c.customerId, c.customerName, a.address, a.cityId, ci.city, co.country, a.postalCode, a.phone 
-                                 FROM customer c
-                                 JOIN address a ON c.addressId = a.addressId
-                                 JOIN city ci ON a.cityId = ci.cityId
-                                 JOIN country co ON ci.countryId = co.countryId
-                                 WHERE c.customerId = @customerId";
+                string query = @"SELECT c.customerId, c.customerName, c.addressId, c.active,
+                                a.address, a.address2, a.cityId, a.postalCode, a.phone,
+                                ci.city, co.country, co.countryId
+                         FROM customer c
+                         JOIN address a ON c.addressId = a.addressId
+                         JOIN city ci ON a.cityId = ci.cityId
+                         JOIN country co ON ci.countryId = co.countryId
+                         WHERE c.customerId = @customerId";
+
                 using (var cmd = new MySqlCommand(query, connection))
                 {
-                    cmd.Parameters.AddWithValue("@customerId", customerId);
+                    cmd.Parameters.AddWithValue("@customerId", this.customerId);
                     using (var reader = cmd.ExecuteReader())
                     {
                         if (reader.Read())
                         {
+                            this.addressId = Convert.ToInt32(reader["addressId"]);
+                            Console.WriteLine($"Loaded address ID: {this.addressId}");
+
                             customerNameTextBox.Text = reader["customerName"].ToString();
                             addressTextBox.Text = reader["address"].ToString();
+                            addressLineTwo.Text = reader["address2"].ToString();
                             postalCodeTextBox.Text = reader["postalCode"].ToString();
                             phoneNumberTextBox.Text = reader["phone"].ToString();
                             countryComboBox.Text = reader["country"].ToString();
                             cityComboBox.Text = reader["city"].ToString();
-                            int countryId = Convert.ToInt32(reader["cityId"]);
-                            LoadCityDropdown(countryId);
+                            activeCheckBox.Checked = Convert.ToBoolean(reader["active"]);
+
+                            IDNum.Value = this.customerId;
+
+                            LoadCountryDropdown();
+                            countryComboBox.SelectedValue = reader["countryId"].ToString();
+                            LoadCityDropdown(Convert.ToInt32(reader["countryId"]));
+                            cityComboBox.SelectedValue = reader["cityId"].ToString();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Customer not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            this.Close();
                         }
                     }
                 }

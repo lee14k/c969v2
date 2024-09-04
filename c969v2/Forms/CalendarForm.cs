@@ -29,10 +29,6 @@ namespace c969v2.Forms
             mainForm.Show();
             this.Close();
         }
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
         private void LoadUpcomingAppointments()
         {
             using (var connection = dbConnection.GetConnection())
@@ -65,17 +61,6 @@ namespace c969v2.Forms
                 }
             }
         }
-        private void DisplayAppointmentsForDate(DateTime date)
-        {
-            var appointmentsForDate = upcomingAppointments
-                .Where(a => a.Start.Date == date.Date)
-                .OrderBy(a => a.Start)
-                .ToList();
-
-            appointmentsDataGridView.DataSource = appointmentsForDate;
-        }
     }
-
-
 }
 
