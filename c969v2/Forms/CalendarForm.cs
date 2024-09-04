@@ -1,15 +1,10 @@
 ﻿using c969v2.Data;
 using MySql.Data.MySqlClient;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Data.Common;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using System;
+using System.Data;
+using System.Linq;
 
 namespace c969v2.Forms
 {
@@ -17,27 +12,31 @@ namespace c969v2.Forms
     {
         private List<Appointment> upcomingAppointments;
         private DatabaseConnection dbConnection;
+
         public CalendarForm()
         {
             InitializeComponent();
-            LoadUpcomingAppointments();
             dbConnection = new DatabaseConnection();
+            LoadUpcomingAppointments();
+            monthCalendar.DateChanged += new DateRangeEventHandler(monthCalendar_DateChanged);
         }
+
         private void backButton_click(object sender, EventArgs e)
         {
             MainForm mainForm = new MainForm();
             mainForm.Show();
             this.Close();
         }
+
         private void LoadUpcomingAppointments()
         {
             using (var connection = dbConnection.GetConnection())
             {
                 connection.Open();
                 string query = @"SELECT Start, End, Title, Type 
-                             FROM appointment 
-                             WHERE Start >= @today
-                             ORDER BY Start";
+                                 FROM appointment 
+                                 WHERE Start >= @today
+                                 ORDER BY Start";
 
                 using (var command = new MySqlCommand(query, connection))
                 {
@@ -60,6 +59,21 @@ namespace c969v2.Forms
                     }
                 }
             }
+        }
+
+        private void DisplayAppointmentsForDate(DateTime date)
+        {
+            var appointmentsForDate = upcomingAppointments
+                .Where(a => a.Start.Date == date.Date)
+                .OrderBy(a => a.Start)
+                .ToList();
+
+            appointmentsDataGridView.DataSource = appointmentsForDate;
+        }
+        private void monthCalendar_DateChanged(object sender, DateRangeEventArgs e)
+        {
+            DateTime selectedDate = monthCalendar.SelectionRange.Start;
+            DisplayAppointmentsForDate(selectedDate);
         }
     }
 }

@@ -39,29 +39,30 @@
             // appointmentsDataGridView
             // 
             this.appointmentsDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.appointmentsDataGridView.Location = new System.Drawing.Point(57, 122);
+            this.appointmentsDataGridView.Location = new System.Drawing.Point(26, 226);
             this.appointmentsDataGridView.Name = "appointmentsDataGridView";
-            this.appointmentsDataGridView.Size = new System.Drawing.Size(351, 184);
+            this.appointmentsDataGridView.Size = new System.Drawing.Size(732, 195);
             this.appointmentsDataGridView.TabIndex = 0;
             // 
             // monthCalendar
             // 
-            this.monthCalendar.Location = new System.Drawing.Point(490, 129);
+            this.monthCalendar.Location = new System.Drawing.Point(518, 18);
             this.monthCalendar.Name = "monthCalendar";
             this.monthCalendar.TabIndex = 2;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F);
             this.label1.Location = new System.Drawing.Point(54, 94);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(262, 13);
+            this.label1.Size = new System.Drawing.Size(410, 20);
             this.label1.TabIndex = 3;
             this.label1.Text = "Select a date and appointments on that date will show";
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(490, 94);
+            this.button4.Location = new System.Drawing.Point(518, 192);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(75, 23);
             this.button4.TabIndex = 7;
