@@ -53,7 +53,7 @@
             this.AppointmentData.Location = new System.Drawing.Point(12, 35);
             this.AppointmentData.Name = "AppointmentData";
             this.AppointmentData.RowHeadersWidth = 51;
-            this.AppointmentData.Size = new System.Drawing.Size(801, 172);
+            this.AppointmentData.Size = new System.Drawing.Size(838, 214);
             this.AppointmentData.TabIndex = 0;
             // 
             // CustomerData
@@ -62,12 +62,12 @@
             this.CustomerData.Location = new System.Drawing.Point(12, 292);
             this.CustomerData.Name = "CustomerData";
             this.CustomerData.RowHeadersWidth = 51;
-            this.CustomerData.Size = new System.Drawing.Size(801, 179);
+            this.CustomerData.Size = new System.Drawing.Size(838, 240);
             this.CustomerData.TabIndex = 1;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(7, 212);
+            this.button1.Location = new System.Drawing.Point(862, 35);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(90, 42);
             this.button1.TabIndex = 2;
@@ -77,7 +77,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(103, 212);
+            this.button2.Location = new System.Drawing.Point(862, 83);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(90, 42);
             this.button2.TabIndex = 3;
@@ -87,9 +87,9 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(10, 477);
+            this.button4.Location = new System.Drawing.Point(862, 292);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 41);
+            this.button4.Size = new System.Drawing.Size(90, 41);
             this.button4.TabIndex = 5;
             this.button4.Text = "Add Customer";
             this.button4.UseVisualStyleBackColor = true;
@@ -97,9 +97,9 @@
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(106, 477);
+            this.button5.Location = new System.Drawing.Point(862, 339);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(75, 41);
+            this.button5.Size = new System.Drawing.Size(90, 41);
             this.button5.TabIndex = 6;
             this.button5.Text = "Edit Customer";
             this.button5.UseVisualStyleBackColor = true;
@@ -107,9 +107,9 @@
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(199, 477);
+            this.button6.Location = new System.Drawing.Point(862, 386);
             this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(75, 41);
+            this.button6.Size = new System.Drawing.Size(90, 41);
             this.button6.TabIndex = 7;
             this.button6.Text = "Delete Customer";
             this.button6.UseVisualStyleBackColor = true;
@@ -118,9 +118,9 @@
             // SignOutButton
             // 
             this.SignOutButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.25F);
-            this.SignOutButton.Location = new System.Drawing.Point(666, 492);
+            this.SignOutButton.Location = new System.Drawing.Point(1169, 477);
             this.SignOutButton.Name = "SignOutButton";
-            this.SignOutButton.Size = new System.Drawing.Size(160, 40);
+            this.SignOutButton.Size = new System.Drawing.Size(215, 40);
             this.SignOutButton.TabIndex = 9;
             this.SignOutButton.Text = "Sign Out";
             this.SignOutButton.UseVisualStyleBackColor = true;
@@ -146,9 +146,9 @@
             // 
             // button7
             // 
-            this.button7.Location = new System.Drawing.Point(295, 213);
+            this.button7.Location = new System.Drawing.Point(862, 179);
             this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(77, 42);
+            this.button7.Size = new System.Drawing.Size(90, 42);
             this.button7.TabIndex = 12;
             this.button7.Text = "Calendar View";
             this.button7.UseVisualStyleBackColor = true;
@@ -156,9 +156,9 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(199, 213);
+            this.button3.Location = new System.Drawing.Point(862, 131);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(88, 42);
+            this.button3.Size = new System.Drawing.Size(90, 42);
             this.button3.TabIndex = 4;
             this.button3.Text = "Delete Appointment";
             this.button3.UseVisualStyleBackColor = true;
@@ -167,7 +167,7 @@
             // ViewReports
             // 
             this.ViewReports.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.25F);
-            this.ViewReports.Location = new System.Drawing.Point(430, 492);
+            this.ViewReports.Location = new System.Drawing.Point(1169, 416);
             this.ViewReports.Name = "ViewReports";
             this.ViewReports.Size = new System.Drawing.Size(215, 40);
             this.ViewReports.TabIndex = 13;
@@ -178,21 +178,21 @@
             // timezoneLabel
             // 
             this.timezoneLabel.AutoSize = true;
-            this.timezoneLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 18.25F);
-            this.timezoneLabel.Location = new System.Drawing.Point(842, 201);
+            this.timezoneLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F);
+            this.timezoneLabel.Location = new System.Drawing.Point(1029, 243);
             this.timezoneLabel.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.timezoneLabel.Name = "timezoneLabel";
-            this.timezoneLabel.Size = new System.Drawing.Size(125, 29);
+            this.timezoneLabel.Size = new System.Drawing.Size(82, 20);
             this.timezoneLabel.TabIndex = 14;
             this.timezoneLabel.Text = "Timezone";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 18.25F);
-            this.label3.Location = new System.Drawing.Point(842, 172);
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.25F);
+            this.label3.Location = new System.Drawing.Point(884, 243);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(209, 29);
+            this.label3.Size = new System.Drawing.Size(139, 20);
             this.label3.TabIndex = 15;
             this.label3.Text = "Your timezone is:";
             // 
@@ -200,7 +200,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1333, 544);
+            this.ClientSize = new System.Drawing.Size(1444, 544);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.timezoneLabel);
             this.Controls.Add(this.ViewReports);
