@@ -10,8 +10,6 @@ namespace c969v2.Forms
     {
         private bool isEditMode;
         private int appointmentId;
-        private int userId; 
-        private int customerId;
         private DatabaseConnection dbConnection;
         private TimeZoneInfo easternTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
         public AppointmentForm(int? appointmentId = null)

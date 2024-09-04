@@ -206,6 +206,7 @@ namespace c969v2.Forms
                 }
                 MessageBox.Show("Customer and related appointments have been deleted.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 RefreshCustomerData();
+                RefreshAppointmentData();
             }
             catch (Exception ex)
             {
@@ -221,18 +222,14 @@ namespace c969v2.Forms
                 if (CustomerHasAppointments(customerId))
                 {
                     var result = MessageBox.Show(
-                        "This customer has associated appointments. Would you also like to delete those appointments?",
+                        "This customer has associated appointments. Deleting this customer will also delete all associated appointments. Do you wish to proceed?",
                         "Confirm Deletion",
-                        MessageBoxButtons.YesNoCancel,
+                        MessageBoxButtons.YesNo,
                         MessageBoxIcon.Warning);
 
-                    if (result == DialogResult.Yes) 
+                    if (result == DialogResult.Yes)
                     {
-                        DeleteCustomerAndAppointments(customerId); 
-                    }
-                    else if (result == DialogResult.No) 
-                    {
-                        DeleteCustomer(customerId);
+                        DeleteCustomerAndAppointments(customerId);
                     }
                 }
                 else
@@ -245,7 +242,7 @@ namespace c969v2.Forms
 
                     if (result == DialogResult.Yes)
                     {
-                        DeleteCustomer(customerId); 
+                        DeleteCustomer(customerId);
                     }
                 }
             }
@@ -254,6 +251,7 @@ namespace c969v2.Forms
                 MessageBox.Show("Please select a customer to delete.", "No Customer Selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
+
         private void SignOutButton_Click(object sender, EventArgs e)
         {
             DialogResult result = MessageBox.Show("Are you sure you want to sign out?", "Confirm Sign Out", MessageBoxButtons.YesNo, MessageBoxIcon.Question);

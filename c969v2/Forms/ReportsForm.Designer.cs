@@ -100,7 +100,6 @@
             this.label3.Size = new System.Drawing.Size(164, 25);
             this.label3.TabIndex = 5;
             this.label3.Text = "User Schedules";
-            this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // label4
             // 
@@ -111,7 +110,6 @@
             this.label4.Size = new System.Drawing.Size(245, 25);
             this.label4.TabIndex = 6;
             this.label4.Text = "Total Appt. By Customer";
-            this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
             // userComboBox
             // 
@@ -139,7 +137,6 @@
             this.label6.Size = new System.Drawing.Size(93, 13);
             this.label6.TabIndex = 10;
             this.label6.Text = "Select a Customer";
-            this.label6.Click += new System.EventHandler(this.label6_Click);
             // 
             // customerComboBox
             // 
