@@ -124,8 +124,8 @@ namespace c969v2.Forms
         private void CheckForUpcomingAppointments(int userId)
         {
             DateTime utcNow = DateTime.UtcNow;
-            DateTime userLocalTime = TimeZoneInfo.ConvertTimeFromUtc(utcNow, userTimeZone); // Convert to user's local time
-            DateTime userAlertTime = userLocalTime.AddMinutes(15); // Alert time in user's local time
+            DateTime userLocalTime = TimeZoneInfo.ConvertTimeFromUtc(utcNow, userTimeZone); 
+            DateTime userAlertTime = userLocalTime.AddMinutes(15);
 
             using (var connection = dbConnection.GetConnection())
             {
@@ -139,7 +139,7 @@ namespace c969v2.Forms
                              AND a.start > @currentUtcTime 
                              AND a.start <= @alertUtcTime
                              ORDER BY a.start ASC
-                             LIMIT 1";  // Get the next upcoming appointment
+                             LIMIT 1";  
 
                     using (var command = new MySqlCommand(query, connection))
                     {

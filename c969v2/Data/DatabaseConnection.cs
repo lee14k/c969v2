@@ -13,20 +13,16 @@ namespace c969v2.Data
 
         public DatabaseConnection()
         {
-            // Define your connection string here using the provided database info
             connectionString = "Server=127.0.0.1;" +
                                "Port=3306;" +
                                "Database=client_schedule;" +
                                "Uid=sqlUser;" +
                                "Pwd=Passw0rd!;";
         }
-
         public MySqlConnection GetConnection()
         {
             return new MySqlConnection(connectionString);
         }
-
-        // Example method to test the connection
         public bool TestConnection()
         {
             using (var connection = GetConnection())

@@ -99,7 +99,7 @@ namespace c969v2.Forms
         {
             if (monthComboBox.SelectedValue != null)
             {
-                int selectedMonth = monthComboBox.SelectedIndex + 1; // Assuming months are 0-indexed in the ComboBox
+                int selectedMonth = monthComboBox.SelectedIndex + 1; 
                 GetAppointmentTypesByMonth(selectedMonth);
             }
         }
@@ -178,7 +178,6 @@ namespace c969v2.Forms
                             });
                         }
 
-                        // Order the appointments by start time
                         var orderedSchedule = userSchedule
                             .OrderBy(a => a.Start)
                             .ToList();
@@ -222,13 +221,11 @@ namespace c969v2.Forms
                             appointmentTypes.Add(reader["Type"].ToString());
                         }
 
-                        // Use a lambda expression to group by type and count each type
                         var typeCounts = appointmentTypes
                             .GroupBy(type => type)
                             .Select(group => new { Type = group.Key, Count = group.Count() })
                             .ToList();
 
-                        // Display the results in a DataGridView or other UI component
                         appointmentTypesDataGridView.DataSource = typeCounts;
                     }
                 }
