@@ -100,6 +100,7 @@ namespace c969v2.Forms
                 if (startLocal < DateTime.Now)
                 {
                     MessageBox.Show("Appointments cannot be scheduled for dates in the past.", "Invalid Appointment Time", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;                
                 }
 
                 if (!IsWithinBusinessHours(startLocal, endLocal))
