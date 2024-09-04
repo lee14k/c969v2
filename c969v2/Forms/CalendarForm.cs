@@ -33,7 +33,7 @@ namespace c969v2.Forms
             using (var connection = dbConnection.GetConnection())
             {
                 connection.Open();
-                string query = @"SELECT Start, End, Title, Type 
+                string query = @"SELECT Start, End, Title, Type, appointmentId, customerId, userId  
                                  FROM appointment 
                                  WHERE Start >= @today
                                  ORDER BY Start";
@@ -53,14 +53,16 @@ namespace c969v2.Forms
                                 Start = Convert.ToDateTime(reader["Start"]),
                                 End = Convert.ToDateTime(reader["End"]),
                                 Title = reader["Title"].ToString(),
-                                Type = reader["Type"].ToString()
+                                Type = reader["Type"].ToString(),
+                                AppointmentId = Convert.ToInt32(reader["appointmentId"]),
+                                CustomerId = Convert.ToInt32(reader["customerId"]),
+                                UserId = Convert.ToInt32(reader["userId"])
                             });
                         }
                     }
                 }
             }
         }
-
         private void DisplayAppointmentsForDate(DateTime date)
         {
             var appointmentsForDate = upcomingAppointments
