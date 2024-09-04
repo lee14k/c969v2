@@ -14,8 +14,6 @@ namespace c969v2.Forms
         private int customerId;
         private DatabaseConnection dbConnection;
         private TimeZoneInfo easternTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
-
-
         public AppointmentForm(int? appointmentId = null)
         {
             InitializeComponent();
@@ -363,8 +361,6 @@ namespace c969v2.Forms
             return true;
         }
     }
-
-
 }
 
 

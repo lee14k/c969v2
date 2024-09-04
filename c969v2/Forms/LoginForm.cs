@@ -27,13 +27,11 @@ namespace c969v2.Forms
             dbConnection = new DatabaseConnection();
             userTimeZone = TimeZoneInfo.Local;
         }
-
         public static void SetCurrentUser (int userId, string userName)
         {
             CurrentUserId = userId;
             CurrentUserName = userName;
         }
-
         public static void ClearCurrentUser ()
         {
             CurrentUserId = 0;
@@ -58,7 +56,6 @@ namespace c969v2.Forms
                 loginButton.Text = "Login";
             }
         }
-
         private void ValidateLogin(string username, string password)
         {
             try
@@ -116,7 +113,6 @@ namespace c969v2.Forms
                 MessageBox.Show($"Error logging login history: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
         private void ShowErrorMessage()
         {
             RegionInfo region = RegionInfo.CurrentRegion;
@@ -125,7 +121,6 @@ namespace c969v2.Forms
                 : "Invalid username or password.";
             MessageBox.Show(errorMessage);
         }
-
         private void CheckForUpcomingAppointments(int userId)
         {
             DateTime utcNow = DateTime.UtcNow;
@@ -176,9 +171,6 @@ namespace c969v2.Forms
                 }
             }
         }
-
-
-
         private void LoginButton_Click(object sender, EventArgs e)
         {
             string username = usernameEnter.Text;

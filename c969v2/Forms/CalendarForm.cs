@@ -17,13 +17,11 @@ namespace c969v2.Forms
     {
         private List<Appointment> upcomingAppointments;
         private DatabaseConnection dbConnection;
-
         public CalendarForm()
         {
             InitializeComponent();
             LoadUpcomingAppointments();
             dbConnection = new DatabaseConnection();
-
         }
         private void backButton_click(object sender, EventArgs e)
         {
@@ -31,7 +29,6 @@ namespace c969v2.Forms
             mainForm.Show();
             this.Close();
         }
-
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
@@ -67,12 +64,6 @@ namespace c969v2.Forms
                     }
                 }
             }
-        }
-
-        private void viewAppointmentsButton_Click(object sender, EventArgs e)
-        {
-            DateTime selectedDate = monthCalendar.SelectionStart;
-            DisplayAppointmentsForDate(selectedDate);
         }
         private void DisplayAppointmentsForDate(DateTime date)
         {

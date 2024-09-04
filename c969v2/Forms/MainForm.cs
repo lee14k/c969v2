@@ -10,7 +10,6 @@ namespace c969v2.Forms
     {
         private DatabaseConnection dbConnection;
         private TimeZoneInfo userTimeZone;
-
         public MainForm()
         {
             SetUserTimeZone();
@@ -25,7 +24,6 @@ namespace c969v2.Forms
         {
              userTimeZone = TimeZoneInfo.Local;
         }
-
         private void LoadAppointmentData()
         {
             using (var connection = dbConnection.GetConnection())
@@ -66,7 +64,6 @@ namespace c969v2.Forms
                 }
             }
         }
-
         private void LoadCustomerData()
         {
             using (var connection = dbConnection.GetConnection())
@@ -91,12 +88,10 @@ namespace c969v2.Forms
                 }
             }
         }
-
         public void RefreshAppointmentData()
         {
             LoadAppointmentData();
         }
-
         private void DeleteAppointment (int appointmentId)
         {
             using (var connection = dbConnection.GetConnection())
@@ -139,7 +134,6 @@ namespace c969v2.Forms
             addAppointmentForm.ShowDialog();
             RefreshAppointmentData();
         }
-
         private void btnAddCustomer_Click(object sender, EventArgs e)
         {
             var addCustomerForm = new CustomerForm();
@@ -150,19 +144,16 @@ namespace c969v2.Forms
         {
             if (AppointmentData.SelectedRows.Count > 0)
             {
-                // Assuming the first column is the appointmentId
                 int selectedAppointmentId = Convert.ToInt32(AppointmentData.SelectedRows[0].Cells[0].Value);
-
-                var editAppointmentForm = new AppointmentForm(selectedAppointmentId); // Pass appointmentId for "Edit" mode
+                var editAppointmentForm = new AppointmentForm(selectedAppointmentId);
                 editAppointmentForm.ShowDialog();
-                RefreshAppointmentData(); // Refresh data after form is closed
+                RefreshAppointmentData();
             }
             else
             {
                 MessageBox.Show("Please select an appointment to edit.", "No Appointment Selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
-
         private void btnEditCustomer_Click(object sender, EventArgs e)
         {
             if (CustomerData.SelectedRows.Count>0)
@@ -191,9 +182,6 @@ namespace c969v2.Forms
                 }
             }
         }
-
-
-
         private void DeleteCustomerAndAppointments(int customerId)
         {
             try
@@ -224,7 +212,6 @@ namespace c969v2.Forms
                 MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
         private void btnDeleteCustomer_Click(object sender, EventArgs e)
         {
             if (CustomerData.SelectedRows.Count > 0)
@@ -239,19 +226,17 @@ namespace c969v2.Forms
                         MessageBoxButtons.YesNoCancel,
                         MessageBoxIcon.Warning);
 
-                    if (result == DialogResult.Yes) // Delete both customer and appointments
+                    if (result == DialogResult.Yes) 
                     {
-                        DeleteCustomerAndAppointments(customerId); // Delete both customer and appointments
+                        DeleteCustomerAndAppointments(customerId); 
                     }
-                    else if (result == DialogResult.No) // Delete only the customer
+                    else if (result == DialogResult.No) 
                     {
-                        DeleteCustomer(customerId); // Only delete the customer
+                        DeleteCustomer(customerId);
                     }
-                    // If the user clicks Cancel, do nothing
                 }
                 else
                 {
-                    // Prompt user to confirm customer deletion when there are no appointments
                     var result = MessageBox.Show(
                         "Are you sure you want to delete this customer?",
                         "Confirm Deletion",
@@ -269,9 +254,6 @@ namespace c969v2.Forms
                 MessageBox.Show("Please select a customer to delete.", "No Customer Selected", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
-
-
-
         private void SignOutButton_Click(object sender, EventArgs e)
         {
             DialogResult result = MessageBox.Show("Are you sure you want to sign out?", "Confirm Sign Out", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -314,19 +296,16 @@ namespace c969v2.Forms
             }
 
         }
-
         private void OpenReports_Click(object sender, EventArgs e)
         {
             var addReportsForm = new ReportsForm();
             addReportsForm.ShowDialog();
         }
-
         private void OpenCalendar_Click(object sender, EventArgs e)
         {
             var addCalendarViewForm = new CalendarForm();
             addCalendarViewForm.ShowDialog();
         }
-
     }
 }
  

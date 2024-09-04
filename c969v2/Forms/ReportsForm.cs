@@ -26,14 +26,12 @@ namespace c969v2.Forms
             mainForm.Show();
             this.Close();
         }
-
         private void ReportsForm_Load(object sender, EventArgs e)
         {
             PopulateCustomerComboBox();
             PopulateUserComboBox();
             PopulateMonthComboBox();
         }
-
         private void PopulateCustomerComboBox()
         {
             using (var connection = dbConnection.GetConnection())
@@ -55,7 +53,6 @@ namespace c969v2.Forms
                 }
             }
         }
-
         private void PopulateUserComboBox()
         {
             using (var connection = dbConnection.GetConnection())
@@ -77,13 +74,11 @@ namespace c969v2.Forms
                 }
             }
         }
-
         private void PopulateMonthComboBox()
         {
             var months = CultureInfo.CurrentCulture.DateTimeFormat.MonthNames.Take(12).ToList();
             monthComboBox.DataSource = months;
         }
-
         private void customerComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (customerComboBox.SelectedValue != null)
@@ -92,7 +87,6 @@ namespace c969v2.Forms
                 GetAppointmentsByCustomer(selectedCustomerId);
             }
         }
-
         private void userComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (userComboBox.SelectedValue != null)
@@ -156,7 +150,6 @@ namespace c969v2.Forms
                 }
             }
         }
-
         private void GetUserSchedule(int userId)
         {
             using (var connection = dbConnection.GetConnection())
@@ -207,7 +200,6 @@ namespace c969v2.Forms
                 }
             }
         }
-
         private void GetAppointmentTypesByMonth(int month)
         {
             using (var connection = dbConnection.GetConnection())
@@ -241,21 +233,6 @@ namespace c969v2.Forms
                     }
                 }
             }
-        }
-
-        private void label3_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label4_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label6_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }

@@ -14,7 +14,6 @@ namespace c969v2.Forms
         private int addressId;
         private int userId;
         private DatabaseConnection dbConnection;
-
         public CustomerForm(int? customerId = null)
         {
             InitializeComponent();
@@ -37,7 +36,6 @@ namespace c969v2.Forms
 
             countryComboBox.SelectedIndexChanged += countryComboBox_SelectedIndexChanged;
         }
-
         private int GenerateNewCustomerId()
         {
             int newCustomerId = 10;
@@ -53,7 +51,6 @@ namespace c969v2.Forms
 
             return newCustomerId;
         }
-
         private int GenerateNewAddressId()
         {
             int newAddressId = 10;
