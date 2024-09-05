@@ -19,7 +19,9 @@ namespace c969v2.Forms
             InitializeComponent();
             dbConnection = new DatabaseConnection();
             LoadUpcomingAppointments();
+            PopulateMonthComboBox(); 
             monthCalendar.DateChanged += new DateRangeEventHandler(monthCalendar_DateChanged);
+            monthComboBox.SelectedIndexChanged += new EventHandler(monthComboBox_SelectedIndexChanged);
             _mainForm = mainForm;
         }
 
@@ -64,6 +66,7 @@ namespace c969v2.Forms
                 }
             }
         }
+
         private void DisplayAppointmentsForDate(DateTime date)
         {
             var appointmentsForDate = upcomingAppointments
@@ -73,10 +76,35 @@ namespace c969v2.Forms
 
             appointmentsDataGridView.DataSource = appointmentsForDate;
         }
+
+        private void DisplayAppointmentsForMonth(int month)
+        {
+            var appointmentsForMonth = upcomingAppointments
+                .Where(a => a.Start.Month == month)
+                .OrderBy(a => a.Start)
+                .ToList();
+
+            appointmentsDataGridView.DataSource = appointmentsForMonth;
+        }
+
         private void monthCalendar_DateChanged(object sender, DateRangeEventArgs e)
         {
             DateTime selectedDate = monthCalendar.SelectionRange.Start;
             DisplayAppointmentsForDate(selectedDate);
+        }
+
+        private void monthComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int selectedMonth = monthComboBox.SelectedIndex + 1;
+            DisplayAppointmentsForMonth(selectedMonth);
+        }
+
+        private void PopulateMonthComboBox()
+        {
+            var months = System.Globalization.DateTimeFormatInfo.InvariantInfo.MonthNames
+                         .Where(m => !string.IsNullOrEmpty(m)).ToArray();
+
+            monthComboBox.Items.AddRange(months);
         }
     }
 }
