@@ -35,5 +35,12 @@ public class Address
         {
             throw new Exception("Phone number cannot exceed 20 characters.");
         }
+        if (string.IsNullOrWhiteSpace(PostalCode)) { throw new Exception("Postal code cannot be empty."); }
+
+        if (string.IsNullOrWhiteSpace(Phone)) { throw new Exception("Phone number cannot be empty."); }
+
+
+        if (!System.Text.RegularExpressions.Regex.IsMatch(Phone, @"^[\d-]+$")) { throw new Exception("Phone number can only contain digits and dashes."); }
+
     }
 }
